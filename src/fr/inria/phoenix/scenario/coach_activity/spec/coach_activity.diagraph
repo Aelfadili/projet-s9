@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<DiaGraph>
+	<controller id="Coach_activityController" x="100.0" y="188.0"/>
+	<action id="ActivityNotifier/NotifyActivity" x="100.0" y="68.0"/>
+	<context id="PropositionGoOut" x="100.0" y="308.0"/>
+	<source id="Fitbit/steps" x="280.0" y="428.0"/>
+	<source id="Agenda/events" x="100.0" y="428.0"/>
+	<context id="AlertMove" x="460.0" y="308.0"/>
+	<source id="ActivityNotifier/dailyActivity" x="550.0" y="428.0"/>
+	<context id="PropositionDActivity" x="640.0" y="308.0"/>
+	<context id="Congratulation" x="280.0" y="308.0"/>
+</DiaGraph>
