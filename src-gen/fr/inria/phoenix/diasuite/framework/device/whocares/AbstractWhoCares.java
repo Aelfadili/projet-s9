@@ -7,11 +7,11 @@ import fr.inria.diagen.core.service.local.Service;
 
 /**
  * ------------------------------------------------------------
-WhoCares						||
-------------------------------------------------------------
-
-<pre>
-device WhoCares {
+ * WhoCares						||
+ * ------------------------------------------------------------
+ * 
+ * <pre>
+ * device WhoCares {
  * 	attribute date as Date;
  * 	attribute day as Day;
  * 	attribute fileType as FileType;
@@ -44,7 +44,7 @@ device WhoCares {
  * 	attribute sleepPeriod as SleepPeriod;
  * 	attribute fitbitAlarm as Alarm;
  * }
-</pre>
+ * </pre>
  */
 public abstract class AbstractWhoCares extends Service {
     
@@ -267,15 +267,15 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>action</code> attribute from device <code>WhoCares</code>.
-    <p>
-    Presence Detector
-    attribute room as Room;
-    Inactivity Sensor
-    
-    <pre>
-    attribute action as Interaction;
-    </pre>
-    @param newActionValue the new value of <code>action</code>
+     * <p>
+     * Presence Detector
+     * attribute room as Room;
+     * Inactivity Sensor
+     * 
+     * <pre>
+     * attribute action as Interaction;
+     * </pre>
+     * @param newActionValue the new value of <code>action</code>
      */
     protected void updateAction(fr.inria.phoenix.diasuite.framework.datatype.interaction.Interaction newActionValue) {
         if (_action != newActionValue) {
@@ -286,15 +286,15 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>action</code> attribute from device <code>WhoCares</code>.
-    <p>
-    Presence Detector
-    attribute room as Room;
-    Inactivity Sensor
-    
-    <pre>
-    attribute action as Interaction;
-    </pre>
-    @return the value of <code>action</code>
+     * <p>
+     * Presence Detector
+     * attribute room as Room;
+     * Inactivity Sensor
+     * 
+     * <pre>
+     * attribute action as Interaction;
+     * </pre>
+     * @return the value of <code>action</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.interaction.Interaction getAction() {
         return _action;
@@ -306,11 +306,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>actionType</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute actionType as InteractionType;
-    </pre>
-    @param newActionTypeValue the new value of <code>actionType</code>
+     * 
+     * <pre>
+     * attribute actionType as InteractionType;
+     * </pre>
+     * @param newActionTypeValue the new value of <code>actionType</code>
      */
     protected void updateActionType(fr.inria.phoenix.diasuite.framework.datatype.interactiontype.InteractionType newActionTypeValue) {
         if (_actionType != newActionTypeValue) {
@@ -321,11 +321,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>actionType</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute actionType as InteractionType;
-    </pre>
-    @return the value of <code>actionType</code>
+     * 
+     * <pre>
+     * attribute actionType as InteractionType;
+     * </pre>
+     * @return the value of <code>actionType</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.interactiontype.InteractionType getActionType() {
         return _actionType;
@@ -337,13 +337,13 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>agendatEvent</code> attribute from device <code>WhoCares</code>.
-    <p>
-    Home Service
-    
-    <pre>
-    attribute agendatEvent as AgendaEvent;
-    </pre>
-    @param newAgendatEventValue the new value of <code>agendatEvent</code>
+     * <p>
+     * Home Service
+     * 
+     * <pre>
+     * attribute agendatEvent as AgendaEvent;
+     * </pre>
+     * @param newAgendatEventValue the new value of <code>agendatEvent</code>
      */
     protected void updateAgendatEvent(fr.inria.phoenix.diasuite.framework.datatype.agendaevent.AgendaEvent newAgendatEventValue) {
         if (_agendatEvent != newAgendatEventValue) {
@@ -354,13 +354,13 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>agendatEvent</code> attribute from device <code>WhoCares</code>.
-    <p>
-    Home Service
-    
-    <pre>
-    attribute agendatEvent as AgendaEvent;
-    </pre>
-    @return the value of <code>agendatEvent</code>
+     * <p>
+     * Home Service
+     * 
+     * <pre>
+     * attribute agendatEvent as AgendaEvent;
+     * </pre>
+     * @return the value of <code>agendatEvent</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.agendaevent.AgendaEvent getAgendatEvent() {
         return _agendatEvent;
@@ -372,11 +372,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>androidApp</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute androidApp as AndroidApp;
-    </pre>
-    @param newAndroidAppValue the new value of <code>androidApp</code>
+     * 
+     * <pre>
+     * attribute androidApp as AndroidApp;
+     * </pre>
+     * @param newAndroidAppValue the new value of <code>androidApp</code>
      */
     protected void updateAndroidApp(fr.inria.phoenix.diasuite.framework.datatype.androidapp.AndroidApp newAndroidAppValue) {
         if (_androidApp != newAndroidAppValue) {
@@ -387,11 +387,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>androidApp</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute androidApp as AndroidApp;
-    </pre>
-    @return the value of <code>androidApp</code>
+     * 
+     * <pre>
+     * attribute androidApp as AndroidApp;
+     * </pre>
+     * @return the value of <code>androidApp</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.androidapp.AndroidApp getAndroidApp() {
         return _androidApp;
@@ -403,11 +403,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>androidExtraString</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute androidExtraString as AndroidExtraString;
-    </pre>
-    @param newAndroidExtraStringValue the new value of <code>androidExtraString</code>
+     * 
+     * <pre>
+     * attribute androidExtraString as AndroidExtraString;
+     * </pre>
+     * @param newAndroidExtraStringValue the new value of <code>androidExtraString</code>
      */
     protected void updateAndroidExtraString(fr.inria.phoenix.diasuite.framework.datatype.androidextrastring.AndroidExtraString newAndroidExtraStringValue) {
         if (_androidExtraString != newAndroidExtraStringValue) {
@@ -418,11 +418,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>androidExtraString</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute androidExtraString as AndroidExtraString;
-    </pre>
-    @return the value of <code>androidExtraString</code>
+     * 
+     * <pre>
+     * attribute androidExtraString as AndroidExtraString;
+     * </pre>
+     * @return the value of <code>androidExtraString</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.androidextrastring.AndroidExtraString getAndroidExtraString() {
         return _androidExtraString;
@@ -434,11 +434,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>androidIntent</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute androidIntent as AndroidIntent;
-    </pre>
-    @param newAndroidIntentValue the new value of <code>androidIntent</code>
+     * 
+     * <pre>
+     * attribute androidIntent as AndroidIntent;
+     * </pre>
+     * @param newAndroidIntentValue the new value of <code>androidIntent</code>
      */
     protected void updateAndroidIntent(fr.inria.phoenix.diasuite.framework.datatype.androidintent.AndroidIntent newAndroidIntentValue) {
         if (_androidIntent != newAndroidIntentValue) {
@@ -449,11 +449,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>androidIntent</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute androidIntent as AndroidIntent;
-    </pre>
-    @return the value of <code>androidIntent</code>
+     * 
+     * <pre>
+     * attribute androidIntent as AndroidIntent;
+     * </pre>
+     * @return the value of <code>androidIntent</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.androidintent.AndroidIntent getAndroidIntent() {
         return _androidIntent;
@@ -465,13 +465,13 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>battery</code> attribute from device <code>WhoCares</code>.
-    <p>
-    Android
-    
-    <pre>
-    attribute battery as Battery;
-    </pre>
-    @param newBatteryValue the new value of <code>battery</code>
+     * <p>
+     * Android
+     * 
+     * <pre>
+     * attribute battery as Battery;
+     * </pre>
+     * @param newBatteryValue the new value of <code>battery</code>
      */
     protected void updateBattery(fr.inria.phoenix.diasuite.framework.datatype.battery.Battery newBatteryValue) {
         if (_battery != newBatteryValue) {
@@ -482,13 +482,13 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>battery</code> attribute from device <code>WhoCares</code>.
-    <p>
-    Android
-    
-    <pre>
-    attribute battery as Battery;
-    </pre>
-    @return the value of <code>battery</code>
+     * <p>
+     * Android
+     * 
+     * <pre>
+     * attribute battery as Battery;
+     * </pre>
+     * @return the value of <code>battery</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.battery.Battery getBattery() {
         return _battery;
@@ -500,13 +500,13 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>contact</code> attribute from device <code>WhoCares</code>.
-    <p>
-    Messengers
-    
-    <pre>
-    attribute contact as Contact;
-    </pre>
-    @param newContactValue the new value of <code>contact</code>
+     * <p>
+     * Messengers
+     * 
+     * <pre>
+     * attribute contact as Contact;
+     * </pre>
+     * @param newContactValue the new value of <code>contact</code>
      */
     protected void updateContact(fr.inria.phoenix.diasuite.framework.datatype.contact.Contact newContactValue) {
         if (_contact != newContactValue) {
@@ -517,13 +517,13 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>contact</code> attribute from device <code>WhoCares</code>.
-    <p>
-    Messengers
-    
-    <pre>
-    attribute contact as Contact;
-    </pre>
-    @return the value of <code>contact</code>
+     * <p>
+     * Messengers
+     * 
+     * <pre>
+     * attribute contact as Contact;
+     * </pre>
+     * @return the value of <code>contact</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.contact.Contact getContact() {
         return _contact;
@@ -535,11 +535,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>criticalNotification</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute criticalNotification as CriticalNotification;
-    </pre>
-    @param newCriticalNotificationValue the new value of <code>criticalNotification</code>
+     * 
+     * <pre>
+     * attribute criticalNotification as CriticalNotification;
+     * </pre>
+     * @param newCriticalNotificationValue the new value of <code>criticalNotification</code>
      */
     protected void updateCriticalNotification(fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification newCriticalNotificationValue) {
         if (_criticalNotification != newCriticalNotificationValue) {
@@ -550,11 +550,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>criticalNotification</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute criticalNotification as CriticalNotification;
-    </pre>
-    @return the value of <code>criticalNotification</code>
+     * 
+     * <pre>
+     * attribute criticalNotification as CriticalNotification;
+     * </pre>
+     * @return the value of <code>criticalNotification</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification getCriticalNotification() {
         return _criticalNotification;
@@ -566,11 +566,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>dailyActivity</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute dailyActivity as DailyActivity;
-    </pre>
-    @param newDailyActivityValue the new value of <code>dailyActivity</code>
+     * 
+     * <pre>
+     * attribute dailyActivity as DailyActivity;
+     * </pre>
+     * @param newDailyActivityValue the new value of <code>dailyActivity</code>
      */
     protected void updateDailyActivity(fr.inria.phoenix.diasuite.framework.datatype.dailyactivity.DailyActivity newDailyActivityValue) {
         if (_dailyActivity != newDailyActivityValue) {
@@ -581,11 +581,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>dailyActivity</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute dailyActivity as DailyActivity;
-    </pre>
-    @return the value of <code>dailyActivity</code>
+     * 
+     * <pre>
+     * attribute dailyActivity as DailyActivity;
+     * </pre>
+     * @return the value of <code>dailyActivity</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.dailyactivity.DailyActivity getDailyActivity() {
         return _dailyActivity;
@@ -597,13 +597,13 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>dailyActivityName</code> attribute from device <code>WhoCares</code>.
-    <p>
-    Activity Notifier
-    
-    <pre>
-    attribute dailyActivityName as DailyActivityName;
-    </pre>
-    @param newDailyActivityNameValue the new value of <code>dailyActivityName</code>
+     * <p>
+     * Activity Notifier
+     * 
+     * <pre>
+     * attribute dailyActivityName as DailyActivityName;
+     * </pre>
+     * @param newDailyActivityNameValue the new value of <code>dailyActivityName</code>
      */
     protected void updateDailyActivityName(fr.inria.phoenix.diasuite.framework.datatype.dailyactivityname.DailyActivityName newDailyActivityNameValue) {
         if (_dailyActivityName != newDailyActivityNameValue) {
@@ -614,13 +614,13 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>dailyActivityName</code> attribute from device <code>WhoCares</code>.
-    <p>
-    Activity Notifier
-    
-    <pre>
-    attribute dailyActivityName as DailyActivityName;
-    </pre>
-    @return the value of <code>dailyActivityName</code>
+     * <p>
+     * Activity Notifier
+     * 
+     * <pre>
+     * attribute dailyActivityName as DailyActivityName;
+     * </pre>
+     * @return the value of <code>dailyActivityName</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.dailyactivityname.DailyActivityName getDailyActivityName() {
         return _dailyActivityName;
@@ -632,11 +632,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>dailyActivityStats</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute dailyActivityStats as DailyActivityStats;
-    </pre>
-    @param newDailyActivityStatsValue the new value of <code>dailyActivityStats</code>
+     * 
+     * <pre>
+     * attribute dailyActivityStats as DailyActivityStats;
+     * </pre>
+     * @param newDailyActivityStatsValue the new value of <code>dailyActivityStats</code>
      */
     protected void updateDailyActivityStats(fr.inria.phoenix.diasuite.framework.datatype.dailyactivitystats.DailyActivityStats newDailyActivityStatsValue) {
         if (_dailyActivityStats != newDailyActivityStatsValue) {
@@ -647,11 +647,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>dailyActivityStats</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute dailyActivityStats as DailyActivityStats;
-    </pre>
-    @return the value of <code>dailyActivityStats</code>
+     * 
+     * <pre>
+     * attribute dailyActivityStats as DailyActivityStats;
+     * </pre>
+     * @return the value of <code>dailyActivityStats</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.dailyactivitystats.DailyActivityStats getDailyActivityStats() {
         return _dailyActivityStats;
@@ -663,11 +663,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>dailyReport</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute dailyReport as DailyReport;
-    </pre>
-    @param newDailyReportValue the new value of <code>dailyReport</code>
+     * 
+     * <pre>
+     * attribute dailyReport as DailyReport;
+     * </pre>
+     * @param newDailyReportValue the new value of <code>dailyReport</code>
      */
     protected void updateDailyReport(fr.inria.phoenix.diasuite.framework.datatype.dailyreport.DailyReport newDailyReportValue) {
         if (_dailyReport != newDailyReportValue) {
@@ -678,11 +678,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>dailyReport</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute dailyReport as DailyReport;
-    </pre>
-    @return the value of <code>dailyReport</code>
+     * 
+     * <pre>
+     * attribute dailyReport as DailyReport;
+     * </pre>
+     * @return the value of <code>dailyReport</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.dailyreport.DailyReport getDailyReport() {
         return _dailyReport;
@@ -694,13 +694,13 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>date</code> attribute from device <code>WhoCares</code>.
-    <p>
-    Utils
-    
-    <pre>
-    attribute date as Date;
-    </pre>
-    @param newDateValue the new value of <code>date</code>
+     * <p>
+     * Utils
+     * 
+     * <pre>
+     * attribute date as Date;
+     * </pre>
+     * @param newDateValue the new value of <code>date</code>
      */
     protected void updateDate(fr.inria.phoenix.diasuite.framework.datatype.date.Date newDateValue) {
         if (_date != newDateValue) {
@@ -711,13 +711,13 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>date</code> attribute from device <code>WhoCares</code>.
-    <p>
-    Utils
-    
-    <pre>
-    attribute date as Date;
-    </pre>
-    @return the value of <code>date</code>
+     * <p>
+     * Utils
+     * 
+     * <pre>
+     * attribute date as Date;
+     * </pre>
+     * @return the value of <code>date</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.date.Date getDate() {
         return _date;
@@ -729,11 +729,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>day</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute day as Day;
-    </pre>
-    @param newDayValue the new value of <code>day</code>
+     * 
+     * <pre>
+     * attribute day as Day;
+     * </pre>
+     * @param newDayValue the new value of <code>day</code>
      */
     protected void updateDay(fr.inria.phoenix.diasuite.framework.datatype.day.Day newDayValue) {
         if (_day != newDayValue) {
@@ -744,11 +744,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>day</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute day as Day;
-    </pre>
-    @return the value of <code>day</code>
+     * 
+     * <pre>
+     * attribute day as Day;
+     * </pre>
+     * @return the value of <code>day</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.day.Day getDay() {
         return _day;
@@ -760,11 +760,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>dayTime</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute dayTime as DayTime;
-    </pre>
-    @param newDayTimeValue the new value of <code>dayTime</code>
+     * 
+     * <pre>
+     * attribute dayTime as DayTime;
+     * </pre>
+     * @param newDayTimeValue the new value of <code>dayTime</code>
      */
     protected void updateDayTime(fr.inria.phoenix.diasuite.framework.datatype.daytime.DayTime newDayTimeValue) {
         if (_dayTime != newDayTimeValue) {
@@ -775,11 +775,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>dayTime</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute dayTime as DayTime;
-    </pre>
-    @return the value of <code>dayTime</code>
+     * 
+     * <pre>
+     * attribute dayTime as DayTime;
+     * </pre>
+     * @return the value of <code>dayTime</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.daytime.DayTime getDayTime() {
         return _dayTime;
@@ -791,13 +791,13 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>doorState</code> attribute from device <code>WhoCares</code>.
-    <p>
-    Sensors
-    
-    <pre>
-    attribute doorState as DoorState;
-    </pre>
-    @param newDoorStateValue the new value of <code>doorState</code>
+     * <p>
+     * Sensors
+     * 
+     * <pre>
+     * attribute doorState as DoorState;
+     * </pre>
+     * @param newDoorStateValue the new value of <code>doorState</code>
      */
     protected void updateDoorState(fr.inria.phoenix.diasuite.framework.datatype.doorstate.DoorState newDoorStateValue) {
         if (_doorState != newDoorStateValue) {
@@ -808,13 +808,13 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>doorState</code> attribute from device <code>WhoCares</code>.
-    <p>
-    Sensors
-    
-    <pre>
-    attribute doorState as DoorState;
-    </pre>
-    @return the value of <code>doorState</code>
+     * <p>
+     * Sensors
+     * 
+     * <pre>
+     * attribute doorState as DoorState;
+     * </pre>
+     * @return the value of <code>doorState</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.doorstate.DoorState getDoorState() {
         return _doorState;
@@ -826,11 +826,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>file</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute file as File;
-    </pre>
-    @param newFileValue the new value of <code>file</code>
+     * 
+     * <pre>
+     * attribute file as File;
+     * </pre>
+     * @param newFileValue the new value of <code>file</code>
      */
     protected void updateFile(fr.inria.phoenix.diasuite.framework.datatype.file.File newFileValue) {
         if (_file != newFileValue) {
@@ -841,11 +841,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>file</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute file as File;
-    </pre>
-    @return the value of <code>file</code>
+     * 
+     * <pre>
+     * attribute file as File;
+     * </pre>
+     * @return the value of <code>file</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.file.File getFile() {
         return _file;
@@ -857,11 +857,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>fileType</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute fileType as FileType;
-    </pre>
-    @param newFileTypeValue the new value of <code>fileType</code>
+     * 
+     * <pre>
+     * attribute fileType as FileType;
+     * </pre>
+     * @param newFileTypeValue the new value of <code>fileType</code>
      */
     protected void updateFileType(fr.inria.phoenix.diasuite.framework.datatype.filetype.FileType newFileTypeValue) {
         if (_fileType != newFileTypeValue) {
@@ -872,11 +872,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>fileType</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute fileType as FileType;
-    </pre>
-    @return the value of <code>fileType</code>
+     * 
+     * <pre>
+     * attribute fileType as FileType;
+     * </pre>
+     * @return the value of <code>fileType</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.filetype.FileType getFileType() {
         return _fileType;
@@ -888,11 +888,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>fitbitAlarm</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute fitbitAlarm as Alarm;
-    </pre>
-    @param newFitbitAlarmValue the new value of <code>fitbitAlarm</code>
+     * 
+     * <pre>
+     * attribute fitbitAlarm as Alarm;
+     * </pre>
+     * @param newFitbitAlarmValue the new value of <code>fitbitAlarm</code>
      */
     protected void updateFitbitAlarm(fr.inria.phoenix.diasuite.framework.datatype.alarm.Alarm newFitbitAlarmValue) {
         if (_fitbitAlarm != newFitbitAlarmValue) {
@@ -903,11 +903,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>fitbitAlarm</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute fitbitAlarm as Alarm;
-    </pre>
-    @return the value of <code>fitbitAlarm</code>
+     * 
+     * <pre>
+     * attribute fitbitAlarm as Alarm;
+     * </pre>
+     * @return the value of <code>fitbitAlarm</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.alarm.Alarm getFitbitAlarm() {
         return _fitbitAlarm;
@@ -919,11 +919,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>message</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute message as Message;
-    </pre>
-    @param newMessageValue the new value of <code>message</code>
+     * 
+     * <pre>
+     * attribute message as Message;
+     * </pre>
+     * @param newMessageValue the new value of <code>message</code>
      */
     protected void updateMessage(fr.inria.phoenix.diasuite.framework.datatype.message.Message newMessageValue) {
         if (_message != newMessageValue) {
@@ -934,11 +934,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>message</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute message as Message;
-    </pre>
-    @return the value of <code>message</code>
+     * 
+     * <pre>
+     * attribute message as Message;
+     * </pre>
+     * @return the value of <code>message</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.message.Message getMessage() {
         return _message;
@@ -950,11 +950,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>notification</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute notification as NonCriticalNotification;
-    </pre>
-    @param newNotificationValue the new value of <code>notification</code>
+     * 
+     * <pre>
+     * attribute notification as NonCriticalNotification;
+     * </pre>
+     * @param newNotificationValue the new value of <code>notification</code>
      */
     protected void updateNotification(fr.inria.phoenix.diasuite.framework.datatype.noncriticalnotification.NonCriticalNotification newNotificationValue) {
         if (_notification != newNotificationValue) {
@@ -965,11 +965,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>notification</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute notification as NonCriticalNotification;
-    </pre>
-    @return the value of <code>notification</code>
+     * 
+     * <pre>
+     * attribute notification as NonCriticalNotification;
+     * </pre>
+     * @return the value of <code>notification</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.noncriticalnotification.NonCriticalNotification getNotification() {
         return _notification;
@@ -981,11 +981,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>period</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute period as Period;
-    </pre>
-    @param newPeriodValue the new value of <code>period</code>
+     * 
+     * <pre>
+     * attribute period as Period;
+     * </pre>
+     * @param newPeriodValue the new value of <code>period</code>
      */
     protected void updatePeriod(fr.inria.phoenix.diasuite.framework.datatype.period.Period newPeriodValue) {
         if (_period != newPeriodValue) {
@@ -996,11 +996,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>period</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute period as Period;
-    </pre>
-    @return the value of <code>period</code>
+     * 
+     * <pre>
+     * attribute period as Period;
+     * </pre>
+     * @return the value of <code>period</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.period.Period getPeriod() {
         return _period;
@@ -1012,11 +1012,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>periodActivity</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute periodActivity as PeriodActivity;
-    </pre>
-    @param newPeriodActivityValue the new value of <code>periodActivity</code>
+     * 
+     * <pre>
+     * attribute periodActivity as PeriodActivity;
+     * </pre>
+     * @param newPeriodActivityValue the new value of <code>periodActivity</code>
      */
     protected void updatePeriodActivity(fr.inria.phoenix.diasuite.framework.datatype.periodactivity.PeriodActivity newPeriodActivityValue) {
         if (_periodActivity != newPeriodActivityValue) {
@@ -1027,11 +1027,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>periodActivity</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute periodActivity as PeriodActivity;
-    </pre>
-    @return the value of <code>periodActivity</code>
+     * 
+     * <pre>
+     * attribute periodActivity as PeriodActivity;
+     * </pre>
+     * @return the value of <code>periodActivity</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.periodactivity.PeriodActivity getPeriodActivity() {
         return _periodActivity;
@@ -1043,11 +1043,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>periodActivityName</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute periodActivityName as PeriodActivityName;
-    </pre>
-    @param newPeriodActivityNameValue the new value of <code>periodActivityName</code>
+     * 
+     * <pre>
+     * attribute periodActivityName as PeriodActivityName;
+     * </pre>
+     * @param newPeriodActivityNameValue the new value of <code>periodActivityName</code>
      */
     protected void updatePeriodActivityName(fr.inria.phoenix.diasuite.framework.datatype.periodactivityname.PeriodActivityName newPeriodActivityNameValue) {
         if (_periodActivityName != newPeriodActivityNameValue) {
@@ -1058,11 +1058,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>periodActivityName</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute periodActivityName as PeriodActivityName;
-    </pre>
-    @return the value of <code>periodActivityName</code>
+     * 
+     * <pre>
+     * attribute periodActivityName as PeriodActivityName;
+     * </pre>
+     * @return the value of <code>periodActivityName</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.periodactivityname.PeriodActivityName getPeriodActivityName() {
         return _periodActivityName;
@@ -1074,11 +1074,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>periodActivityStats</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute periodActivityStats as PeriodActivityStats;
-    </pre>
-    @param newPeriodActivityStatsValue the new value of <code>periodActivityStats</code>
+     * 
+     * <pre>
+     * attribute periodActivityStats as PeriodActivityStats;
+     * </pre>
+     * @param newPeriodActivityStatsValue the new value of <code>periodActivityStats</code>
      */
     protected void updatePeriodActivityStats(fr.inria.phoenix.diasuite.framework.datatype.periodactivitystats.PeriodActivityStats newPeriodActivityStatsValue) {
         if (_periodActivityStats != newPeriodActivityStatsValue) {
@@ -1089,11 +1089,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>periodActivityStats</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute periodActivityStats as PeriodActivityStats;
-    </pre>
-    @return the value of <code>periodActivityStats</code>
+     * 
+     * <pre>
+     * attribute periodActivityStats as PeriodActivityStats;
+     * </pre>
+     * @return the value of <code>periodActivityStats</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.periodactivitystats.PeriodActivityStats getPeriodActivityStats() {
         return _periodActivityStats;
@@ -1105,13 +1105,13 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>pulseRecord</code> attribute from device <code>WhoCares</code>.
-    <p>
-    Fitbit
-    
-    <pre>
-    attribute pulseRecord as Pulse;
-    </pre>
-    @param newPulseRecordValue the new value of <code>pulseRecord</code>
+     * <p>
+     * Fitbit
+     * 
+     * <pre>
+     * attribute pulseRecord as Pulse;
+     * </pre>
+     * @param newPulseRecordValue the new value of <code>pulseRecord</code>
      */
     protected void updatePulseRecord(fr.inria.phoenix.diasuite.framework.datatype.pulse.Pulse newPulseRecordValue) {
         if (_pulseRecord != newPulseRecordValue) {
@@ -1122,13 +1122,13 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>pulseRecord</code> attribute from device <code>WhoCares</code>.
-    <p>
-    Fitbit
-    
-    <pre>
-    attribute pulseRecord as Pulse;
-    </pre>
-    @return the value of <code>pulseRecord</code>
+     * <p>
+     * Fitbit
+     * 
+     * <pre>
+     * attribute pulseRecord as Pulse;
+     * </pre>
+     * @return the value of <code>pulseRecord</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.pulse.Pulse getPulseRecord() {
         return _pulseRecord;
@@ -1140,13 +1140,13 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>sleepPeriod</code> attribute from device <code>WhoCares</code>.
-    <p>
-    attribute fitibitActivity as FitbitActivity;
-    
-    <pre>
-    attribute sleepPeriod as SleepPeriod;
-    </pre>
-    @param newSleepPeriodValue the new value of <code>sleepPeriod</code>
+     * <p>
+     * attribute fitibitActivity as FitbitActivity;
+     * 
+     * <pre>
+     * attribute sleepPeriod as SleepPeriod;
+     * </pre>
+     * @param newSleepPeriodValue the new value of <code>sleepPeriod</code>
      */
     protected void updateSleepPeriod(fr.inria.phoenix.diasuite.framework.datatype.sleepperiod.SleepPeriod newSleepPeriodValue) {
         if (_sleepPeriod != newSleepPeriodValue) {
@@ -1157,13 +1157,13 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>sleepPeriod</code> attribute from device <code>WhoCares</code>.
-    <p>
-    attribute fitibitActivity as FitbitActivity;
-    
-    <pre>
-    attribute sleepPeriod as SleepPeriod;
-    </pre>
-    @return the value of <code>sleepPeriod</code>
+     * <p>
+     * attribute fitibitActivity as FitbitActivity;
+     * 
+     * <pre>
+     * attribute sleepPeriod as SleepPeriod;
+     * </pre>
+     * @return the value of <code>sleepPeriod</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.sleepperiod.SleepPeriod getSleepPeriod() {
         return _sleepPeriod;
@@ -1175,11 +1175,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>soundLevel</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute soundLevel as SoundLevel;
-    </pre>
-    @param newSoundLevelValue the new value of <code>soundLevel</code>
+     * 
+     * <pre>
+     * attribute soundLevel as SoundLevel;
+     * </pre>
+     * @param newSoundLevelValue the new value of <code>soundLevel</code>
      */
     protected void updateSoundLevel(fr.inria.phoenix.diasuite.framework.datatype.soundlevel.SoundLevel newSoundLevelValue) {
         if (_soundLevel != newSoundLevelValue) {
@@ -1190,11 +1190,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>soundLevel</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute soundLevel as SoundLevel;
-    </pre>
-    @return the value of <code>soundLevel</code>
+     * 
+     * <pre>
+     * attribute soundLevel as SoundLevel;
+     * </pre>
+     * @return the value of <code>soundLevel</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.soundlevel.SoundLevel getSoundLevel() {
         return _soundLevel;
@@ -1206,11 +1206,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>statisticReport</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute statisticReport as StatisticReport;
-    </pre>
-    @param newStatisticReportValue the new value of <code>statisticReport</code>
+     * 
+     * <pre>
+     * attribute statisticReport as StatisticReport;
+     * </pre>
+     * @param newStatisticReportValue the new value of <code>statisticReport</code>
      */
     protected void updateStatisticReport(fr.inria.phoenix.diasuite.framework.datatype.statisticreport.StatisticReport newStatisticReportValue) {
         if (_statisticReport != newStatisticReportValue) {
@@ -1221,11 +1221,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>statisticReport</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute statisticReport as StatisticReport;
-    </pre>
-    @return the value of <code>statisticReport</code>
+     * 
+     * <pre>
+     * attribute statisticReport as StatisticReport;
+     * </pre>
+     * @return the value of <code>statisticReport</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.statisticreport.StatisticReport getStatisticReport() {
         return _statisticReport;
@@ -1237,11 +1237,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Set the value of the <code>temperatureUnit</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute temperatureUnit as TemperatureUnit;
-    </pre>
-    @param newTemperatureUnitValue the new value of <code>temperatureUnit</code>
+     * 
+     * <pre>
+     * attribute temperatureUnit as TemperatureUnit;
+     * </pre>
+     * @param newTemperatureUnitValue the new value of <code>temperatureUnit</code>
      */
     protected void updateTemperatureUnit(fr.inria.phoenix.diasuite.framework.datatype.temperatureunit.TemperatureUnit newTemperatureUnitValue) {
         if (_temperatureUnit != newTemperatureUnitValue) {
@@ -1252,11 +1252,11 @@ public abstract class AbstractWhoCares extends Service {
     
     /**
      * Returns the value of the <code>temperatureUnit</code> attribute from device <code>WhoCares</code>.
-    
-    <pre>
-    attribute temperatureUnit as TemperatureUnit;
-    </pre>
-    @return the value of <code>temperatureUnit</code>
+     * 
+     * <pre>
+     * attribute temperatureUnit as TemperatureUnit;
+     * </pre>
+     * @return the value of <code>temperatureUnit</code>
      */
     public fr.inria.phoenix.diasuite.framework.datatype.temperatureunit.TemperatureUnit getTemperatureUnit() {
         return _temperatureUnit;

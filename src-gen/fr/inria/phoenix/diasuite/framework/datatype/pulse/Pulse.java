@@ -4,11 +4,11 @@ import java.io.Serializable;
 
 /**
  * <pre>
-structure Pulse {
+ * structure Pulse {
  *         period as Period;
  *         pulsations as Integer [];
  * }
-</pre>
+ * </pre>
  */
 public class Pulse implements Serializable {
     private static final long serialVersionUID = 0;
@@ -18,11 +18,11 @@ public class Pulse implements Serializable {
     
     /**
      * Returns the value of the period field.
-    
-    <pre>
-    period as Period
-    </pre>
-    @return the value of period
+     * 
+     * <pre>
+     * period as Period
+     * </pre>
+     * @return the value of period
      */
     public fr.inria.phoenix.diasuite.framework.datatype.period.Period getPeriod() {
         return period;
@@ -30,11 +30,11 @@ public class Pulse implements Serializable {
     
     /**
      * Set the value of the period field.
-    
-    <pre>
-    period as Period
-    </pre>
-    @param period the new value of period
+     * 
+     * <pre>
+     * period as Period
+     * </pre>
+     * @param period the new value of period
      */
     public void setPeriod(fr.inria.phoenix.diasuite.framework.datatype.period.Period period) {
         this.period = period;
@@ -46,11 +46,11 @@ public class Pulse implements Serializable {
     
     /**
      * Returns the value of the pulsations field.
-    
-    <pre>
-    pulsations as Integer []
-    </pre>
-    @return the value of pulsations
+     * 
+     * <pre>
+     * pulsations as Integer []
+     * </pre>
+     * @return the value of pulsations
      */
     public java.util.List<java.lang.Integer> getPulsations() {
         return pulsations;
@@ -58,11 +58,11 @@ public class Pulse implements Serializable {
     
     /**
      * Set the value of the pulsations field.
-    
-    <pre>
-    pulsations as Integer []
-    </pre>
-    @param pulsations the new value of pulsations
+     * 
+     * <pre>
+     * pulsations as Integer []
+     * </pre>
+     * @param pulsations the new value of pulsations
      */
     public void setPulsations(java.util.List<java.lang.Integer> pulsations) {
         this.pulsations = pulsations;

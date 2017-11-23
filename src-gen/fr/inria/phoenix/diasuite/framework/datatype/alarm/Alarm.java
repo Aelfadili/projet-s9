@@ -4,13 +4,13 @@ import java.io.Serializable;
 
 /**
  * <pre>
-structure Alarm {
+ * structure Alarm {
  *         name as String;
  *         date as Date;
  *         minutesBetweenReminders as Integer;
  *         reminders as Integer;
  * }
-</pre>
+ * </pre>
  */
 public class Alarm implements Serializable {
     private static final long serialVersionUID = 0;
@@ -20,11 +20,11 @@ public class Alarm implements Serializable {
     
     /**
      * Returns the value of the name field.
-    
-    <pre>
-    name as String
-    </pre>
-    @return the value of name
+     * 
+     * <pre>
+     * name as String
+     * </pre>
+     * @return the value of name
      */
     public java.lang.String getName() {
         return name;
@@ -32,11 +32,11 @@ public class Alarm implements Serializable {
     
     /**
      * Set the value of the name field.
-    
-    <pre>
-    name as String
-    </pre>
-    @param name the new value of name
+     * 
+     * <pre>
+     * name as String
+     * </pre>
+     * @param name the new value of name
      */
     public void setName(java.lang.String name) {
         this.name = name;
@@ -48,11 +48,11 @@ public class Alarm implements Serializable {
     
     /**
      * Returns the value of the date field.
-    
-    <pre>
-    date as Date
-    </pre>
-    @return the value of date
+     * 
+     * <pre>
+     * date as Date
+     * </pre>
+     * @return the value of date
      */
     public fr.inria.phoenix.diasuite.framework.datatype.date.Date getDate() {
         return date;
@@ -60,11 +60,11 @@ public class Alarm implements Serializable {
     
     /**
      * Set the value of the date field.
-    
-    <pre>
-    date as Date
-    </pre>
-    @param date the new value of date
+     * 
+     * <pre>
+     * date as Date
+     * </pre>
+     * @param date the new value of date
      */
     public void setDate(fr.inria.phoenix.diasuite.framework.datatype.date.Date date) {
         this.date = date;
@@ -76,11 +76,11 @@ public class Alarm implements Serializable {
     
     /**
      * Returns the value of the minutesBetweenReminders field.
-    
-    <pre>
-    minutesBetweenReminders as Integer
-    </pre>
-    @return the value of minutesBetweenReminders
+     * 
+     * <pre>
+     * minutesBetweenReminders as Integer
+     * </pre>
+     * @return the value of minutesBetweenReminders
      */
     public java.lang.Integer getMinutesBetweenReminders() {
         return minutesBetweenReminders;
@@ -88,11 +88,11 @@ public class Alarm implements Serializable {
     
     /**
      * Set the value of the minutesBetweenReminders field.
-    
-    <pre>
-    minutesBetweenReminders as Integer
-    </pre>
-    @param minutesBetweenReminders the new value of minutesBetweenReminders
+     * 
+     * <pre>
+     * minutesBetweenReminders as Integer
+     * </pre>
+     * @param minutesBetweenReminders the new value of minutesBetweenReminders
      */
     public void setMinutesBetweenReminders(java.lang.Integer minutesBetweenReminders) {
         this.minutesBetweenReminders = minutesBetweenReminders;
@@ -104,11 +104,11 @@ public class Alarm implements Serializable {
     
     /**
      * Returns the value of the reminders field.
-    
-    <pre>
-    reminders as Integer
-    </pre>
-    @return the value of reminders
+     * 
+     * <pre>
+     * reminders as Integer
+     * </pre>
+     * @return the value of reminders
      */
     public java.lang.Integer getReminders() {
         return reminders;
@@ -116,11 +116,11 @@ public class Alarm implements Serializable {
     
     /**
      * Set the value of the reminders field.
-    
-    <pre>
-    reminders as Integer
-    </pre>
-    @param reminders the new value of reminders
+     * 
+     * <pre>
+     * reminders as Integer
+     * </pre>
+     * @param reminders the new value of reminders
      */
     public void setReminders(java.lang.Integer reminders) {
         this.reminders = reminders;

@@ -7,11 +7,11 @@ import fr.inria.diagen.core.service.local.Service;
 
 /**
  * ------------------------------------------------------------
-Fitbit							||
-------------------------------------------------------------
-
-<pre>
-device Fitbit extends Device {
+ * Fitbit							||
+ * ------------------------------------------------------------
+ * 
+ * <pre>
+ * device Fitbit extends Device {
  *         source calories as Integer indexed by period as Period;
  *         source distanceInMeters as Integer indexed by period as Period;
  *         source pulses as Pulse indexed by period as Period;
@@ -21,7 +21,7 @@ device Fitbit extends Device {
  *         action ScheduleAlarm;
  *         action Vibrate;
  * }
-</pre>
+ * </pre>
  */
 public abstract class AbstractFitbit extends Service {
     
@@ -101,11 +101,11 @@ public abstract class AbstractFitbit extends Service {
     
     /**
      * Set the value of the <code>id</code> attribute from device <code>Device</code>.
-    
-    <pre>
-    attribute id as String;
-    </pre>
-    @param newIdValue the new value of <code>id</code>
+     * 
+     * <pre>
+     * attribute id as String;
+     * </pre>
+     * @param newIdValue the new value of <code>id</code>
      */
     protected void updateId(java.lang.String newIdValue) {
         if (_id != newIdValue) {
@@ -116,11 +116,11 @@ public abstract class AbstractFitbit extends Service {
     
     /**
      * Returns the value of the <code>id</code> attribute from device <code>Device</code>.
-    
-    <pre>
-    attribute id as String;
-    </pre>
-    @return the value of <code>id</code>
+     * 
+     * <pre>
+     * attribute id as String;
+     * </pre>
+     * @return the value of <code>id</code>
      */
     public java.lang.String getId() {
         return _id;
@@ -132,14 +132,14 @@ public abstract class AbstractFitbit extends Service {
     
     /**
      * Publish the value of source <code>alarm</code> from device <code>Fitbit</code>.
-    <p>
-    alarm
-    
-    <pre>
-    source alarm as Alarm indexed by name as String;
-    </pre>
-    @param newAlarmValue the new value for the source <code>alarm</code>
-    @param name the value of the index <code>name</code>
+     * <p>
+     * alarm
+     * 
+     * <pre>
+     * source alarm as Alarm indexed by name as String;
+     * </pre>
+     * @param newAlarmValue the new value for the source <code>alarm</code>
+     * @param name the value of the index <code>name</code>
      */
     protected void publishAlarm(fr.inria.phoenix.diasuite.framework.datatype.alarm.Alarm newAlarmValue,
             java.lang.String name) {
@@ -150,14 +150,14 @@ public abstract class AbstractFitbit extends Service {
     
     /**
      * Returns the value of source <code>alarm</code> from device <code>Fitbit</code>.
-    <p>
-    alarm
-    
-    <pre>
-    source alarm as Alarm indexed by name as String;
-    </pre>
-    @param name the value of the index <code>name</code>
-    @return the value of the source <code>alarm</code>
+     * <p>
+     * alarm
+     * 
+     * <pre>
+     * source alarm as Alarm indexed by name as String;
+     * </pre>
+     * @param name the value of the index <code>name</code>
+     * @return the value of the source <code>alarm</code>
      */
     protected fr.inria.phoenix.diasuite.framework.datatype.alarm.Alarm getAlarm(java.lang.String name) throws Exception {
         return _alarm.get(new AlarmIndices(name));
@@ -169,12 +169,12 @@ public abstract class AbstractFitbit extends Service {
     
     /**
      * Publish the value of source <code>calories</code> from device <code>Fitbit</code>.
-    
-    <pre>
-    source calories as Integer indexed by period as Period;
-    </pre>
-    @param newCaloriesValue the new value for the source <code>calories</code>
-    @param period the value of the index <code>period</code>
+     * 
+     * <pre>
+     * source calories as Integer indexed by period as Period;
+     * </pre>
+     * @param newCaloriesValue the new value for the source <code>calories</code>
+     * @param period the value of the index <code>period</code>
      */
     protected void publishCalories(java.lang.Integer newCaloriesValue,
             fr.inria.phoenix.diasuite.framework.datatype.period.Period period) {
@@ -185,12 +185,12 @@ public abstract class AbstractFitbit extends Service {
     
     /**
      * Returns the value of source <code>calories</code> from device <code>Fitbit</code>.
-    
-    <pre>
-    source calories as Integer indexed by period as Period;
-    </pre>
-    @param period the value of the index <code>period</code>
-    @return the value of the source <code>calories</code>
+     * 
+     * <pre>
+     * source calories as Integer indexed by period as Period;
+     * </pre>
+     * @param period the value of the index <code>period</code>
+     * @return the value of the source <code>calories</code>
      */
     protected java.lang.Integer getCalories(fr.inria.phoenix.diasuite.framework.datatype.period.Period period) throws Exception {
         return _calories.get(new CaloriesIndices(period));
@@ -202,12 +202,12 @@ public abstract class AbstractFitbit extends Service {
     
     /**
      * Publish the value of source <code>distanceInMeters</code> from device <code>Fitbit</code>.
-    
-    <pre>
-    source distanceInMeters as Integer indexed by period as Period;
-    </pre>
-    @param newDistanceInMetersValue the new value for the source <code>distanceInMeters</code>
-    @param period the value of the index <code>period</code>
+     * 
+     * <pre>
+     * source distanceInMeters as Integer indexed by period as Period;
+     * </pre>
+     * @param newDistanceInMetersValue the new value for the source <code>distanceInMeters</code>
+     * @param period the value of the index <code>period</code>
      */
     protected void publishDistanceInMeters(java.lang.Integer newDistanceInMetersValue,
             fr.inria.phoenix.diasuite.framework.datatype.period.Period period) {
@@ -218,12 +218,12 @@ public abstract class AbstractFitbit extends Service {
     
     /**
      * Returns the value of source <code>distanceInMeters</code> from device <code>Fitbit</code>.
-    
-    <pre>
-    source distanceInMeters as Integer indexed by period as Period;
-    </pre>
-    @param period the value of the index <code>period</code>
-    @return the value of the source <code>distanceInMeters</code>
+     * 
+     * <pre>
+     * source distanceInMeters as Integer indexed by period as Period;
+     * </pre>
+     * @param period the value of the index <code>period</code>
+     * @return the value of the source <code>distanceInMeters</code>
      */
     protected java.lang.Integer getDistanceInMeters(fr.inria.phoenix.diasuite.framework.datatype.period.Period period) throws Exception {
         return _distanceInMeters.get(new DistanceInMetersIndices(period));
@@ -235,11 +235,11 @@ public abstract class AbstractFitbit extends Service {
     
     /**
      * Publish the value of source <code>isAlive</code> from device <code>Device</code>.
-    
-    <pre>
-    source isAlive as Boolean;
-    </pre>
-    @param newIsAliveValue the new value for the source <code>isAlive</code>
+     * 
+     * <pre>
+     * source isAlive as Boolean;
+     * </pre>
+     * @param newIsAliveValue the new value for the source <code>isAlive</code>
      */
     protected void publishIsAlive(java.lang.Boolean newIsAliveValue) {
         _isAlive = newIsAliveValue;
@@ -248,11 +248,11 @@ public abstract class AbstractFitbit extends Service {
     
     /**
      * Returns the value of source <code>isAlive</code> from device <code>Device</code>.
-    
-    <pre>
-    source isAlive as Boolean;
-    </pre>
-    @return the value of the source <code>isAlive</code>
+     * 
+     * <pre>
+     * source isAlive as Boolean;
+     * </pre>
+     * @return the value of the source <code>isAlive</code>
      */
     protected java.lang.Boolean getIsAlive() throws Exception {
         return _isAlive;
@@ -264,12 +264,12 @@ public abstract class AbstractFitbit extends Service {
     
     /**
      * Publish the value of source <code>pulses</code> from device <code>Fitbit</code>.
-    
-    <pre>
-    source pulses as Pulse indexed by period as Period;
-    </pre>
-    @param newPulsesValue the new value for the source <code>pulses</code>
-    @param period the value of the index <code>period</code>
+     * 
+     * <pre>
+     * source pulses as Pulse indexed by period as Period;
+     * </pre>
+     * @param newPulsesValue the new value for the source <code>pulses</code>
+     * @param period the value of the index <code>period</code>
      */
     protected void publishPulses(fr.inria.phoenix.diasuite.framework.datatype.pulse.Pulse newPulsesValue,
             fr.inria.phoenix.diasuite.framework.datatype.period.Period period) {
@@ -280,12 +280,12 @@ public abstract class AbstractFitbit extends Service {
     
     /**
      * Returns the value of source <code>pulses</code> from device <code>Fitbit</code>.
-    
-    <pre>
-    source pulses as Pulse indexed by period as Period;
-    </pre>
-    @param period the value of the index <code>period</code>
-    @return the value of the source <code>pulses</code>
+     * 
+     * <pre>
+     * source pulses as Pulse indexed by period as Period;
+     * </pre>
+     * @param period the value of the index <code>period</code>
+     * @return the value of the source <code>pulses</code>
      */
     protected fr.inria.phoenix.diasuite.framework.datatype.pulse.Pulse getPulses(fr.inria.phoenix.diasuite.framework.datatype.period.Period period) throws Exception {
         return _pulses.get(new PulsesIndices(period));
@@ -297,12 +297,12 @@ public abstract class AbstractFitbit extends Service {
     
     /**
      * Publish the value of source <code>sleepPeriods</code> from device <code>Fitbit</code>.
-    
-    <pre>
-    source sleepPeriods as SleepPeriod [] indexed by period as Period;
-    </pre>
-    @param newSleepPeriodsValue the new value for the source <code>sleepPeriods</code>
-    @param period the value of the index <code>period</code>
+     * 
+     * <pre>
+     * source sleepPeriods as SleepPeriod [] indexed by period as Period;
+     * </pre>
+     * @param newSleepPeriodsValue the new value for the source <code>sleepPeriods</code>
+     * @param period the value of the index <code>period</code>
      */
     protected void publishSleepPeriods(java.util.List<fr.inria.phoenix.diasuite.framework.datatype.sleepperiod.SleepPeriod> newSleepPeriodsValue,
             fr.inria.phoenix.diasuite.framework.datatype.period.Period period) {
@@ -313,12 +313,12 @@ public abstract class AbstractFitbit extends Service {
     
     /**
      * Returns the value of source <code>sleepPeriods</code> from device <code>Fitbit</code>.
-    
-    <pre>
-    source sleepPeriods as SleepPeriod [] indexed by period as Period;
-    </pre>
-    @param period the value of the index <code>period</code>
-    @return the value of the source <code>sleepPeriods</code>
+     * 
+     * <pre>
+     * source sleepPeriods as SleepPeriod [] indexed by period as Period;
+     * </pre>
+     * @param period the value of the index <code>period</code>
+     * @return the value of the source <code>sleepPeriods</code>
      */
     protected java.util.List<fr.inria.phoenix.diasuite.framework.datatype.sleepperiod.SleepPeriod> getSleepPeriods(fr.inria.phoenix.diasuite.framework.datatype.period.Period period) throws Exception {
         return _sleepPeriods.get(new SleepPeriodsIndices(period));
@@ -330,12 +330,12 @@ public abstract class AbstractFitbit extends Service {
     
     /**
      * Publish the value of source <code>steps</code> from device <code>Fitbit</code>.
-    
-    <pre>
-    source steps as Integer indexed by period as Period;
-    </pre>
-    @param newStepsValue the new value for the source <code>steps</code>
-    @param period the value of the index <code>period</code>
+     * 
+     * <pre>
+     * source steps as Integer indexed by period as Period;
+     * </pre>
+     * @param newStepsValue the new value for the source <code>steps</code>
+     * @param period the value of the index <code>period</code>
      */
     protected void publishSteps(java.lang.Integer newStepsValue,
             fr.inria.phoenix.diasuite.framework.datatype.period.Period period) {
@@ -346,12 +346,12 @@ public abstract class AbstractFitbit extends Service {
     
     /**
      * Returns the value of source <code>steps</code> from device <code>Fitbit</code>.
-    
-    <pre>
-    source steps as Integer indexed by period as Period;
-    </pre>
-    @param period the value of the index <code>period</code>
-    @return the value of the source <code>steps</code>
+     * 
+     * <pre>
+     * source steps as Integer indexed by period as Period;
+     * </pre>
+     * @param period the value of the index <code>period</code>
+     * @return the value of the source <code>steps</code>
      */
     protected java.lang.Integer getSteps(fr.inria.phoenix.diasuite.framework.datatype.period.Period period) throws Exception {
         return _steps.get(new StepsIndices(period));
@@ -362,10 +362,10 @@ public abstract class AbstractFitbit extends Service {
      * Implement this method to define the <code>removeAlarm</code> order from the <code>ScheduleAlarm</code> action
      * defined in device Fitbit.
      * 
-    
-    <pre>
-    removeAlarm(name as String);
-    </pre>
+     * 
+     * <pre>
+     * removeAlarm(name as String);
+     * </pre>
      * @param name parameter 1 of the order.
      */
     protected abstract void removeAlarm(java.lang.String name) throws Exception;
@@ -374,10 +374,10 @@ public abstract class AbstractFitbit extends Service {
      * Implement this method to define the <code>scheduleAlarm</code> order from the <code>ScheduleAlarm</code> action
      * defined in device Fitbit.
      * 
-    
-    <pre>
-    scheduleAlarm(alarm as Alarm);
-    </pre>
+     * 
+     * <pre>
+     * scheduleAlarm(alarm as Alarm);
+     * </pre>
      * @param alarm parameter 1 of the order.
      */
     protected abstract void scheduleAlarm(fr.inria.phoenix.diasuite.framework.datatype.alarm.Alarm alarm) throws Exception;
@@ -386,10 +386,10 @@ public abstract class AbstractFitbit extends Service {
      * Implement this method to define the <code>vibrateAt</code> order from the <code>Vibrate</code> action
      * defined in device Fitbit.
      * 
-    
-    <pre>
-    vibrateAt(date as Date);
-    </pre>
+     * 
+     * <pre>
+     * vibrateAt(date as Date);
+     * </pre>
      * @param date parameter 1 of the order.
      */
     protected abstract void vibrateAt(fr.inria.phoenix.diasuite.framework.datatype.date.Date date) throws Exception;
@@ -398,10 +398,10 @@ public abstract class AbstractFitbit extends Service {
      * Implement this method to define the <code>vibrateIn</code> order from the <code>Vibrate</code> action
      * defined in device Fitbit.
      * 
-    
-    <pre>
-    vibrateIn(delayInMinutes as Integer);
-    </pre>
+     * 
+     * <pre>
+     * vibrateIn(delayInMinutes as Integer);
+     * </pre>
      * @param delayInMinutes parameter 1 of the order.
      */
     protected abstract void vibrateIn(java.lang.Integer delayInMinutes) throws Exception;

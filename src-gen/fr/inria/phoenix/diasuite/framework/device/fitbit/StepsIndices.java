@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 /**
  * Container for the indices of the source <code>steps</code> from device <code>Fitbit</code>.
-
-<pre>
-source steps as Integer indexed by period as Period;
-</pre>
+ * 
+ * <pre>
+ * source steps as Integer indexed by period as Period;
+ * </pre>
  */
 public final class StepsIndices implements Serializable {
     private static final long serialVersionUID = 0;

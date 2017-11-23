@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 /**
  * Container for the indices of the source <code>pulses</code> from device <code>Fitbit</code>.
-
-<pre>
-source pulses as Pulse indexed by period as Period;
-</pre>
+ * 
+ * <pre>
+ * source pulses as Pulse indexed by period as Period;
+ * </pre>
  */
 public final class PulsesIndices implements Serializable {
     private static final long serialVersionUID = 0;

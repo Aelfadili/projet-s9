@@ -2,11 +2,13 @@ package fr.inria.phoenix.diasuite.framework.mocks;
 
 import fr.inria.diagen.core.ServiceConfiguration;
 import fr.inria.phoenix.diasuite.framework.misc.AppComponentBinder;
-import fr.inria.phoenix.diasuite.framework.controller.coach_activitycontroller.AbstractCoach_activityController;
-import fr.inria.phoenix.diasuite.framework.context.alertmove.AbstractAlertMove;
-import fr.inria.phoenix.diasuite.framework.context.congratulation.AbstractCongratulation;
-import fr.inria.phoenix.diasuite.framework.context.propositiondactivity.AbstractPropositionDActivity;
-import fr.inria.phoenix.diasuite.framework.context.propositiongoout.AbstractPropositionGoOut;
+import fr.inria.phoenix.diasuite.framework.controller.savesleeptime.AbstractSaveSleepTime;
+import fr.inria.phoenix.diasuite.framework.controller.sleepanalyser.AbstractSleepAnalyser;
+import fr.inria.phoenix.diasuite.framework.context.coupling.AbstractCoupling;
+import fr.inria.phoenix.diasuite.framework.context.getfitbitinfos.AbstractGetFitbitInfos;
+import fr.inria.phoenix.diasuite.framework.context.getsavedtime.AbstractGetSavedTime;
+import fr.inria.phoenix.diasuite.framework.context.sleepbegin.AbstractSleepBegin;
+import fr.inria.phoenix.diasuite.framework.context.sleepend.AbstractSleepEnd;
 
 /**
  * Use this class to test your DiaSuite application.
@@ -92,38 +94,44 @@ public final class Mock extends AppComponentBinder {
     }
     
     // Delegation part
-    public Class<? extends AbstractCoach_activityController> getCoach_activityControllerClass() {
-        return delegate.getCoach_activityControllerClass();
+    public Class<? extends AbstractSaveSleepTime> getSaveSleepTimeClass() {
+        return delegate.getSaveSleepTimeClass();
     }
-    public Class<? extends AbstractAlertMove> getAlertMoveClass() {
-        return delegate.getAlertMoveClass();
+    public Class<? extends AbstractSleepAnalyser> getSleepAnalyserClass() {
+        return delegate.getSleepAnalyserClass();
     }
-    public Class<? extends AbstractCongratulation> getCongratulationClass() {
-        return delegate.getCongratulationClass();
+    public Class<? extends AbstractCoupling> getCouplingClass() {
+        return delegate.getCouplingClass();
     }
-    public Class<? extends AbstractPropositionDActivity> getPropositionDActivityClass() {
-        return delegate.getPropositionDActivityClass();
+    public Class<? extends AbstractGetFitbitInfos> getGetFitbitInfosClass() {
+        return delegate.getGetFitbitInfosClass();
     }
-    public Class<? extends AbstractPropositionGoOut> getPropositionGoOutClass() {
-        return delegate.getPropositionGoOutClass();
+    public Class<? extends AbstractGetSavedTime> getGetSavedTimeClass() {
+        return delegate.getGetSavedTimeClass();
+    }
+    public Class<? extends AbstractSleepBegin> getSleepBeginClass() {
+        return delegate.getSleepBeginClass();
+    }
+    public Class<? extends AbstractSleepEnd> getSleepEndClass() {
+        return delegate.getSleepEndClass();
     }
     
     // Mocks constructor for all devices
     /**
      * Returns a mock of the device <code>Cooker</code>.
-    <p>
-    ------------------
-    Cooking Appliance
-    ------------------
-    
-    <pre>
-    device Cooker extends Appliance , ElectricMeter {
+     * <p>
+     * ------------------
+     * Cooking Appliance
+     * ------------------
+     * 
+     * <pre>
+     * device Cooker extends Appliance , ElectricMeter {
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param location the value of the <code>location</code> attribute
-    @param user the value of the <code>user</code> attribute
-    @return a mock of the device <code>Cooker</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param location the value of the <code>location</code> attribute
+     * @param user the value of the <code>user</code> attribute
+     * @return a mock of the device <code>Cooker</code>.
      */
     public CookerMock cooker(java.lang.String id,
             java.lang.String location,
@@ -135,19 +143,19 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Cooker</code>.
-    <p>
-    ------------------
-    Cooking Appliance
-    ------------------
-    
-    <pre>
-    device Cooker extends Appliance , ElectricMeter {
+     * <p>
+     * ------------------
+     * Cooking Appliance
+     * ------------------
+     * 
+     * <pre>
+     * device Cooker extends Appliance , ElectricMeter {
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param location the value of the <code>location</code> attribute
-    @param user the value of the <code>user</code> attribute
-    @return a mock of the device <code>Cooker</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param location the value of the <code>location</code> attribute
+     * @param user the value of the <code>user</code> attribute
+     * @return a mock of the device <code>Cooker</code>.
      */
     public static CookerMock mockCooker(java.lang.String id,
             java.lang.String location,
@@ -159,19 +167,19 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Device</code>.
-    <p>
-    ------------------------------------------------------------
-    Devices							||
-    ------------------------------------------------------------
-    
-    <pre>
-    device Device {
+     * <p>
+     * ------------------------------------------------------------
+     * Devices							||
+     * ------------------------------------------------------------
+     * 
+     * <pre>
+     * device Device {
      * 	attribute id as String;
      * 	source isAlive as Boolean;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>Device</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>Device</code>.
      */
     public DeviceMock device(java.lang.String id) {
         DeviceMock mock = new DeviceMock(getServiceConfiguration("Device" + randomId()), id);
@@ -181,19 +189,19 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Device</code>.
-    <p>
-    ------------------------------------------------------------
-    Devices							||
-    ------------------------------------------------------------
-    
-    <pre>
-    device Device {
+     * <p>
+     * ------------------------------------------------------------
+     * Devices							||
+     * ------------------------------------------------------------
+     * 
+     * <pre>
+     * device Device {
      * 	attribute id as String;
      * 	source isAlive as Boolean;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>Device</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>Device</code>.
      */
     public static DeviceMock mockDevice(java.lang.String id) {
         if(mocker == null)
@@ -203,9 +211,9 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Android</code>.
-    
-    <pre>
-    device Android extends Device {
+     * 
+     * <pre>
+     * device Android extends Device {
      * 	attribute type as String;
      * 	attribute version as Integer;
      * 	source battery as Battery;
@@ -216,11 +224,11 @@ public final class Mock extends AppComponentBinder {
      * 	action SoundAction;
      * 	action ActivityAction;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param type the value of the <code>type</code> attribute
-    @param version the value of the <code>version</code> attribute
-    @return a mock of the device <code>Android</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param type the value of the <code>type</code> attribute
+     * @param version the value of the <code>version</code> attribute
+     * @return a mock of the device <code>Android</code>.
      */
     public AndroidMock android(java.lang.String id,
             java.lang.String type,
@@ -232,9 +240,9 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Android</code>.
-    
-    <pre>
-    device Android extends Device {
+     * 
+     * <pre>
+     * device Android extends Device {
      * 	attribute type as String;
      * 	attribute version as Integer;
      * 	source battery as Battery;
@@ -245,11 +253,11 @@ public final class Mock extends AppComponentBinder {
      * 	action SoundAction;
      * 	action ActivityAction;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param type the value of the <code>type</code> attribute
-    @param version the value of the <code>version</code> attribute
-    @return a mock of the device <code>Android</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param type the value of the <code>type</code> attribute
+     * @param version the value of the <code>version</code> attribute
+     * @return a mock of the device <code>Android</code>.
      */
     public static AndroidMock mockAndroid(java.lang.String id,
             java.lang.String type,
@@ -261,13 +269,13 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Fitbit</code>.
-    <p>
-    ------------------------------------------------------------
-    Fitbit							||
-    ------------------------------------------------------------
-    
-    <pre>
-    device Fitbit extends Device {
+     * <p>
+     * ------------------------------------------------------------
+     * Fitbit							||
+     * ------------------------------------------------------------
+     * 
+     * <pre>
+     * device Fitbit extends Device {
      *         source calories as Integer indexed by period as Period;
      *         source distanceInMeters as Integer indexed by period as Period;
      *         source pulses as Pulse indexed by period as Period;
@@ -277,9 +285,9 @@ public final class Mock extends AppComponentBinder {
      *         action ScheduleAlarm;
      *         action Vibrate;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>Fitbit</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>Fitbit</code>.
      */
     public FitbitMock fitbit(java.lang.String id) {
         FitbitMock mock = new FitbitMock(getServiceConfiguration("Fitbit" + randomId()), id);
@@ -289,13 +297,13 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Fitbit</code>.
-    <p>
-    ------------------------------------------------------------
-    Fitbit							||
-    ------------------------------------------------------------
-    
-    <pre>
-    device Fitbit extends Device {
+     * <p>
+     * ------------------------------------------------------------
+     * Fitbit							||
+     * ------------------------------------------------------------
+     * 
+     * <pre>
+     * device Fitbit extends Device {
      *         source calories as Integer indexed by period as Period;
      *         source distanceInMeters as Integer indexed by period as Period;
      *         source pulses as Pulse indexed by period as Period;
@@ -305,9 +313,9 @@ public final class Mock extends AppComponentBinder {
      *         action ScheduleAlarm;
      *         action Vibrate;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>Fitbit</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>Fitbit</code>.
      */
     public static FitbitMock mockFitbit(java.lang.String id) {
         if(mocker == null)
@@ -317,21 +325,21 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>PhysicalDevice</code>.
-    <p>
-    ------------------------------------------------------------
-    Physical Devices					||
-    ------------------------------------------------------------
-    
-    <pre>
-    device PhysicalDevice extends Device {
+     * <p>
+     * ------------------------------------------------------------
+     * Physical Devices					||
+     * ------------------------------------------------------------
+     * 
+     * <pre>
+     * device PhysicalDevice extends Device {
      * 	attribute location as String;
      * 	attribute user as String;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param location the value of the <code>location</code> attribute
-    @param user the value of the <code>user</code> attribute
-    @return a mock of the device <code>PhysicalDevice</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param location the value of the <code>location</code> attribute
+     * @param user the value of the <code>user</code> attribute
+     * @return a mock of the device <code>PhysicalDevice</code>.
      */
     public PhysicalDeviceMock physicalDevice(java.lang.String id,
             java.lang.String location,
@@ -343,21 +351,21 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>PhysicalDevice</code>.
-    <p>
-    ------------------------------------------------------------
-    Physical Devices					||
-    ------------------------------------------------------------
-    
-    <pre>
-    device PhysicalDevice extends Device {
+     * <p>
+     * ------------------------------------------------------------
+     * Physical Devices					||
+     * ------------------------------------------------------------
+     * 
+     * <pre>
+     * device PhysicalDevice extends Device {
      * 	attribute location as String;
      * 	attribute user as String;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param location the value of the <code>location</code> attribute
-    @param user the value of the <code>user</code> attribute
-    @return a mock of the device <code>PhysicalDevice</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param location the value of the <code>location</code> attribute
+     * @param user the value of the <code>user</code> attribute
+     * @return a mock of the device <code>PhysicalDevice</code>.
      */
     public static PhysicalDeviceMock mockPhysicalDevice(java.lang.String id,
             java.lang.String location,
@@ -369,22 +377,22 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Appliance</code>.
-    <p>
-    ------------------------------------------------------------
-    Appliances						||
-    ------------------------------------------------------------
-    
-    <pre>
-    device Appliance extends PhysicalDevice {
+     * <p>
+     * ------------------------------------------------------------
+     * Appliances						||
+     * ------------------------------------------------------------
+     * 
+     * <pre>
+     * device Appliance extends PhysicalDevice {
      * 	source on as Boolean;
      * 	action On;
      * 	action Off;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param location the value of the <code>location</code> attribute
-    @param user the value of the <code>user</code> attribute
-    @return a mock of the device <code>Appliance</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param location the value of the <code>location</code> attribute
+     * @param user the value of the <code>user</code> attribute
+     * @return a mock of the device <code>Appliance</code>.
      */
     public ApplianceMock appliance(java.lang.String id,
             java.lang.String location,
@@ -396,22 +404,22 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Appliance</code>.
-    <p>
-    ------------------------------------------------------------
-    Appliances						||
-    ------------------------------------------------------------
-    
-    <pre>
-    device Appliance extends PhysicalDevice {
+     * <p>
+     * ------------------------------------------------------------
+     * Appliances						||
+     * ------------------------------------------------------------
+     * 
+     * <pre>
+     * device Appliance extends PhysicalDevice {
      * 	source on as Boolean;
      * 	action On;
      * 	action Off;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param location the value of the <code>location</code> attribute
-    @param user the value of the <code>user</code> attribute
-    @return a mock of the device <code>Appliance</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param location the value of the <code>location</code> attribute
+     * @param user the value of the <code>user</code> attribute
+     * @return a mock of the device <code>Appliance</code>.
      */
     public static ApplianceMock mockAppliance(java.lang.String id,
             java.lang.String location,
@@ -423,19 +431,19 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Light</code>.
-    <p>
-    ------
-    Light
-    ------
-    
-    <pre>
-    device Light extends Appliance {
+     * <p>
+     * ------
+     * Light
+     * ------
+     * 
+     * <pre>
+     * device Light extends Appliance {
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param location the value of the <code>location</code> attribute
-    @param user the value of the <code>user</code> attribute
-    @return a mock of the device <code>Light</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param location the value of the <code>location</code> attribute
+     * @param user the value of the <code>user</code> attribute
+     * @return a mock of the device <code>Light</code>.
      */
     public LightMock light(java.lang.String id,
             java.lang.String location,
@@ -447,19 +455,19 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Light</code>.
-    <p>
-    ------
-    Light
-    ------
-    
-    <pre>
-    device Light extends Appliance {
+     * <p>
+     * ------
+     * Light
+     * ------
+     * 
+     * <pre>
+     * device Light extends Appliance {
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param location the value of the <code>location</code> attribute
-    @param user the value of the <code>user</code> attribute
-    @return a mock of the device <code>Light</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param location the value of the <code>location</code> attribute
+     * @param user the value of the <code>user</code> attribute
+     * @return a mock of the device <code>Light</code>.
      */
     public static LightMock mockLight(java.lang.String id,
             java.lang.String location,
@@ -471,21 +479,21 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Input</code>.
-    <p>
-    -------
-    Input
-    -------
-    
-    <pre>
-    device Input extends PhysicalDevice {
+     * <p>
+     * -------
+     * Input
+     * -------
+     * 
+     * <pre>
+     * device Input extends PhysicalDevice {
      * 	source message as String;
      * 	action SetInput;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param location the value of the <code>location</code> attribute
-    @param user the value of the <code>user</code> attribute
-    @return a mock of the device <code>Input</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param location the value of the <code>location</code> attribute
+     * @param user the value of the <code>user</code> attribute
+     * @return a mock of the device <code>Input</code>.
      */
     public InputMock input(java.lang.String id,
             java.lang.String location,
@@ -497,21 +505,21 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Input</code>.
-    <p>
-    -------
-    Input
-    -------
-    
-    <pre>
-    device Input extends PhysicalDevice {
+     * <p>
+     * -------
+     * Input
+     * -------
+     * 
+     * <pre>
+     * device Input extends PhysicalDevice {
      * 	source message as String;
      * 	action SetInput;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param location the value of the <code>location</code> attribute
-    @param user the value of the <code>user</code> attribute
-    @return a mock of the device <code>Input</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param location the value of the <code>location</code> attribute
+     * @param user the value of the <code>user</code> attribute
+     * @return a mock of the device <code>Input</code>.
      */
     public static InputMock mockInput(java.lang.String id,
             java.lang.String location,
@@ -523,19 +531,19 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Sensor</code>.
-    <p>
-    ------------------------------------------------------------
-    Sensor							||
-    ------------------------------------------------------------
-    
-    <pre>
-    device Sensor extends PhysicalDevice {
+     * <p>
+     * ------------------------------------------------------------
+     * Sensor							||
+     * ------------------------------------------------------------
+     * 
+     * <pre>
+     * device Sensor extends PhysicalDevice {
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param location the value of the <code>location</code> attribute
-    @param user the value of the <code>user</code> attribute
-    @return a mock of the device <code>Sensor</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param location the value of the <code>location</code> attribute
+     * @param user the value of the <code>user</code> attribute
+     * @return a mock of the device <code>Sensor</code>.
      */
     public SensorMock sensor(java.lang.String id,
             java.lang.String location,
@@ -547,19 +555,19 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Sensor</code>.
-    <p>
-    ------------------------------------------------------------
-    Sensor							||
-    ------------------------------------------------------------
-    
-    <pre>
-    device Sensor extends PhysicalDevice {
+     * <p>
+     * ------------------------------------------------------------
+     * Sensor							||
+     * ------------------------------------------------------------
+     * 
+     * <pre>
+     * device Sensor extends PhysicalDevice {
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param location the value of the <code>location</code> attribute
-    @param user the value of the <code>user</code> attribute
-    @return a mock of the device <code>Sensor</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param location the value of the <code>location</code> attribute
+     * @param user the value of the <code>user</code> attribute
+     * @return a mock of the device <code>Sensor</code>.
      */
     public static SensorMock mockSensor(java.lang.String id,
             java.lang.String location,
@@ -571,16 +579,16 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>ContactSensor</code>.
-    
-    <pre>
-    device ContactSensor extends Sensor {
+     * 
+     * <pre>
+     * device ContactSensor extends Sensor {
      * 	source contact as Boolean;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param location the value of the <code>location</code> attribute
-    @param user the value of the <code>user</code> attribute
-    @return a mock of the device <code>ContactSensor</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param location the value of the <code>location</code> attribute
+     * @param user the value of the <code>user</code> attribute
+     * @return a mock of the device <code>ContactSensor</code>.
      */
     public ContactSensorMock contactSensor(java.lang.String id,
             java.lang.String location,
@@ -592,16 +600,16 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>ContactSensor</code>.
-    
-    <pre>
-    device ContactSensor extends Sensor {
+     * 
+     * <pre>
+     * device ContactSensor extends Sensor {
      * 	source contact as Boolean;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param location the value of the <code>location</code> attribute
-    @param user the value of the <code>user</code> attribute
-    @return a mock of the device <code>ContactSensor</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param location the value of the <code>location</code> attribute
+     * @param user the value of the <code>user</code> attribute
+     * @return a mock of the device <code>ContactSensor</code>.
      */
     public static ContactSensorMock mockContactSensor(java.lang.String id,
             java.lang.String location,
@@ -613,19 +621,19 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>EnergyMeter</code>.
-    <p>
-    -------------
-    Energy Meter
-    -------------
-    
-    <pre>
-    device EnergyMeter extends Sensor {
+     * <p>
+     * -------------
+     * Energy Meter
+     * -------------
+     * 
+     * <pre>
+     * device EnergyMeter extends Sensor {
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param location the value of the <code>location</code> attribute
-    @param user the value of the <code>user</code> attribute
-    @return a mock of the device <code>EnergyMeter</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param location the value of the <code>location</code> attribute
+     * @param user the value of the <code>user</code> attribute
+     * @return a mock of the device <code>EnergyMeter</code>.
      */
     public EnergyMeterMock energyMeter(java.lang.String id,
             java.lang.String location,
@@ -637,19 +645,19 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>EnergyMeter</code>.
-    <p>
-    -------------
-    Energy Meter
-    -------------
-    
-    <pre>
-    device EnergyMeter extends Sensor {
+     * <p>
+     * -------------
+     * Energy Meter
+     * -------------
+     * 
+     * <pre>
+     * device EnergyMeter extends Sensor {
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param location the value of the <code>location</code> attribute
-    @param user the value of the <code>user</code> attribute
-    @return a mock of the device <code>EnergyMeter</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param location the value of the <code>location</code> attribute
+     * @param user the value of the <code>user</code> attribute
+     * @return a mock of the device <code>EnergyMeter</code>.
      */
     public static EnergyMeterMock mockEnergyMeter(java.lang.String id,
             java.lang.String location,
@@ -661,16 +669,16 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>ElectricMeter</code>.
-    
-    <pre>
-    device ElectricMeter extends EnergyMeter {
+     * 
+     * <pre>
+     * device ElectricMeter extends EnergyMeter {
      * 	source consumption as Float;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param location the value of the <code>location</code> attribute
-    @param user the value of the <code>user</code> attribute
-    @return a mock of the device <code>ElectricMeter</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param location the value of the <code>location</code> attribute
+     * @param user the value of the <code>user</code> attribute
+     * @return a mock of the device <code>ElectricMeter</code>.
      */
     public ElectricMeterMock electricMeter(java.lang.String id,
             java.lang.String location,
@@ -682,16 +690,16 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>ElectricMeter</code>.
-    
-    <pre>
-    device ElectricMeter extends EnergyMeter {
+     * 
+     * <pre>
+     * device ElectricMeter extends EnergyMeter {
      * 	source consumption as Float;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param location the value of the <code>location</code> attribute
-    @param user the value of the <code>user</code> attribute
-    @return a mock of the device <code>ElectricMeter</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param location the value of the <code>location</code> attribute
+     * @param user the value of the <code>user</code> attribute
+     * @return a mock of the device <code>ElectricMeter</code>.
      */
     public static ElectricMeterMock mockElectricMeter(java.lang.String id,
             java.lang.String location,
@@ -703,16 +711,16 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>LightSensor</code>.
-    
-    <pre>
-    device LightSensor extends Sensor {
+     * 
+     * <pre>
+     * device LightSensor extends Sensor {
      * 	source lightLevel as Float;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param location the value of the <code>location</code> attribute
-    @param user the value of the <code>user</code> attribute
-    @return a mock of the device <code>LightSensor</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param location the value of the <code>location</code> attribute
+     * @param user the value of the <code>user</code> attribute
+     * @return a mock of the device <code>LightSensor</code>.
      */
     public LightSensorMock lightSensor(java.lang.String id,
             java.lang.String location,
@@ -724,16 +732,16 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>LightSensor</code>.
-    
-    <pre>
-    device LightSensor extends Sensor {
+     * 
+     * <pre>
+     * device LightSensor extends Sensor {
      * 	source lightLevel as Float;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param location the value of the <code>location</code> attribute
-    @param user the value of the <code>user</code> attribute
-    @return a mock of the device <code>LightSensor</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param location the value of the <code>location</code> attribute
+     * @param user the value of the <code>user</code> attribute
+     * @return a mock of the device <code>LightSensor</code>.
      */
     public static LightSensorMock mockLightSensor(java.lang.String id,
             java.lang.String location,
@@ -745,16 +753,16 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>MotionDetector</code>.
-    
-    <pre>
-    device MotionDetector extends Sensor {
+     * 
+     * <pre>
+     * device MotionDetector extends Sensor {
      * 	source motion as Boolean;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param location the value of the <code>location</code> attribute
-    @param user the value of the <code>user</code> attribute
-    @return a mock of the device <code>MotionDetector</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param location the value of the <code>location</code> attribute
+     * @param user the value of the <code>user</code> attribute
+     * @return a mock of the device <code>MotionDetector</code>.
      */
     public MotionDetectorMock motionDetector(java.lang.String id,
             java.lang.String location,
@@ -766,16 +774,16 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>MotionDetector</code>.
-    
-    <pre>
-    device MotionDetector extends Sensor {
+     * 
+     * <pre>
+     * device MotionDetector extends Sensor {
      * 	source motion as Boolean;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param location the value of the <code>location</code> attribute
-    @param user the value of the <code>user</code> attribute
-    @return a mock of the device <code>MotionDetector</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param location the value of the <code>location</code> attribute
+     * @param user the value of the <code>user</code> attribute
+     * @return a mock of the device <code>MotionDetector</code>.
      */
     public static MotionDetectorMock mockMotionDetector(java.lang.String id,
             java.lang.String location,
@@ -787,16 +795,16 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>TemperatureSensor</code>.
-    
-    <pre>
-    device TemperatureSensor extends Sensor {
+     * 
+     * <pre>
+     * device TemperatureSensor extends Sensor {
      * 	source temperature as Float indexed by unit as TemperatureUnit;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param location the value of the <code>location</code> attribute
-    @param user the value of the <code>user</code> attribute
-    @return a mock of the device <code>TemperatureSensor</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param location the value of the <code>location</code> attribute
+     * @param user the value of the <code>user</code> attribute
+     * @return a mock of the device <code>TemperatureSensor</code>.
      */
     public TemperatureSensorMock temperatureSensor(java.lang.String id,
             java.lang.String location,
@@ -808,16 +816,16 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>TemperatureSensor</code>.
-    
-    <pre>
-    device TemperatureSensor extends Sensor {
+     * 
+     * <pre>
+     * device TemperatureSensor extends Sensor {
      * 	source temperature as Float indexed by unit as TemperatureUnit;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param location the value of the <code>location</code> attribute
-    @param user the value of the <code>user</code> attribute
-    @return a mock of the device <code>TemperatureSensor</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param location the value of the <code>location</code> attribute
+     * @param user the value of the <code>user</code> attribute
+     * @return a mock of the device <code>TemperatureSensor</code>.
      */
     public static TemperatureSensorMock mockTemperatureSensor(java.lang.String id,
             java.lang.String location,
@@ -829,17 +837,17 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Service</code>.
-    <p>
-    ------------------------------------------------------------
-    Services						||
-    ------------------------------------------------------------
-    
-    <pre>
-    device Service extends Device {
+     * <p>
+     * ------------------------------------------------------------
+     * Services						||
+     * ------------------------------------------------------------
+     * 
+     * <pre>
+     * device Service extends Device {
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>Service</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>Service</code>.
      */
     public ServiceMock service(java.lang.String id) {
         ServiceMock mock = new ServiceMock(getServiceConfiguration("Service" + randomId()), id);
@@ -849,17 +857,17 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Service</code>.
-    <p>
-    ------------------------------------------------------------
-    Services						||
-    ------------------------------------------------------------
-    
-    <pre>
-    device Service extends Device {
+     * <p>
+     * ------------------------------------------------------------
+     * Services						||
+     * ------------------------------------------------------------
+     * 
+     * <pre>
+     * device Service extends Device {
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>Service</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>Service</code>.
      */
     public static ServiceMock mockService(java.lang.String id) {
         if(mocker == null)
@@ -869,18 +877,18 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>ActivityReporter</code>.
-    
-    <pre>
-    device ActivityReporter extends Service {
+     * 
+     * <pre>
+     * device ActivityReporter extends Service {
      * 	source dailyReport as DailyReport;
      * 	source statisticReport as StatisticReport;
      * 	source dailyActivityStats as DailyActivityStats indexed by activity as DailyActivityName;
      * 	source periodActivityStats as PeriodActivityStats indexed by activity as PeriodActivityName;
      * 	action UpdateCurrentReport;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>ActivityReporter</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>ActivityReporter</code>.
      */
     public ActivityReporterMock activityReporter(java.lang.String id) {
         ActivityReporterMock mock = new ActivityReporterMock(getServiceConfiguration("ActivityReporter" + randomId()), id);
@@ -890,18 +898,18 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>ActivityReporter</code>.
-    
-    <pre>
-    device ActivityReporter extends Service {
+     * 
+     * <pre>
+     * device ActivityReporter extends Service {
      * 	source dailyReport as DailyReport;
      * 	source statisticReport as StatisticReport;
      * 	source dailyActivityStats as DailyActivityStats indexed by activity as DailyActivityName;
      * 	source periodActivityStats as PeriodActivityStats indexed by activity as PeriodActivityName;
      * 	action UpdateCurrentReport;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>ActivityReporter</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>ActivityReporter</code>.
      */
     public static ActivityReporterMock mockActivityReporter(java.lang.String id) {
         if(mocker == null)
@@ -911,16 +919,16 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Clock</code>.
-    
-    <pre>
-    device Clock extends Service {
+     * 
+     * <pre>
+     * device Clock extends Service {
      * 	source tickSecond as Integer;
      * 	source tickMinute as Integer;
      * 	source tickHour as Integer;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>Clock</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>Clock</code>.
      */
     public ClockMock clock(java.lang.String id) {
         ClockMock mock = new ClockMock(getServiceConfiguration("Clock" + randomId()), id);
@@ -930,16 +938,16 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Clock</code>.
-    
-    <pre>
-    device Clock extends Service {
+     * 
+     * <pre>
+     * device Clock extends Service {
      * 	source tickSecond as Integer;
      * 	source tickMinute as Integer;
      * 	source tickHour as Integer;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>Clock</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>Clock</code>.
      */
     public static ClockMock mockClock(java.lang.String id) {
         if(mocker == null)
@@ -949,17 +957,17 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>CommunicationService</code>.
-    <p>
-    ------------------------------------------------------------
-    Communication Service					||
-    ------------------------------------------------------------
-    
-    <pre>
-    device CommunicationService extends Service {
+     * <p>
+     * ------------------------------------------------------------
+     * Communication Service					||
+     * ------------------------------------------------------------
+     * 
+     * <pre>
+     * device CommunicationService extends Service {
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>CommunicationService</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>CommunicationService</code>.
      */
     public CommunicationServiceMock communicationService(java.lang.String id) {
         CommunicationServiceMock mock = new CommunicationServiceMock(getServiceConfiguration("CommunicationService" + randomId()), id);
@@ -969,17 +977,17 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>CommunicationService</code>.
-    <p>
-    ------------------------------------------------------------
-    Communication Service					||
-    ------------------------------------------------------------
-    
-    <pre>
-    device CommunicationService extends Service {
+     * <p>
+     * ------------------------------------------------------------
+     * Communication Service					||
+     * ------------------------------------------------------------
+     * 
+     * <pre>
+     * device CommunicationService extends Service {
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>CommunicationService</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>CommunicationService</code>.
      */
     public static CommunicationServiceMock mockCommunicationService(java.lang.String id) {
         if(mocker == null)
@@ -989,15 +997,15 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Messenger</code>.
-    
-    <pre>
-    device Messenger extends CommunicationService {
+     * 
+     * <pre>
+     * device Messenger extends CommunicationService {
      * 	source lastMessage as Message;
      * 	action SendMessage;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>Messenger</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>Messenger</code>.
      */
     public MessengerMock messenger(java.lang.String id) {
         MessengerMock mock = new MessengerMock(getServiceConfiguration("Messenger" + randomId()), id);
@@ -1007,15 +1015,15 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Messenger</code>.
-    
-    <pre>
-    device Messenger extends CommunicationService {
+     * 
+     * <pre>
+     * device Messenger extends CommunicationService {
      * 	source lastMessage as Message;
      * 	action SendMessage;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>Messenger</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>Messenger</code>.
      */
     public static MessengerMock mockMessenger(java.lang.String id) {
         if(mocker == null)
@@ -1025,14 +1033,14 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Mailer</code>.
-    
-    <pre>
-    device Mailer extends Messenger {
+     * 
+     * <pre>
+     * device Mailer extends Messenger {
      * 	source unreadEmailCount as Integer;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>Mailer</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>Mailer</code>.
      */
     public MailerMock mailer(java.lang.String id) {
         MailerMock mock = new MailerMock(getServiceConfiguration("Mailer" + randomId()), id);
@@ -1042,14 +1050,14 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Mailer</code>.
-    
-    <pre>
-    device Mailer extends Messenger {
+     * 
+     * <pre>
+     * device Mailer extends Messenger {
      * 	source unreadEmailCount as Integer;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>Mailer</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>Mailer</code>.
      */
     public static MailerMock mockMailer(java.lang.String id) {
         if(mocker == null)
@@ -1059,13 +1067,13 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>SMSSender</code>.
-    
-    <pre>
-    device SMSSender extends Messenger {
+     * 
+     * <pre>
+     * device SMSSender extends Messenger {
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>SMSSender</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>SMSSender</code>.
      */
     public SMSSenderMock sMSSender(java.lang.String id) {
         SMSSenderMock mock = new SMSSenderMock(getServiceConfiguration("SMSSender" + randomId()), id);
@@ -1075,13 +1083,13 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>SMSSender</code>.
-    
-    <pre>
-    device SMSSender extends Messenger {
+     * 
+     * <pre>
+     * device SMSSender extends Messenger {
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>SMSSender</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>SMSSender</code>.
      */
     public static SMSSenderMock mockSMSSender(java.lang.String id) {
         if(mocker == null)
@@ -1091,17 +1099,17 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>HomeService</code>.
-    <p>
-    ------------------------------------------------------------
-    HomeService						||
-    ------------------------------------------------------------
-    
-    <pre>
-    device HomeService extends Service {
+     * <p>
+     * ------------------------------------------------------------
+     * HomeService						||
+     * ------------------------------------------------------------
+     * 
+     * <pre>
+     * device HomeService extends Service {
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>HomeService</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>HomeService</code>.
      */
     public HomeServiceMock homeService(java.lang.String id) {
         HomeServiceMock mock = new HomeServiceMock(getServiceConfiguration("HomeService" + randomId()), id);
@@ -1111,17 +1119,17 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>HomeService</code>.
-    <p>
-    ------------------------------------------------------------
-    HomeService						||
-    ------------------------------------------------------------
-    
-    <pre>
-    device HomeService extends Service {
+     * <p>
+     * ------------------------------------------------------------
+     * HomeService						||
+     * ------------------------------------------------------------
+     * 
+     * <pre>
+     * device HomeService extends Service {
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>HomeService</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>HomeService</code>.
      */
     public static HomeServiceMock mockHomeService(java.lang.String id) {
         if(mocker == null)
@@ -1131,9 +1139,9 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Agenda</code>.
-    
-    <pre>
-    device Agenda extends HomeService {
+     * 
+     * <pre>
+     * device Agenda extends HomeService {
      * 	attribute owner as String;
      * 	source currentEvents as AgendaEvent [];
      * 	source nextEvent as AgendaEvent;
@@ -1141,10 +1149,10 @@ public final class Mock extends AppComponentBinder {
      * 	source events as AgendaEvent [] indexed by filter as AgendaEvent;
      * 	action AgendaEventAction;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param owner the value of the <code>owner</code> attribute
-    @return a mock of the device <code>Agenda</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param owner the value of the <code>owner</code> attribute
+     * @return a mock of the device <code>Agenda</code>.
      */
     public AgendaMock agenda(java.lang.String id,
             java.lang.String owner) {
@@ -1155,9 +1163,9 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Agenda</code>.
-    
-    <pre>
-    device Agenda extends HomeService {
+     * 
+     * <pre>
+     * device Agenda extends HomeService {
      * 	attribute owner as String;
      * 	source currentEvents as AgendaEvent [];
      * 	source nextEvent as AgendaEvent;
@@ -1165,10 +1173,10 @@ public final class Mock extends AppComponentBinder {
      * 	source events as AgendaEvent [] indexed by filter as AgendaEvent;
      * 	action AgendaEventAction;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @param owner the value of the <code>owner</code> attribute
-    @return a mock of the device <code>Agenda</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @param owner the value of the <code>owner</code> attribute
+     * @return a mock of the device <code>Agenda</code>.
      */
     public static AgendaMock mockAgenda(java.lang.String id,
             java.lang.String owner) {
@@ -1179,18 +1187,18 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Notifier</code>.
-    
-    <pre>
-    device Notifier extends HomeService {
+     * 
+     * <pre>
+     * device Notifier extends HomeService {
      * 	source cancelled as Boolean indexed by id as String;
      * 	source expired as Boolean indexed by id as String;
      * 	source reply as Integer indexed by id as String;
      * 	action SendCriticalNotification;
      * 	action SendNonCriticalNotification;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>Notifier</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>Notifier</code>.
      */
     public NotifierMock notifier(java.lang.String id) {
         NotifierMock mock = new NotifierMock(getServiceConfiguration("Notifier" + randomId()), id);
@@ -1200,18 +1208,18 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Notifier</code>.
-    
-    <pre>
-    device Notifier extends HomeService {
+     * 
+     * <pre>
+     * device Notifier extends HomeService {
      * 	source cancelled as Boolean indexed by id as String;
      * 	source expired as Boolean indexed by id as String;
      * 	source reply as Integer indexed by id as String;
      * 	action SendCriticalNotification;
      * 	action SendNonCriticalNotification;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>Notifier</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>Notifier</code>.
      */
     public static NotifierMock mockNotifier(java.lang.String id) {
         if(mocker == null)
@@ -1221,18 +1229,18 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>RoutineScheduler</code>.
-    
-    <pre>
-    device RoutineScheduler extends Service {
+     * 
+     * <pre>
+     * device RoutineScheduler extends Service {
      * 	source currentTime as DayTime;
      * 	source startMonitoring as DailyActivityName;
      * 	source stopMonitoring as DailyActivityName;
      * 	action UpdateDayTime;
      * 	action UpdateRoutines;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>RoutineScheduler</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>RoutineScheduler</code>.
      */
     public RoutineSchedulerMock routineScheduler(java.lang.String id) {
         RoutineSchedulerMock mock = new RoutineSchedulerMock(getServiceConfiguration("RoutineScheduler" + randomId()), id);
@@ -1242,18 +1250,18 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>RoutineScheduler</code>.
-    
-    <pre>
-    device RoutineScheduler extends Service {
+     * 
+     * <pre>
+     * device RoutineScheduler extends Service {
      * 	source currentTime as DayTime;
      * 	source startMonitoring as DailyActivityName;
      * 	source stopMonitoring as DailyActivityName;
      * 	action UpdateDayTime;
      * 	action UpdateRoutines;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>RoutineScheduler</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>RoutineScheduler</code>.
      */
     public static RoutineSchedulerMock mockRoutineScheduler(java.lang.String id) {
         if(mocker == null)
@@ -1263,17 +1271,17 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>SoftwareSensor</code>.
-    <p>
-    ------------------------------------------------------------
-    SoftwareSensor						||
-    ------------------------------------------------------------
-    
-    <pre>
-    device SoftwareSensor extends Service {
+     * <p>
+     * ------------------------------------------------------------
+     * SoftwareSensor						||
+     * ------------------------------------------------------------
+     * 
+     * <pre>
+     * device SoftwareSensor extends Service {
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>SoftwareSensor</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>SoftwareSensor</code>.
      */
     public SoftwareSensorMock softwareSensor(java.lang.String id) {
         SoftwareSensorMock mock = new SoftwareSensorMock(getServiceConfiguration("SoftwareSensor" + randomId()), id);
@@ -1283,17 +1291,17 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>SoftwareSensor</code>.
-    <p>
-    ------------------------------------------------------------
-    SoftwareSensor						||
-    ------------------------------------------------------------
-    
-    <pre>
-    device SoftwareSensor extends Service {
+     * <p>
+     * ------------------------------------------------------------
+     * SoftwareSensor						||
+     * ------------------------------------------------------------
+     * 
+     * <pre>
+     * device SoftwareSensor extends Service {
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>SoftwareSensor</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>SoftwareSensor</code>.
      */
     public static SoftwareSensorMock mockSoftwareSensor(java.lang.String id) {
         if(mocker == null)
@@ -1303,20 +1311,20 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>ActivityNotifier</code>.
-    <p>
-    ------------------------------------------------------------
-    ActivityNotifier					||
-    ------------------------------------------------------------
-    
-    <pre>
-    device ActivityNotifier extends SoftwareSensor {
+     * <p>
+     * ------------------------------------------------------------
+     * ActivityNotifier					||
+     * ------------------------------------------------------------
+     * 
+     * <pre>
+     * device ActivityNotifier extends SoftwareSensor {
      * 	source dailyActivity as DailyActivity;
      * 	source periodActivity as PeriodActivity;
      * 	action NotifyActivity;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>ActivityNotifier</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>ActivityNotifier</code>.
      */
     public ActivityNotifierMock activityNotifier(java.lang.String id) {
         ActivityNotifierMock mock = new ActivityNotifierMock(getServiceConfiguration("ActivityNotifier" + randomId()), id);
@@ -1326,20 +1334,20 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>ActivityNotifier</code>.
-    <p>
-    ------------------------------------------------------------
-    ActivityNotifier					||
-    ------------------------------------------------------------
-    
-    <pre>
-    device ActivityNotifier extends SoftwareSensor {
+     * <p>
+     * ------------------------------------------------------------
+     * ActivityNotifier					||
+     * ------------------------------------------------------------
+     * 
+     * <pre>
+     * device ActivityNotifier extends SoftwareSensor {
      * 	source dailyActivity as DailyActivity;
      * 	source periodActivity as PeriodActivity;
      * 	action NotifyActivity;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>ActivityNotifier</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>ActivityNotifier</code>.
      */
     public static ActivityNotifierMock mockActivityNotifier(java.lang.String id) {
         if(mocker == null)
@@ -1349,38 +1357,38 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>InactivitySensor</code>.
-    <p>
-    ------------------------------------------------------------
-    Presence Detector					||
-    ------------------------------------------------------------
-    enumeration Room {
-    ENTRANCE, BEDROOM, KITCHEN, BATHROOM, LIVING, TOILET
-    }
-    
-    device IndoorLocationDetector extends SoftwareSensor {
-    // AR (14/02/17)
-    source currentRoom as Room;
-    action SetLocation;
-    }
-    
-    action SetLocation {
-    setLocation(location as Room);
-    resetLocation();
-    }
-    ------------------------------------------------------------
-    InactivitySensor					||
-    ------------------------------------------------------------
-    AR (01/08/17)
-    
-    <pre>
-    device InactivitySensor extends SoftwareSensor {
+     * <p>
+     * ------------------------------------------------------------
+     * Presence Detector					||
+     * ------------------------------------------------------------
+     * enumeration Room {
+     * ENTRANCE, BEDROOM, KITCHEN, BATHROOM, LIVING, TOILET
+     * }
+     * 
+     * device IndoorLocationDetector extends SoftwareSensor {
+     * // AR (14/02/17)
+     * source currentRoom as Room;
+     * action SetLocation;
+     * }
+     * 
+     * action SetLocation {
+     * setLocation(location as Room);
+     * resetLocation();
+     * }
+     * ------------------------------------------------------------
+     * InactivitySensor					||
+     * ------------------------------------------------------------
+     * AR (01/08/17)
+     * 
+     * <pre>
+     * device InactivitySensor extends SoftwareSensor {
      * 	source inactivityLevel as Float;
      * 	source lastInteraction as Interaction;
      * 	action UpdateInactivityLevel;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>InactivitySensor</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>InactivitySensor</code>.
      */
     public InactivitySensorMock inactivitySensor(java.lang.String id) {
         InactivitySensorMock mock = new InactivitySensorMock(getServiceConfiguration("InactivitySensor" + randomId()), id);
@@ -1390,38 +1398,38 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>InactivitySensor</code>.
-    <p>
-    ------------------------------------------------------------
-    Presence Detector					||
-    ------------------------------------------------------------
-    enumeration Room {
-    ENTRANCE, BEDROOM, KITCHEN, BATHROOM, LIVING, TOILET
-    }
-    
-    device IndoorLocationDetector extends SoftwareSensor {
-    // AR (14/02/17)
-    source currentRoom as Room;
-    action SetLocation;
-    }
-    
-    action SetLocation {
-    setLocation(location as Room);
-    resetLocation();
-    }
-    ------------------------------------------------------------
-    InactivitySensor					||
-    ------------------------------------------------------------
-    AR (01/08/17)
-    
-    <pre>
-    device InactivitySensor extends SoftwareSensor {
+     * <p>
+     * ------------------------------------------------------------
+     * Presence Detector					||
+     * ------------------------------------------------------------
+     * enumeration Room {
+     * ENTRANCE, BEDROOM, KITCHEN, BATHROOM, LIVING, TOILET
+     * }
+     * 
+     * device IndoorLocationDetector extends SoftwareSensor {
+     * // AR (14/02/17)
+     * source currentRoom as Room;
+     * action SetLocation;
+     * }
+     * 
+     * action SetLocation {
+     * setLocation(location as Room);
+     * resetLocation();
+     * }
+     * ------------------------------------------------------------
+     * InactivitySensor					||
+     * ------------------------------------------------------------
+     * AR (01/08/17)
+     * 
+     * <pre>
+     * device InactivitySensor extends SoftwareSensor {
      * 	source inactivityLevel as Float;
      * 	source lastInteraction as Interaction;
      * 	action UpdateInactivityLevel;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>InactivitySensor</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>InactivitySensor</code>.
      */
     public static InactivitySensorMock mockInactivitySensor(java.lang.String id) {
         if(mocker == null)
@@ -1431,19 +1439,19 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Storage</code>.
-    <p>
-    --------
-    Storage
-    --------
-    
-    <pre>
-    device Storage extends Service {
+     * <p>
+     * --------
+     * Storage
+     * --------
+     * 
+     * <pre>
+     * device Storage extends Service {
      * 	source data as String indexed by key as String;
      * 	action PutStringData;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>Storage</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>Storage</code>.
      */
     public StorageMock storage(java.lang.String id) {
         StorageMock mock = new StorageMock(getServiceConfiguration("Storage" + randomId()), id);
@@ -1453,19 +1461,19 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Storage</code>.
-    <p>
-    --------
-    Storage
-    --------
-    
-    <pre>
-    device Storage extends Service {
+     * <p>
+     * --------
+     * Storage
+     * --------
+     * 
+     * <pre>
+     * device Storage extends Service {
      * 	source data as String indexed by key as String;
      * 	action PutStringData;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>Storage</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>Storage</code>.
      */
     public static StorageMock mockStorage(java.lang.String id) {
         if(mocker == null)
@@ -1475,19 +1483,19 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Timer</code>.
-    <p>
-    ------
-    Timer
-    ------
-    
-    <pre>
-    device Timer extends Service {
+     * <p>
+     * ------
+     * Timer
+     * ------
+     * 
+     * <pre>
+     * device Timer extends Service {
      * 	source timerTriggered as String indexed by timerId as String;
      * 	action ScheduleTimer;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>Timer</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>Timer</code>.
      */
     public TimerMock timer(java.lang.String id) {
         TimerMock mock = new TimerMock(getServiceConfiguration("Timer" + randomId()), id);
@@ -1497,19 +1505,19 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>Timer</code>.
-    <p>
-    ------
-    Timer
-    ------
-    
-    <pre>
-    device Timer extends Service {
+     * <p>
+     * ------
+     * Timer
+     * ------
+     * 
+     * <pre>
+     * device Timer extends Service {
      * 	source timerTriggered as String indexed by timerId as String;
      * 	action ScheduleTimer;
      * }
-    </pre>
-    @param id the value of the <code>id</code> attribute
-    @return a mock of the device <code>Timer</code>.
+     * </pre>
+     * @param id the value of the <code>id</code> attribute
+     * @return a mock of the device <code>Timer</code>.
      */
     public static TimerMock mockTimer(java.lang.String id) {
         if(mocker == null)
@@ -1519,13 +1527,13 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>WhoCares</code>.
-    <p>
-    ------------------------------------------------------------
-    WhoCares						||
-    ------------------------------------------------------------
-    
-    <pre>
-    device WhoCares {
+     * <p>
+     * ------------------------------------------------------------
+     * WhoCares						||
+     * ------------------------------------------------------------
+     * 
+     * <pre>
+     * device WhoCares {
      * 	attribute date as Date;
      * 	attribute day as Day;
      * 	attribute fileType as FileType;
@@ -1558,39 +1566,39 @@ public final class Mock extends AppComponentBinder {
      * 	attribute sleepPeriod as SleepPeriod;
      * 	attribute fitbitAlarm as Alarm;
      * }
-    </pre>
-    @param date the value of the <code>date</code> attribute
-    @param day the value of the <code>day</code> attribute
-    @param fileType the value of the <code>fileType</code> attribute
-    @param file the value of the <code>file</code> attribute
-    @param contact the value of the <code>contact</code> attribute
-    @param message the value of the <code>message</code> attribute
-    @param agendatEvent the value of the <code>agendatEvent</code> attribute
-    @param notification the value of the <code>notification</code> attribute
-    @param criticalNotification the value of the <code>criticalNotification</code> attribute
-    @param doorState the value of the <code>doorState</code> attribute
-    @param temperatureUnit the value of the <code>temperatureUnit</code> attribute
-    @param dailyActivityName the value of the <code>dailyActivityName</code> attribute
-    @param periodActivityName the value of the <code>periodActivityName</code> attribute
-    @param dailyActivity the value of the <code>dailyActivity</code> attribute
-    @param period the value of the <code>period</code> attribute
-    @param periodActivity the value of the <code>periodActivity</code> attribute
-    @param dailyReport the value of the <code>dailyReport</code> attribute
-    @param statisticReport the value of the <code>statisticReport</code> attribute
-    @param periodActivityStats the value of the <code>periodActivityStats</code> attribute
-    @param dailyActivityStats the value of the <code>dailyActivityStats</code> attribute
-    @param action the value of the <code>action</code> attribute
-    @param actionType the value of the <code>actionType</code> attribute
-    @param dayTime the value of the <code>dayTime</code> attribute
-    @param battery the value of the <code>battery</code> attribute
-    @param androidApp the value of the <code>androidApp</code> attribute
-    @param soundLevel the value of the <code>soundLevel</code> attribute
-    @param androidIntent the value of the <code>androidIntent</code> attribute
-    @param androidExtraString the value of the <code>androidExtraString</code> attribute
-    @param pulseRecord the value of the <code>pulseRecord</code> attribute
-    @param sleepPeriod the value of the <code>sleepPeriod</code> attribute
-    @param fitbitAlarm the value of the <code>fitbitAlarm</code> attribute
-    @return a mock of the device <code>WhoCares</code>.
+     * </pre>
+     * @param date the value of the <code>date</code> attribute
+     * @param day the value of the <code>day</code> attribute
+     * @param fileType the value of the <code>fileType</code> attribute
+     * @param file the value of the <code>file</code> attribute
+     * @param contact the value of the <code>contact</code> attribute
+     * @param message the value of the <code>message</code> attribute
+     * @param agendatEvent the value of the <code>agendatEvent</code> attribute
+     * @param notification the value of the <code>notification</code> attribute
+     * @param criticalNotification the value of the <code>criticalNotification</code> attribute
+     * @param doorState the value of the <code>doorState</code> attribute
+     * @param temperatureUnit the value of the <code>temperatureUnit</code> attribute
+     * @param dailyActivityName the value of the <code>dailyActivityName</code> attribute
+     * @param periodActivityName the value of the <code>periodActivityName</code> attribute
+     * @param dailyActivity the value of the <code>dailyActivity</code> attribute
+     * @param period the value of the <code>period</code> attribute
+     * @param periodActivity the value of the <code>periodActivity</code> attribute
+     * @param dailyReport the value of the <code>dailyReport</code> attribute
+     * @param statisticReport the value of the <code>statisticReport</code> attribute
+     * @param periodActivityStats the value of the <code>periodActivityStats</code> attribute
+     * @param dailyActivityStats the value of the <code>dailyActivityStats</code> attribute
+     * @param action the value of the <code>action</code> attribute
+     * @param actionType the value of the <code>actionType</code> attribute
+     * @param dayTime the value of the <code>dayTime</code> attribute
+     * @param battery the value of the <code>battery</code> attribute
+     * @param androidApp the value of the <code>androidApp</code> attribute
+     * @param soundLevel the value of the <code>soundLevel</code> attribute
+     * @param androidIntent the value of the <code>androidIntent</code> attribute
+     * @param androidExtraString the value of the <code>androidExtraString</code> attribute
+     * @param pulseRecord the value of the <code>pulseRecord</code> attribute
+     * @param sleepPeriod the value of the <code>sleepPeriod</code> attribute
+     * @param fitbitAlarm the value of the <code>fitbitAlarm</code> attribute
+     * @return a mock of the device <code>WhoCares</code>.
      */
     public WhoCaresMock whoCares(fr.inria.phoenix.diasuite.framework.datatype.date.Date date,
             fr.inria.phoenix.diasuite.framework.datatype.day.Day day,
@@ -1630,13 +1638,13 @@ public final class Mock extends AppComponentBinder {
     
     /**
      * Returns a mock of the device <code>WhoCares</code>.
-    <p>
-    ------------------------------------------------------------
-    WhoCares						||
-    ------------------------------------------------------------
-    
-    <pre>
-    device WhoCares {
+     * <p>
+     * ------------------------------------------------------------
+     * WhoCares						||
+     * ------------------------------------------------------------
+     * 
+     * <pre>
+     * device WhoCares {
      * 	attribute date as Date;
      * 	attribute day as Day;
      * 	attribute fileType as FileType;
@@ -1669,39 +1677,39 @@ public final class Mock extends AppComponentBinder {
      * 	attribute sleepPeriod as SleepPeriod;
      * 	attribute fitbitAlarm as Alarm;
      * }
-    </pre>
-    @param date the value of the <code>date</code> attribute
-    @param day the value of the <code>day</code> attribute
-    @param fileType the value of the <code>fileType</code> attribute
-    @param file the value of the <code>file</code> attribute
-    @param contact the value of the <code>contact</code> attribute
-    @param message the value of the <code>message</code> attribute
-    @param agendatEvent the value of the <code>agendatEvent</code> attribute
-    @param notification the value of the <code>notification</code> attribute
-    @param criticalNotification the value of the <code>criticalNotification</code> attribute
-    @param doorState the value of the <code>doorState</code> attribute
-    @param temperatureUnit the value of the <code>temperatureUnit</code> attribute
-    @param dailyActivityName the value of the <code>dailyActivityName</code> attribute
-    @param periodActivityName the value of the <code>periodActivityName</code> attribute
-    @param dailyActivity the value of the <code>dailyActivity</code> attribute
-    @param period the value of the <code>period</code> attribute
-    @param periodActivity the value of the <code>periodActivity</code> attribute
-    @param dailyReport the value of the <code>dailyReport</code> attribute
-    @param statisticReport the value of the <code>statisticReport</code> attribute
-    @param periodActivityStats the value of the <code>periodActivityStats</code> attribute
-    @param dailyActivityStats the value of the <code>dailyActivityStats</code> attribute
-    @param action the value of the <code>action</code> attribute
-    @param actionType the value of the <code>actionType</code> attribute
-    @param dayTime the value of the <code>dayTime</code> attribute
-    @param battery the value of the <code>battery</code> attribute
-    @param androidApp the value of the <code>androidApp</code> attribute
-    @param soundLevel the value of the <code>soundLevel</code> attribute
-    @param androidIntent the value of the <code>androidIntent</code> attribute
-    @param androidExtraString the value of the <code>androidExtraString</code> attribute
-    @param pulseRecord the value of the <code>pulseRecord</code> attribute
-    @param sleepPeriod the value of the <code>sleepPeriod</code> attribute
-    @param fitbitAlarm the value of the <code>fitbitAlarm</code> attribute
-    @return a mock of the device <code>WhoCares</code>.
+     * </pre>
+     * @param date the value of the <code>date</code> attribute
+     * @param day the value of the <code>day</code> attribute
+     * @param fileType the value of the <code>fileType</code> attribute
+     * @param file the value of the <code>file</code> attribute
+     * @param contact the value of the <code>contact</code> attribute
+     * @param message the value of the <code>message</code> attribute
+     * @param agendatEvent the value of the <code>agendatEvent</code> attribute
+     * @param notification the value of the <code>notification</code> attribute
+     * @param criticalNotification the value of the <code>criticalNotification</code> attribute
+     * @param doorState the value of the <code>doorState</code> attribute
+     * @param temperatureUnit the value of the <code>temperatureUnit</code> attribute
+     * @param dailyActivityName the value of the <code>dailyActivityName</code> attribute
+     * @param periodActivityName the value of the <code>periodActivityName</code> attribute
+     * @param dailyActivity the value of the <code>dailyActivity</code> attribute
+     * @param period the value of the <code>period</code> attribute
+     * @param periodActivity the value of the <code>periodActivity</code> attribute
+     * @param dailyReport the value of the <code>dailyReport</code> attribute
+     * @param statisticReport the value of the <code>statisticReport</code> attribute
+     * @param periodActivityStats the value of the <code>periodActivityStats</code> attribute
+     * @param dailyActivityStats the value of the <code>dailyActivityStats</code> attribute
+     * @param action the value of the <code>action</code> attribute
+     * @param actionType the value of the <code>actionType</code> attribute
+     * @param dayTime the value of the <code>dayTime</code> attribute
+     * @param battery the value of the <code>battery</code> attribute
+     * @param androidApp the value of the <code>androidApp</code> attribute
+     * @param soundLevel the value of the <code>soundLevel</code> attribute
+     * @param androidIntent the value of the <code>androidIntent</code> attribute
+     * @param androidExtraString the value of the <code>androidExtraString</code> attribute
+     * @param pulseRecord the value of the <code>pulseRecord</code> attribute
+     * @param sleepPeriod the value of the <code>sleepPeriod</code> attribute
+     * @param fitbitAlarm the value of the <code>fitbitAlarm</code> attribute
+     * @return a mock of the device <code>WhoCares</code>.
      */
     public static WhoCaresMock mockWhoCares(fr.inria.phoenix.diasuite.framework.datatype.date.Date date,
             fr.inria.phoenix.diasuite.framework.datatype.day.Day day,

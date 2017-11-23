@@ -2,12 +2,14 @@ package fr.inria.phoenix.diasuite.framework.misc;
 
 import fr.inria.diagen.core.deploy.AbstractDeploy;
 
-import fr.inria.phoenix.diasuite.framework.context.alertmove.AbstractAlertMove;
-import fr.inria.phoenix.diasuite.framework.context.congratulation.AbstractCongratulation;
-import fr.inria.phoenix.diasuite.framework.context.propositiondactivity.AbstractPropositionDActivity;
-import fr.inria.phoenix.diasuite.framework.context.propositiongoout.AbstractPropositionGoOut;
+import fr.inria.phoenix.diasuite.framework.context.coupling.AbstractCoupling;
+import fr.inria.phoenix.diasuite.framework.context.getfitbitinfos.AbstractGetFitbitInfos;
+import fr.inria.phoenix.diasuite.framework.context.getsavedtime.AbstractGetSavedTime;
+import fr.inria.phoenix.diasuite.framework.context.sleepbegin.AbstractSleepBegin;
+import fr.inria.phoenix.diasuite.framework.context.sleepend.AbstractSleepEnd;
 
-import fr.inria.phoenix.diasuite.framework.controller.coach_activitycontroller.AbstractCoach_activityController;
+import fr.inria.phoenix.diasuite.framework.controller.savesleeptime.AbstractSaveSleepTime;
+import fr.inria.phoenix.diasuite.framework.controller.sleepanalyser.AbstractSleepAnalyser;
 
 /**
  * This class should be implemented to bind the implementation of the various components
@@ -15,135 +17,160 @@ import fr.inria.phoenix.diasuite.framework.controller.coach_activitycontroller.A
 public abstract class AppComponentBinder extends AbstractDeploy {
 
     // Context instances
-    private AbstractAlertMove alertMoveInstance = null;
-    private AbstractCongratulation congratulationInstance = null;
-    private AbstractPropositionDActivity propositionDActivityInstance = null;
-    private AbstractPropositionGoOut propositionGoOutInstance = null;
+    private AbstractCoupling couplingInstance = null;
+    private AbstractGetFitbitInfos getFitbitInfosInstance = null;
+    private AbstractGetSavedTime getSavedTimeInstance = null;
+    private AbstractSleepBegin sleepBeginInstance = null;
+    private AbstractSleepEnd sleepEndInstance = null;
 
     // Controller instances
-    private AbstractCoach_activityController coach_activityControllerInstance = null;
+    private AbstractSaveSleepTime saveSleepTimeInstance = null;
+    private AbstractSleepAnalyser sleepAnalyserInstance = null;
     
     @Override
     public void deployAll() {
         // Initialization of contexts
-        if (alertMoveInstance == null)
-            alertMoveInstance = getInstance(getAlertMoveClass());
-        if (congratulationInstance == null)
-            congratulationInstance = getInstance(getCongratulationClass());
-        if (propositionDActivityInstance == null)
-            propositionDActivityInstance = getInstance(getPropositionDActivityClass());
-        if (propositionGoOutInstance == null)
-            propositionGoOutInstance = getInstance(getPropositionGoOutClass());
+        if (couplingInstance == null)
+            couplingInstance = getInstance(getCouplingClass());
+        if (getFitbitInfosInstance == null)
+            getFitbitInfosInstance = getInstance(getGetFitbitInfosClass());
+        if (getSavedTimeInstance == null)
+            getSavedTimeInstance = getInstance(getGetSavedTimeClass());
+        if (sleepBeginInstance == null)
+            sleepBeginInstance = getInstance(getSleepBeginClass());
+        if (sleepEndInstance == null)
+            sleepEndInstance = getInstance(getSleepEndClass());
         // Intialization of controllers
-        if (coach_activityControllerInstance == null)
-            coach_activityControllerInstance = getInstance(getCoach_activityControllerClass());
+        if (saveSleepTimeInstance == null)
+            saveSleepTimeInstance = getInstance(getSaveSleepTimeClass());
+        if (sleepAnalyserInstance == null)
+            sleepAnalyserInstance = getInstance(getSleepAnalyserClass());
         // Deploying contexts
-        deploy(alertMoveInstance);
-        deploy(congratulationInstance);
-        deploy(propositionDActivityInstance);
-        deploy(propositionGoOutInstance);
+        deploy(couplingInstance);
+        deploy(getFitbitInfosInstance);
+        deploy(getSavedTimeInstance);
+        deploy(sleepBeginInstance);
+        deploy(sleepEndInstance);
         // Deploying controllers
-        deploy(coach_activityControllerInstance);
+        deploy(saveSleepTimeInstance);
+        deploy(sleepAnalyserInstance);
     }
     
     @Override
     public void undeployAll() {
         // Undeploying contexts
-        undeploy(alertMoveInstance);
-        undeploy(congratulationInstance);
-        undeploy(propositionDActivityInstance);
-        undeploy(propositionGoOutInstance);
+        undeploy(couplingInstance);
+        undeploy(getFitbitInfosInstance);
+        undeploy(getSavedTimeInstance);
+        undeploy(sleepBeginInstance);
+        undeploy(sleepEndInstance);
         // Undeploying controllers
-        undeploy(coach_activityControllerInstance);
+        undeploy(saveSleepTimeInstance);
+        undeploy(sleepAnalyserInstance);
     }
     
     // Abstract binding methods for contexts
     /**
-     * Overrides this method to provide the implementation class of the <code>AlertMove</code> context
+     * Overrides this method to provide the implementation class of the <code>Coupling</code> context
+     * 
+     * <pre>
+     * context Coupling as SleepPeriod[] indexed by period as Period {
+     * 	when provided GetFitbitInfos 
+     * 		maybe publish;
+     * 	when provided GetSavedTime 
+     * 		maybe publish;
+     * }
+     * </pre>
+     * @return a class object of a derivation of {@link AbstractCoupling} that implements the <code>Coupling</code> context
+     */
+    public abstract Class<? extends AbstractCoupling> getCouplingClass();
     
-    <pre>
-    context AlertMove as Boolean{
-     * 	when provided dailyActivity from ActivityNotifier
-     * 	get steps from Fitbit,
-     * 		dailyActivity from ActivityNotifier
+    /**
+     * Overrides this method to provide the implementation class of the <code>GetFitbitInfos</code> context
+     * 
+     * <pre>
+     * context GetFitbitInfos as SleepPeriod[] indexed by period as Period  {
+     * 	when provided sleepPeriods from Fitbit
+     * 		always publish;
+     * }
+     * </pre>
+     * @return a class object of a derivation of {@link AbstractGetFitbitInfos} that implements the <code>GetFitbitInfos</code> context
+     */
+    public abstract Class<? extends AbstractGetFitbitInfos> getGetFitbitInfosClass();
+    
+    /**
+     * Overrides this method to provide the implementation class of the <code>GetSavedTime</code> context
+     * 
+     * <pre>
+     * context GetSavedTime as String[] {
+     * 	when provided data from Storage
+     * 		maybe publish;
+     * }
+     * </pre>
+     * @return a class object of a derivation of {@link AbstractGetSavedTime} that implements the <code>GetSavedTime</code> context
+     */
+    public abstract Class<? extends AbstractGetSavedTime> getGetSavedTimeClass();
+    
+    /**
+     * Overrides this method to provide the implementation class of the <code>SleepBegin</code> context
+     * 
+     * <pre>
+     * context SleepBegin as String {
+     * 	when provided tickHour from Clock
+     * 		get inactivityLevel from InactivitySensor,
+     * 		lastInteraction from InactivitySensor
      * 	maybe publish;
      * }
-    </pre>
-    @return a class object of a derivation of {@link AbstractAlertMove} that implements the <code>AlertMove</code> context
+     * </pre>
+     * @return a class object of a derivation of {@link AbstractSleepBegin} that implements the <code>SleepBegin</code> context
      */
-    public abstract Class<? extends AbstractAlertMove> getAlertMoveClass();
+    public abstract Class<? extends AbstractSleepBegin> getSleepBeginClass();
     
     /**
-     * Overrides this method to provide the implementation class of the <code>Congratulation</code> context
-    <p>
-    Sortie context : Si nombre de pas suffisant alors féliciter
-    
-    <pre>
-    context Congratulation as Boolean {
-     * 	when provided steps from Fitbit
-     * 	get steps from Fitbit
-     * 	maybe publish;
-     * 	}
-    </pre>
-    @return a class object of a derivation of {@link AbstractCongratulation} that implements the <code>Congratulation</code> context
-     */
-    public abstract Class<? extends AbstractCongratulation> getCongratulationClass();
-    
-    /**
-     * Overrides this method to provide the implementation class of the <code>PropositionDActivity</code> context
-    
-    <pre>
-    context PropositionDActivity as Boolean {
-     * 	when provided dailyActivity from ActivityNotifier
-     * 	get dailyActivity from ActivityNotifier
+     * Overrides this method to provide the implementation class of the <code>SleepEnd</code> context
+     * 
+     * <pre>
+     * context SleepEnd as String {
+     * 	when provided inactivityLevel from InactivitySensor
+     * 		get tickHour from Clock,
+     * 		lastInteraction from InactivitySensor
      * 	maybe publish;
      * }
-    </pre>
-    @return a class object of a derivation of {@link AbstractPropositionDActivity} that implements the <code>PropositionDActivity</code> context
+     * </pre>
+     * @return a class object of a derivation of {@link AbstractSleepEnd} that implements the <code>SleepEnd</code> context
      */
-    public abstract Class<? extends AbstractPropositionDActivity> getPropositionDActivityClass();
-    
-    /**
-     * Overrides this method to provide the implementation class of the <code>PropositionGoOut</code> context
-    <p>
-    Boolean ou String ?
-    Sortie context : Si nombre de pas insuffisant
-    
-    <pre>
-    context PropositionGoOut as Boolean {
-     * 	when provided steps from Fitbit
-     * 	get steps from Fitbit,
-     * 		events from Agenda
-     * 	maybe publish;
-     * 	}
-    </pre>
-    @return a class object of a derivation of {@link AbstractPropositionGoOut} that implements the <code>PropositionGoOut</code> context
-     */
-    public abstract Class<? extends AbstractPropositionGoOut> getPropositionGoOutClass();
+    public abstract Class<? extends AbstractSleepEnd> getSleepEndClass();
     
     // End of abstract binding methods for contexts
     
     // Abstract binding methods for controllers
     /**
-     * Overrides this method to provide the implementation class of the <code>Coach_activityController</code> controller
-    <p>
-    Coach_activity controller
-    
-    <pre>
-    controller Coach_activityController {
-     * 	when provided PropositionGoOut
-     * 	do NotifyActivity on ActivityNotifier;
-     * 	when provided Congratulation
-     * 	do NotifyActivity on ActivityNotifier;
-     * 	when provided PropositionDActivity
-     * 	do NotifyActivity on ActivityNotifier;
-     * 	when provided AlertMove
-     * 	do NotifyActivity on ActivityNotifier;
+     * Overrides this method to provide the implementation class of the <code>SaveSleepTime</code> controller
+     * 
+     * <pre>
+     * controller SaveSleepTime {
+     * 	when provided SleepBegin
+     * 		do PutStringData on Storage;
+     * 	when provided SleepEnd
+     * 		do PutStringData on Storage;	
      * }
-    </pre>
-    @return a class object of a derivation of {@link AbstractCoach_activityController} that implements the <code>Coach_activityController</code> controller
+     * </pre>
+     * @return a class object of a derivation of {@link AbstractSaveSleepTime} that implements the <code>SaveSleepTime</code> controller
      */
-    public abstract Class<? extends AbstractCoach_activityController> getCoach_activityControllerClass();
+    public abstract Class<? extends AbstractSaveSleepTime> getSaveSleepTimeClass();
+    
+    /**
+     * Overrides this method to provide the implementation class of the <code>SleepAnalyser</code> controller
+     * 
+     * <pre>
+     * controller SleepAnalyser {
+     * 	when provided Coupling
+     * 	do	SendMessage on Messenger;
+     * }
+     * </pre>
+     * @return a class object of a derivation of {@link AbstractSleepAnalyser} that implements the <code>SleepAnalyser</code> controller
+     */
+    public abstract Class<? extends AbstractSleepAnalyser> getSleepAnalyserClass();
     
     // End of abstract binding methods for controllers
 }

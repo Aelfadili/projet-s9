@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 /**
  * Container for the indices of the source <code>distanceInMeters</code> from device <code>Fitbit</code>.
-
-<pre>
-source distanceInMeters as Integer indexed by period as Period;
-</pre>
+ * 
+ * <pre>
+ * source distanceInMeters as Integer indexed by period as Period;
+ * </pre>
  */
 public final class DistanceInMetersIndices implements Serializable {
     private static final long serialVersionUID = 0;
