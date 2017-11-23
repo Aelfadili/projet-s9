@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<DiaGraph>
+	<controller id="SaveSleepTime" x="108.0" y="191.0"/>
+	<action id="Storage/PutStringData" x="108.0" y="71.0"/>
+	<context id="SleepBegin" x="198.0" y="431.0"/>
+	<source id="InactivitySensor/inactivityLevel" x="288.0" y="551.0"/>
+	<source id="Clock/tickHour" x="108.0" y="551.0"/>
+	<source id="InactivitySensor/lastInteraction" x="468.0" y="551.0"/>
+	<context id="SleepEnd" x="18.0" y="431.0"/>
+	<controller id="SleepAnalyser" x="288.0" y="191.0"/>
+	<action id="Messenger/SendMessage" x="288.0" y="71.0"/>
+	<context id="Coupling" x="288.0" y="311.0"/>
+	<context id="GetSavedTime" x="378.0" y="431.0"/>
+	<source id="Storage/data" x="648.0" y="551.0"/>
+	<context id="GetFitbitInfos" x="558.0" y="431.0"/>
+	<source id="Fitbit/sleepPeriods" x="828.0" y="551.0"/>
+</DiaGraph>

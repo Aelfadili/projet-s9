@@ -2,12 +2,12 @@ package fr.inria.phoenix.diasuite.framework.mocks;
 
 import fr.inria.diagen.core.ServiceConfiguration;
 import fr.inria.phoenix.diasuite.framework.device.fitbit.AbstractFitbit;
-import fr.inria.phoenix.diasuite.framework.device.fitbit.CaloriesIndices;
-import fr.inria.phoenix.diasuite.framework.device.fitbit.SleepPeriodsIndices;
-import fr.inria.phoenix.diasuite.framework.device.fitbit.AlarmIndices;
-import fr.inria.phoenix.diasuite.framework.device.fitbit.DistanceInMetersIndices;
 import fr.inria.phoenix.diasuite.framework.device.fitbit.PulsesIndices;
 import fr.inria.phoenix.diasuite.framework.device.fitbit.StepsIndices;
+import fr.inria.phoenix.diasuite.framework.device.fitbit.CaloriesIndices;
+import fr.inria.phoenix.diasuite.framework.device.fitbit.SleepPeriodsIndices;
+import fr.inria.phoenix.diasuite.framework.device.fitbit.DistanceInMetersIndices;
+import fr.inria.phoenix.diasuite.framework.device.fitbit.AlarmIndices;
 
 // @internal
 public final class FitbitMock {
