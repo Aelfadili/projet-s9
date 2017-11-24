@@ -10,6 +10,13 @@ import fr.inria.diagen.core.service.proxy.Proxy;
 import fr.inria.phoenix.diasuite.framework.device.storage.DataFromStorage;
 
 /**
+ * controller SaveSleepTime {
+ * 	when provided SleepBegin
+ * 		do PutStringData on Storage;
+ * 	when provided SleepEnd
+ * 		do PutStringData on Storage;	
+ * }
+ * 
  * <pre>
  * context GetSavedTime as String[] {
  * 	when provided data from Storage

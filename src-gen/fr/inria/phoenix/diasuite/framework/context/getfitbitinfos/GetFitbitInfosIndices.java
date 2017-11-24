@@ -4,10 +4,29 @@ import java.io.Serializable;
 
 /**
  * Container for the indices of the context <code>GetFitbitInfos</code>.
+ * <p>
+ * context SleepEnd as String {
+ * 	when provided inactivityLevel from InactivitySensor
+ * 		get currentTime from RoutineScheduler,
+ * 		lastInteraction from InactivitySensor
+ * 	maybe publish;
+ * }
+ * controller SaveSleepTime {
+ * 	when provided SleepBegin
+ * 		do PutStringData on Storage;
+ * 	when provided SleepEnd
+ * 		do PutStringData on Storage;	
+ * }
+ * context GetSavedTime as String[] {
+ * 	when provided data from Storage
+ * 		maybe publish;
+ * }
  * 
  * <pre>
  * context GetFitbitInfos as SleepPeriod[] indexed by period as Period  {
- * 	when provided sleepPeriods from Fitbit
+ * 	when provided currentTime from RoutineScheduler
+ * 		get	sleepPeriods from Fitbit,
+ * 		tickHour from Clock
  * 		always publish;
  * }
  * </pre>

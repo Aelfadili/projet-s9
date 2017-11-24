@@ -2,13 +2,10 @@ package fr.inria.phoenix.diasuite.framework.mocks;
 
 import fr.inria.diagen.core.ServiceConfiguration;
 import fr.inria.phoenix.diasuite.framework.misc.AppComponentBinder;
-import fr.inria.phoenix.diasuite.framework.controller.savesleeptime.AbstractSaveSleepTime;
 import fr.inria.phoenix.diasuite.framework.controller.sleepanalyser.AbstractSleepAnalyser;
 import fr.inria.phoenix.diasuite.framework.context.coupling.AbstractCoupling;
 import fr.inria.phoenix.diasuite.framework.context.getfitbitinfos.AbstractGetFitbitInfos;
-import fr.inria.phoenix.diasuite.framework.context.getsavedtime.AbstractGetSavedTime;
-import fr.inria.phoenix.diasuite.framework.context.sleepbegin.AbstractSleepBegin;
-import fr.inria.phoenix.diasuite.framework.context.sleepend.AbstractSleepEnd;
+import fr.inria.phoenix.diasuite.framework.context.sleep.AbstractSleep;
 
 /**
  * Use this class to test your DiaSuite application.
@@ -94,9 +91,6 @@ public final class Mock extends AppComponentBinder {
     }
     
     // Delegation part
-    public Class<? extends AbstractSaveSleepTime> getSaveSleepTimeClass() {
-        return delegate.getSaveSleepTimeClass();
-    }
     public Class<? extends AbstractSleepAnalyser> getSleepAnalyserClass() {
         return delegate.getSleepAnalyserClass();
     }
@@ -106,14 +100,8 @@ public final class Mock extends AppComponentBinder {
     public Class<? extends AbstractGetFitbitInfos> getGetFitbitInfosClass() {
         return delegate.getGetFitbitInfosClass();
     }
-    public Class<? extends AbstractGetSavedTime> getGetSavedTimeClass() {
-        return delegate.getGetSavedTimeClass();
-    }
-    public Class<? extends AbstractSleepBegin> getSleepBeginClass() {
-        return delegate.getSleepBeginClass();
-    }
-    public Class<? extends AbstractSleepEnd> getSleepEndClass() {
-        return delegate.getSleepEndClass();
+    public Class<? extends AbstractSleep> getSleepClass() {
+        return delegate.getSleepClass();
     }
     
     // Mocks constructor for all devices

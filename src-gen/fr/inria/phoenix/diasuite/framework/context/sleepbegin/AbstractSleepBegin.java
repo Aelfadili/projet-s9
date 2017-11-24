@@ -7,12 +7,12 @@ import fr.inria.diagen.core.network.RemoteServiceInfo;
 import fr.inria.diagen.core.service.local.Service;
 import fr.inria.diagen.core.service.proxy.Proxy;
 
-import fr.inria.phoenix.diasuite.framework.device.clock.TickHourFromClock;
+import fr.inria.phoenix.diasuite.framework.device.routinescheduler.CurrentTimeFromRoutineScheduler;
 
 /**
  * <pre>
  * context SleepBegin as String {
- * 	when provided tickHour from Clock
+ * 	when provided currentTime from RoutineScheduler
  * 		get inactivityLevel from InactivitySensor,
  * 		lastInteraction from InactivitySensor
  * 	maybe publish;
@@ -35,15 +35,15 @@ public abstract class AbstractSleepBegin extends Service {
     @Override
     protected void postInitialize() {
         // Default implementation of post initialize: subscribe to all required devices
-        discoverClockForSubscribe.all().subscribeTickHour(); // subscribe to tickHour from all Clock devices
+        discoverRoutineSchedulerForSubscribe.all().subscribeCurrentTime(); // subscribe to currentTime from all RoutineScheduler devices
     }
     
     @Override
     public final void valueReceived(java.util.Map<String, Object> properties, RemoteServiceInfo source, String eventName, Object value, Object... indexes) {
-        if (eventName.equals("tickHour") && source.isCompatible("/Device/Device/Service/Clock/")) {
-            TickHourFromClock tickHourFromClock = new TickHourFromClock(this, source, (java.lang.Integer) value);
+        if (eventName.equals("currentTime") && source.isCompatible("/Device/Device/Service/RoutineScheduler/")) {
+            CurrentTimeFromRoutineScheduler currentTimeFromRoutineScheduler = new CurrentTimeFromRoutineScheduler(this, source, (fr.inria.phoenix.diasuite.framework.datatype.daytime.DayTime) value);
             
-            SleepBeginValuePublishable returnValue = onTickHourFromClock(tickHourFromClock, new DiscoverForTickHourFromClock());
+            SleepBeginValuePublishable returnValue = onCurrentTimeFromRoutineScheduler(currentTimeFromRoutineScheduler, new DiscoverForCurrentTimeFromRoutineScheduler());
             if(returnValue != null && returnValue.doPublish()) {
                 setSleepBegin(returnValue.getValue());
             }
@@ -129,170 +129,178 @@ public abstract class AbstractSleepBegin extends Service {
     
     // Interaction contract implementation
     /**
-     * This method is called when a <code>Clock</code> device on which we have subscribed publish on its <code>tickHour</code> source.
+     * This method is called when a <code>RoutineScheduler</code> device on which we have subscribed publish on its <code>currentTime</code> source.
      * 
      * <pre>
-     * when provided tickHour from Clock
+     * when provided currentTime from RoutineScheduler
      * 		get inactivityLevel from InactivitySensor,
      * 		lastInteraction from InactivitySensor
      * 	maybe publish;
      * </pre>
      * 
-     * @param tickHourFromClock the value of the <code>tickHour</code> source and the <code>Clock</code> device that published the value.
+     * @param currentTimeFromRoutineScheduler the value of the <code>currentTime</code> source and the <code>RoutineScheduler</code> device that published the value.
      * @param discover a discover object to get value from devices and contexts
      * @return a {@link SleepBeginValuePublishable} that says if the context should publish a value and which value it should publish
      */
-    protected abstract SleepBeginValuePublishable onTickHourFromClock(TickHourFromClock tickHourFromClock, DiscoverForTickHourFromClock discover);
+    protected abstract SleepBeginValuePublishable onCurrentTimeFromRoutineScheduler(CurrentTimeFromRoutineScheduler currentTimeFromRoutineScheduler, DiscoverForCurrentTimeFromRoutineScheduler discover);
     
     // End of interaction contract implementation
     
-    // Discover part for Clock devices
+    // Discover part for RoutineScheduler devices
     /**
-     * Use this object to discover Clock devices.
+     * Use this object to discover RoutineScheduler devices.
      * 
      * <pre>
-     * device Clock extends Service {
-     * 	source tickSecond as Integer;
-     * 	source tickMinute as Integer;
-     * 	source tickHour as Integer;
+     * device RoutineScheduler extends Service {
+     * 	source currentTime as DayTime;
+     * 	source startMonitoring as DailyActivityName;
+     * 	source stopMonitoring as DailyActivityName;
+     * 	action UpdateDayTime;
+     * 	action UpdateRoutines;
      * }
      * </pre>
      * 
-     * @see ClockDiscoverer
+     * @see RoutineSchedulerDiscoverer
      */
-    protected final ClockDiscoverer discoverClockForSubscribe = new ClockDiscoverer(this);
+    protected final RoutineSchedulerDiscoverer discoverRoutineSchedulerForSubscribe = new RoutineSchedulerDiscoverer(this);
     
     /**
-     * Discover object that will exposes the <code>Clock</code> devices that can be discovered
+     * Discover object that will exposes the <code>RoutineScheduler</code> devices that can be discovered
      * 
      * <pre>
-     * device Clock extends Service {
-     * 	source tickSecond as Integer;
-     * 	source tickMinute as Integer;
-     * 	source tickHour as Integer;
+     * device RoutineScheduler extends Service {
+     * 	source currentTime as DayTime;
+     * 	source startMonitoring as DailyActivityName;
+     * 	source stopMonitoring as DailyActivityName;
+     * 	action UpdateDayTime;
+     * 	action UpdateRoutines;
      * }
      * </pre>
      */
-    protected final static class ClockDiscoverer {
+    protected final static class RoutineSchedulerDiscoverer {
         private Service serviceParent;
         
-        private ClockDiscoverer(Service serviceParent) {
+        private RoutineSchedulerDiscoverer(Service serviceParent) {
             super();
             this.serviceParent = serviceParent;
         }
         
-        private ClockComposite instantiateComposite() {
-            return new ClockComposite(serviceParent);
+        private RoutineSchedulerComposite instantiateComposite() {
+            return new RoutineSchedulerComposite(serviceParent);
         }
         
         /**
-         * Returns a composite of all accessible <code>Clock</code> devices
+         * Returns a composite of all accessible <code>RoutineScheduler</code> devices
          * 
-         * @return a {@link ClockComposite} object composed of all discoverable <code>Clock</code>
+         * @return a {@link RoutineSchedulerComposite} object composed of all discoverable <code>RoutineScheduler</code>
          */
-        public ClockComposite all() {
+        public RoutineSchedulerComposite all() {
             return instantiateComposite();
         }
         
         /**
-         * Returns a proxy to one out of all accessible <code>Clock</code> devices
+         * Returns a proxy to one out of all accessible <code>RoutineScheduler</code> devices
          * 
-         * @return a {@link ClockProxy} object pointing to a random discoverable <code>Clock</code> device
+         * @return a {@link RoutineSchedulerProxy} object pointing to a random discoverable <code>RoutineScheduler</code> device
          */
-        public ClockProxy anyOne() {
+        public RoutineSchedulerProxy anyOne() {
             return all().anyOne();
         }
         
         /**
-         * Returns a composite of all accessible <code>Clock</code> devices whose attribute <code>id</code> matches a given value.
+         * Returns a composite of all accessible <code>RoutineScheduler</code> devices whose attribute <code>id</code> matches a given value.
          * 
          * @param id The <code>id<code> attribute value to match.
-         * @return a {@link ClockComposite} object composed of all matching <code>Clock</code> devices
+         * @return a {@link RoutineSchedulerComposite} object composed of all matching <code>RoutineScheduler</code> devices
          */
-        public ClockComposite whereId(java.lang.String id) throws CompositeException {
+        public RoutineSchedulerComposite whereId(java.lang.String id) throws CompositeException {
             return instantiateComposite().andId(id);
         }
     }
     
     /**
-     * A composite of several <code>Clock</code> devices
+     * A composite of several <code>RoutineScheduler</code> devices
      * 
      * <pre>
-     * device Clock extends Service {
-     * 	source tickSecond as Integer;
-     * 	source tickMinute as Integer;
-     * 	source tickHour as Integer;
+     * device RoutineScheduler extends Service {
+     * 	source currentTime as DayTime;
+     * 	source startMonitoring as DailyActivityName;
+     * 	source stopMonitoring as DailyActivityName;
+     * 	action UpdateDayTime;
+     * 	action UpdateRoutines;
      * }
      * </pre>
      */
-    protected final static class ClockComposite extends fr.inria.diagen.core.service.composite.Composite<ClockProxy> {
-        private ClockComposite(Service serviceParent) {
-            super(serviceParent, "/Device/Device/Service/Clock/");
+    protected final static class RoutineSchedulerComposite extends fr.inria.diagen.core.service.composite.Composite<RoutineSchedulerProxy> {
+        private RoutineSchedulerComposite(Service serviceParent) {
+            super(serviceParent, "/Device/Device/Service/RoutineScheduler/");
         }
         
         @Override
-        protected ClockProxy instantiateProxy(RemoteServiceInfo rsi) {
-            return new ClockProxy(service, rsi);
+        protected RoutineSchedulerProxy instantiateProxy(RemoteServiceInfo rsi) {
+            return new RoutineSchedulerProxy(service, rsi);
         }
         
         /**
          * Returns this composite in which a filter was set to the attribute <code>id</code>.
          * 
          * @param id The <code>id<code> attribute value to match.
-         * @return this {@link ClockComposite}, filtered using the attribute <code>id</code>.
+         * @return this {@link RoutineSchedulerComposite}, filtered using the attribute <code>id</code>.
          */
-        public ClockComposite andId(java.lang.String id) throws CompositeException {
+        public RoutineSchedulerComposite andId(java.lang.String id) throws CompositeException {
             filterByAttribute("id", id);
             return this;
         }
         
         /**
-         * Subscribes to the <code>tickHour</code> source. After a call to this method, the context will be notified when a
-         * <code>Clock</code> device of this composite publishes a value on its <code>tickHour</code> source.
+         * Subscribes to the <code>currentTime</code> source. After a call to this method, the context will be notified when a
+         * <code>RoutineScheduler</code> device of this composite publishes a value on its <code>currentTime</code> source.
          */
-        public void subscribeTickHour() {
-            subscribeValue("tickHour");
+        public void subscribeCurrentTime() {
+            subscribeValue("currentTime");
         }
         
         /**
-         * Unsubscribes from the <code>tickHour</code> source. After a call to this method, the context will no more be notified
-         * when a <code>Clock</code> device of this composite publishes a value on its <code>tickHour</code> source.
+         * Unsubscribes from the <code>currentTime</code> source. After a call to this method, the context will no more be notified
+         * when a <code>RoutineScheduler</code> device of this composite publishes a value on its <code>currentTime</code> source.
          */
-        public void unsubscribeTickHour() {
-            unsubscribeValue("tickHour");
+        public void unsubscribeCurrentTime() {
+            unsubscribeValue("currentTime");
         }
     }
     
     /**
-     * A proxy to one <code>Clock</code> device
+     * A proxy to one <code>RoutineScheduler</code> device
      * 
      * <pre>
-     * device Clock extends Service {
-     * 	source tickSecond as Integer;
-     * 	source tickMinute as Integer;
-     * 	source tickHour as Integer;
+     * device RoutineScheduler extends Service {
+     * 	source currentTime as DayTime;
+     * 	source startMonitoring as DailyActivityName;
+     * 	source stopMonitoring as DailyActivityName;
+     * 	action UpdateDayTime;
+     * 	action UpdateRoutines;
      * }
      * </pre>
      */
-    protected final static class ClockProxy extends Proxy {
-        private ClockProxy(Service service, RemoteServiceInfo remoteServiceInfo) {
+    protected final static class RoutineSchedulerProxy extends Proxy {
+        private RoutineSchedulerProxy(Service service, RemoteServiceInfo remoteServiceInfo) {
             super(service, remoteServiceInfo);
         }
         
         /**
-         * Subscribes to the <code>tickHour</code> source. After a call to this method, the context will be notified when the
-         * <code>Clock</code> device of this proxy publishes a value on its <code>tickHour</code> source.
+         * Subscribes to the <code>currentTime</code> source. After a call to this method, the context will be notified when the
+         * <code>RoutineScheduler</code> device of this proxy publishes a value on its <code>currentTime</code> source.
          */
-        public void subscribeTickHour() {
-            subscribeValue("tickHour");
+        public void subscribeCurrentTime() {
+            subscribeValue("currentTime");
         }
         
         /**
-         * Unsubscribes from the <code>tickHour</code> source. After a call to this method, the context will no more be notified
-         * when the <code>Clock</code> device of this proxy publishes a value on its <code>tickHour</code> source.
+         * Unsubscribes from the <code>currentTime</code> source. After a call to this method, the context will no more be notified
+         * when the <code>RoutineScheduler</code> device of this proxy publishes a value on its <code>currentTime</code> source.
          */
-        public void unsubscribeTickHour() {
-            unsubscribeValue("tickHour");
+        public void unsubscribeCurrentTime() {
+            unsubscribeValue("currentTime");
         }
         
         /**
@@ -302,33 +310,33 @@ public abstract class AbstractSleepBegin extends Service {
             return (java.lang.String) callGetValue("id");
         }
     }
-    // End of discover part for Clock devices
+    // End of discover part for RoutineScheduler devices
     
-    // Discover object for tickHour from Clock
+    // Discover object for currentTime from RoutineScheduler
     /**
      * An object to discover devices and contexts for the following interaction contract:
      * 
      * <code>
-     * when provided tickHour from Clock
+     * when provided currentTime from RoutineScheduler
      * 		get inactivityLevel from InactivitySensor,
      * 		lastInteraction from InactivitySensor
      * 	maybe publish;
      * </code>
      */
-    protected final class DiscoverForTickHourFromClock {
-        private final InactivitySensorDiscovererForTickHourFromClock inactivitySensorDiscoverer = new InactivitySensorDiscovererForTickHourFromClock(AbstractSleepBegin.this);
+    protected final class DiscoverForCurrentTimeFromRoutineScheduler {
+        private final InactivitySensorDiscovererForCurrentTimeFromRoutineScheduler inactivitySensorDiscoverer = new InactivitySensorDiscovererForCurrentTimeFromRoutineScheduler(AbstractSleepBegin.this);
         
         /**
-         * @return a {@link InactivitySensorDiscovererForTickHourFromClock} object to discover <code>InactivitySensor</code> devices
+         * @return a {@link InactivitySensorDiscovererForCurrentTimeFromRoutineScheduler} object to discover <code>InactivitySensor</code> devices
          */
-        public InactivitySensorDiscovererForTickHourFromClock inactivitySensors() {
+        public InactivitySensorDiscovererForCurrentTimeFromRoutineScheduler inactivitySensors() {
             return inactivitySensorDiscoverer;
         }
     }
     
     /**
      * Discover object that will exposes the <code>InactivitySensor</code> devices to get their sources for the
-     * <code>when provided tickHour from Clock</code> interaction contract.
+     * <code>when provided currentTime from RoutineScheduler</code> interaction contract.
      * <p>
      * ------------------------------------------------------------
      * Presence Detector					||
@@ -360,33 +368,33 @@ public abstract class AbstractSleepBegin extends Service {
      * }
      * </pre>
      */
-    protected final static class InactivitySensorDiscovererForTickHourFromClock {
+    protected final static class InactivitySensorDiscovererForCurrentTimeFromRoutineScheduler {
         private Service serviceParent;
         
-        private InactivitySensorDiscovererForTickHourFromClock(Service serviceParent) {
+        private InactivitySensorDiscovererForCurrentTimeFromRoutineScheduler(Service serviceParent) {
             super();
             this.serviceParent = serviceParent;
         }
         
-        private InactivitySensorCompositeForTickHourFromClock instantiateComposite() {
-            return new InactivitySensorCompositeForTickHourFromClock(serviceParent);
+        private InactivitySensorCompositeForCurrentTimeFromRoutineScheduler instantiateComposite() {
+            return new InactivitySensorCompositeForCurrentTimeFromRoutineScheduler(serviceParent);
         }
         
         /**
          * Returns a composite of all accessible <code>InactivitySensor</code> devices
          * 
-         * @return a {@link InactivitySensorCompositeForTickHourFromClock} object composed of all discoverable <code>InactivitySensor</code>
+         * @return a {@link InactivitySensorCompositeForCurrentTimeFromRoutineScheduler} object composed of all discoverable <code>InactivitySensor</code>
          */
-        public InactivitySensorCompositeForTickHourFromClock all() {
+        public InactivitySensorCompositeForCurrentTimeFromRoutineScheduler all() {
             return instantiateComposite();
         }
         
         /**
          * Returns a proxy to one out of all accessible <code>InactivitySensor</code> devices
          * 
-         * @return a {@link InactivitySensorProxyForTickHourFromClock} object pointing to a random discoverable <code>InactivitySensor</code> device
+         * @return a {@link InactivitySensorProxyForCurrentTimeFromRoutineScheduler} object pointing to a random discoverable <code>InactivitySensor</code> device
          */
-        public InactivitySensorProxyForTickHourFromClock anyOne() {
+        public InactivitySensorProxyForCurrentTimeFromRoutineScheduler anyOne() {
             return all().anyOne();
         }
         
@@ -394,16 +402,16 @@ public abstract class AbstractSleepBegin extends Service {
          * Returns a composite of all accessible <code>InactivitySensor</code> devices whose attribute <code>id</code> matches a given value.
          * 
          * @param id The <code>id<code> attribute value to match.
-         * @return a {@link InactivitySensorCompositeForTickHourFromClock} object composed of all matching <code>InactivitySensor</code> devices
+         * @return a {@link InactivitySensorCompositeForCurrentTimeFromRoutineScheduler} object composed of all matching <code>InactivitySensor</code> devices
          */
-        public InactivitySensorCompositeForTickHourFromClock whereId(java.lang.String id) throws CompositeException {
+        public InactivitySensorCompositeForCurrentTimeFromRoutineScheduler whereId(java.lang.String id) throws CompositeException {
             return instantiateComposite().andId(id);
         }
     }
     
     /**
      * A composite of several <code>InactivitySensor</code> devices to get their sources for the
-     * <code>when provided tickHour from Clock</code> interaction contract.
+     * <code>when provided currentTime from RoutineScheduler</code> interaction contract.
      * <p>
      * ------------------------------------------------------------
      * Presence Detector					||
@@ -435,23 +443,23 @@ public abstract class AbstractSleepBegin extends Service {
      * }
      * </pre>
      */
-    protected final static class InactivitySensorCompositeForTickHourFromClock extends fr.inria.diagen.core.service.composite.Composite<InactivitySensorProxyForTickHourFromClock> {
-        private InactivitySensorCompositeForTickHourFromClock(Service serviceParent) {
+    protected final static class InactivitySensorCompositeForCurrentTimeFromRoutineScheduler extends fr.inria.diagen.core.service.composite.Composite<InactivitySensorProxyForCurrentTimeFromRoutineScheduler> {
+        private InactivitySensorCompositeForCurrentTimeFromRoutineScheduler(Service serviceParent) {
             super(serviceParent, "/Device/Device/Service/SoftwareSensor/InactivitySensor/");
         }
         
         @Override
-        protected InactivitySensorProxyForTickHourFromClock instantiateProxy(RemoteServiceInfo rsi) {
-            return new InactivitySensorProxyForTickHourFromClock(service, rsi);
+        protected InactivitySensorProxyForCurrentTimeFromRoutineScheduler instantiateProxy(RemoteServiceInfo rsi) {
+            return new InactivitySensorProxyForCurrentTimeFromRoutineScheduler(service, rsi);
         }
         
         /**
          * Returns this composite in which a filter was set to the attribute <code>id</code>.
          * 
          * @param id The <code>id<code> attribute value to match.
-         * @return this {@link InactivitySensorCompositeForTickHourFromClock}, filtered using the attribute <code>id</code>.
+         * @return this {@link InactivitySensorCompositeForCurrentTimeFromRoutineScheduler}, filtered using the attribute <code>id</code>.
          */
-        public InactivitySensorCompositeForTickHourFromClock andId(java.lang.String id) throws CompositeException {
+        public InactivitySensorCompositeForCurrentTimeFromRoutineScheduler andId(java.lang.String id) throws CompositeException {
             filterByAttribute("id", id);
             return this;
         }
@@ -459,7 +467,7 @@ public abstract class AbstractSleepBegin extends Service {
     
     /**
      * A proxy to one <code>InactivitySensor</code> device to get its sources for the
-     * <code>when provided tickHour from Clock</code> interaction contract.
+     * <code>when provided currentTime from RoutineScheduler</code> interaction contract.
      * <p>
      * ------------------------------------------------------------
      * Presence Detector					||
@@ -491,8 +499,8 @@ public abstract class AbstractSleepBegin extends Service {
      * }
      * </pre>
      */
-    protected final static class InactivitySensorProxyForTickHourFromClock extends Proxy {
-        private InactivitySensorProxyForTickHourFromClock(Service service, RemoteServiceInfo remoteServiceInfo) {
+    protected final static class InactivitySensorProxyForCurrentTimeFromRoutineScheduler extends Proxy {
+        private InactivitySensorProxyForCurrentTimeFromRoutineScheduler(Service service, RemoteServiceInfo remoteServiceInfo) {
             super(service, remoteServiceInfo);
         }
         
@@ -521,5 +529,5 @@ public abstract class AbstractSleepBegin extends Service {
             return (java.lang.String) callGetValue("id");
         }
     }
-    // End of discover object for tickHour from Clock
+    // End of discover object for currentTime from RoutineScheduler
 }

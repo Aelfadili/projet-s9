@@ -4,12 +4,13 @@ import java.io.Serializable;
 
 /**
  * Container for the indices of the context <code>Coupling</code>.
+ * <p>
+ * when provided GetSavedTime 
+ * 		maybe publish;
  * 
  * <pre>
  * context Coupling as SleepPeriod[] indexed by period as Period {
  * 	when provided GetFitbitInfos 
- * 		maybe publish;
- * 	when provided GetSavedTime 
  * 		maybe publish;
  * }
  * </pre>

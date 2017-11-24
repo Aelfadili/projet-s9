@@ -4,12 +4,13 @@ import java.io.Serializable;
 
 /**
  * An object to store a value published by the context <code>Coupling</code>.
+ * <p>
+ * when provided GetSavedTime 
+ * 		maybe publish;
  *
  * <pre>
  * context Coupling as SleepPeriod[] indexed by period as Period {
  * 	when provided GetFitbitInfos 
- * 		maybe publish;
- * 	when provided GetSavedTime 
  * 		maybe publish;
  * }
  * </pre>
@@ -21,6 +22,10 @@ public final class CouplingValue implements Serializable {
     
     /**
      * Get the value of the context <code>Coupling</code>
+     * 
+     * <p>
+     * when provided GetSavedTime 
+     * 		maybe publish;
      * 
      * @return the value of the context <code>Coupling</code>
      */

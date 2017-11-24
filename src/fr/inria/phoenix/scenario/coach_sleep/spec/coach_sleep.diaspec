@@ -1,47 +1,50 @@
 include "taxonomy.diaspec";
 
-context SleepBegin as String {
-	when provided tickHour from Clock
-		get inactivityLevel from InactivitySensor,
+context Sleep as String {
+	when provided inactivityLevel from InactivitySensor 
+		get currentTime from RoutineScheduler,
 		lastInteraction from InactivitySensor
 	maybe publish;
 }
 
-context SleepEnd as String {
+/*context SleepEnd as String {
 	when provided inactivityLevel from InactivitySensor
-		get tickHour from Clock,
+		get currentTime from RoutineScheduler,
 		lastInteraction from InactivitySensor
 	maybe publish;
-}
+}*/
 
 
-controller SaveSleepTime {
+/*controller SaveSleepTime {
 	when provided SleepBegin
 		do PutStringData on Storage;
 	when provided SleepEnd
 		do PutStringData on Storage;	
-}
+}*/
 
 
-context GetSavedTime as String[] {
+/*context GetSavedTime as String[] {
 	when provided data from Storage
 		maybe publish;
-}
+}*/
 
 context GetFitbitInfos as SleepPeriod[] indexed by period as Period  {
-	when provided sleepPeriods from Fitbit
+	when provided currentTime from RoutineScheduler
+		get	sleepPeriods from Fitbit,
+		tickHour from Clock
 		always publish;
 }
 
 context Coupling as SleepPeriod[] indexed by period as Period {
 	when provided GetFitbitInfos 
 		maybe publish;
-	when provided GetSavedTime 
-		maybe publish;
+	/*when provided GetSavedTime 
+		maybe publish;*/
 }
 
 controller SleepAnalyser {
 	when provided Coupling
-	do	SendMessage on Messenger;
+	do SendNonCriticalNotification on Notifier,
+	 PutStringData on Storage;
 }
 	

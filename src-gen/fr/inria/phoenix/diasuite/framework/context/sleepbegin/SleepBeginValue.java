@@ -7,7 +7,7 @@ import java.io.Serializable;
  *
  * <pre>
  * context SleepBegin as String {
- * 	when provided tickHour from Clock
+ * 	when provided currentTime from RoutineScheduler
  * 		get inactivityLevel from InactivitySensor,
  * 		lastInteraction from InactivitySensor
  * 	maybe publish;

@@ -4,6 +4,13 @@ import java.io.Serializable;
 
 /**
  * An object to store a value published by the context <code>GetSavedTime</code>.
+ * <p>
+ * controller SaveSleepTime {
+ * 	when provided SleepBegin
+ * 		do PutStringData on Storage;
+ * 	when provided SleepEnd
+ * 		do PutStringData on Storage;	
+ * }
  *
  * <pre>
  * context GetSavedTime as String[] {
@@ -19,6 +26,14 @@ public final class GetSavedTimeValue implements Serializable {
     
     /**
      * Get the value of the context <code>GetSavedTime</code>
+     * 
+     * <p>
+     * controller SaveSleepTime {
+     * 	when provided SleepBegin
+     * 		do PutStringData on Storage;
+     * 	when provided SleepEnd
+     * 		do PutStringData on Storage;	
+     * }
      * 
      * @return the value of the context <code>GetSavedTime</code>
      */

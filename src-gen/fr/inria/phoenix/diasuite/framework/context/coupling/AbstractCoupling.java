@@ -7,14 +7,14 @@ import fr.inria.diagen.core.service.local.Service;
 import fr.inria.diagen.core.service.proxy.Proxy;
 
 import fr.inria.phoenix.diasuite.framework.context.getfitbitinfos.GetFitbitInfosValue;
-import fr.inria.phoenix.diasuite.framework.context.getsavedtime.GetSavedTimeValue;
 
 /**
+ * when provided GetSavedTime 
+ * 		maybe publish;
+ * 
  * <pre>
  * context Coupling as SleepPeriod[] indexed by period as Period {
  * 	when provided GetFitbitInfos 
- * 		maybe publish;
- * 	when provided GetSavedTime 
  * 		maybe publish;
  * }
  * </pre>
@@ -30,7 +30,6 @@ public abstract class AbstractCoupling extends Service {
     @Override
     protected final void internalPostInitialize() {
         subscribeValue("getFitbitInfos", "/Context/GetFitbitInfos/"); // subscribe to GetFitbitInfos context
-        subscribeValue("getSavedTime", "/Context/GetSavedTime/"); // subscribe to GetSavedTime context
         postInitialize();
     }
     
@@ -41,14 +40,6 @@ public abstract class AbstractCoupling extends Service {
                     (fr.inria.phoenix.diasuite.framework.datatype.period.Period) indexes[0]);
             
             CouplingValuePublishable returnValue = onGetFitbitInfos(getFitbitInfosValue);
-            if(returnValue != null && returnValue.doPublish()) {
-                setCoupling(returnValue.getValue(), returnValue.getPeriod());
-            }
-        }
-        if (eventName.equals("getSavedTime") && source.isCompatible("/Context/GetSavedTime/")) {
-            GetSavedTimeValue getSavedTimeValue = new GetSavedTimeValue((java.util.List<java.lang.String>) value);
-            
-            CouplingValuePublishable returnValue = onGetSavedTime(getSavedTimeValue);
             if(returnValue != null && returnValue.doPublish()) {
                 setCoupling(returnValue.getValue(), returnValue.getPeriod());
             }
@@ -169,19 +160,6 @@ public abstract class AbstractCoupling extends Service {
      * @return a {@link CouplingValuePublishable} that says if the context should publish a value and which value it should publish
      */
     protected abstract CouplingValuePublishable onGetFitbitInfos(GetFitbitInfosValue getFitbitInfosValue);
-    
-    /**
-     * This method is called when the <code>GetSavedTime</code> context publishes a value.
-     * 
-     * <pre>
-     * when provided GetSavedTime 
-     * 		maybe publish;
-     * </pre>
-     * 
-     * @param getSavedTimeValue the value of the <code>GetSavedTime</code> context.
-     * @return a {@link CouplingValuePublishable} that says if the context should publish a value and which value it should publish
-     */
-    protected abstract CouplingValuePublishable onGetSavedTime(GetSavedTimeValue getSavedTimeValue);
     
     // End of interaction contract implementation
 }

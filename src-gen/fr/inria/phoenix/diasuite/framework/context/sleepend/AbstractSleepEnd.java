@@ -13,7 +13,7 @@ import fr.inria.phoenix.diasuite.framework.device.inactivitysensor.InactivityLev
  * <pre>
  * context SleepEnd as String {
  * 	when provided inactivityLevel from InactivitySensor
- * 		get tickHour from Clock,
+ * 		get currentTime from RoutineScheduler,
  * 		lastInteraction from InactivitySensor
  * 	maybe publish;
  * }
@@ -133,7 +133,7 @@ public abstract class AbstractSleepEnd extends Service {
      * 
      * <pre>
      * when provided inactivityLevel from InactivitySensor
-     * 		get tickHour from Clock,
+     * 		get currentTime from RoutineScheduler,
      * 		lastInteraction from InactivitySensor
      * 	maybe publish;
      * </pre>
@@ -398,20 +398,20 @@ public abstract class AbstractSleepEnd extends Service {
      * 
      * <code>
      * when provided inactivityLevel from InactivitySensor
-     * 		get tickHour from Clock,
+     * 		get currentTime from RoutineScheduler,
      * 		lastInteraction from InactivitySensor
      * 	maybe publish;
      * </code>
      */
     protected final class DiscoverForInactivityLevelFromInactivitySensor {
-        private final ClockDiscovererForInactivityLevelFromInactivitySensor clockDiscoverer = new ClockDiscovererForInactivityLevelFromInactivitySensor(AbstractSleepEnd.this);
+        private final RoutineSchedulerDiscovererForInactivityLevelFromInactivitySensor routineSchedulerDiscoverer = new RoutineSchedulerDiscovererForInactivityLevelFromInactivitySensor(AbstractSleepEnd.this);
         private final InactivitySensorDiscovererForInactivityLevelFromInactivitySensor inactivitySensorDiscoverer = new InactivitySensorDiscovererForInactivityLevelFromInactivitySensor(AbstractSleepEnd.this);
         
         /**
-         * @return a {@link ClockDiscovererForInactivityLevelFromInactivitySensor} object to discover <code>Clock</code> devices
+         * @return a {@link RoutineSchedulerDiscovererForInactivityLevelFromInactivitySensor} object to discover <code>RoutineScheduler</code> devices
          */
-        public ClockDiscovererForInactivityLevelFromInactivitySensor clocks() {
-            return clockDiscoverer;
+        public RoutineSchedulerDiscovererForInactivityLevelFromInactivitySensor routineSchedulers() {
+            return routineSchedulerDiscoverer;
         }
         
         /**
@@ -423,116 +423,122 @@ public abstract class AbstractSleepEnd extends Service {
     }
     
     /**
-     * Discover object that will exposes the <code>Clock</code> devices to get their sources for the
+     * Discover object that will exposes the <code>RoutineScheduler</code> devices to get their sources for the
      * <code>when provided inactivityLevel from InactivitySensor</code> interaction contract.
      * 
      * <pre>
-     * device Clock extends Service {
-     * 	source tickSecond as Integer;
-     * 	source tickMinute as Integer;
-     * 	source tickHour as Integer;
+     * device RoutineScheduler extends Service {
+     * 	source currentTime as DayTime;
+     * 	source startMonitoring as DailyActivityName;
+     * 	source stopMonitoring as DailyActivityName;
+     * 	action UpdateDayTime;
+     * 	action UpdateRoutines;
      * }
      * </pre>
      */
-    protected final static class ClockDiscovererForInactivityLevelFromInactivitySensor {
+    protected final static class RoutineSchedulerDiscovererForInactivityLevelFromInactivitySensor {
         private Service serviceParent;
         
-        private ClockDiscovererForInactivityLevelFromInactivitySensor(Service serviceParent) {
+        private RoutineSchedulerDiscovererForInactivityLevelFromInactivitySensor(Service serviceParent) {
             super();
             this.serviceParent = serviceParent;
         }
         
-        private ClockCompositeForInactivityLevelFromInactivitySensor instantiateComposite() {
-            return new ClockCompositeForInactivityLevelFromInactivitySensor(serviceParent);
+        private RoutineSchedulerCompositeForInactivityLevelFromInactivitySensor instantiateComposite() {
+            return new RoutineSchedulerCompositeForInactivityLevelFromInactivitySensor(serviceParent);
         }
         
         /**
-         * Returns a composite of all accessible <code>Clock</code> devices
+         * Returns a composite of all accessible <code>RoutineScheduler</code> devices
          * 
-         * @return a {@link ClockCompositeForInactivityLevelFromInactivitySensor} object composed of all discoverable <code>Clock</code>
+         * @return a {@link RoutineSchedulerCompositeForInactivityLevelFromInactivitySensor} object composed of all discoverable <code>RoutineScheduler</code>
          */
-        public ClockCompositeForInactivityLevelFromInactivitySensor all() {
+        public RoutineSchedulerCompositeForInactivityLevelFromInactivitySensor all() {
             return instantiateComposite();
         }
         
         /**
-         * Returns a proxy to one out of all accessible <code>Clock</code> devices
+         * Returns a proxy to one out of all accessible <code>RoutineScheduler</code> devices
          * 
-         * @return a {@link ClockProxyForInactivityLevelFromInactivitySensor} object pointing to a random discoverable <code>Clock</code> device
+         * @return a {@link RoutineSchedulerProxyForInactivityLevelFromInactivitySensor} object pointing to a random discoverable <code>RoutineScheduler</code> device
          */
-        public ClockProxyForInactivityLevelFromInactivitySensor anyOne() {
+        public RoutineSchedulerProxyForInactivityLevelFromInactivitySensor anyOne() {
             return all().anyOne();
         }
         
         /**
-         * Returns a composite of all accessible <code>Clock</code> devices whose attribute <code>id</code> matches a given value.
+         * Returns a composite of all accessible <code>RoutineScheduler</code> devices whose attribute <code>id</code> matches a given value.
          * 
          * @param id The <code>id<code> attribute value to match.
-         * @return a {@link ClockCompositeForInactivityLevelFromInactivitySensor} object composed of all matching <code>Clock</code> devices
+         * @return a {@link RoutineSchedulerCompositeForInactivityLevelFromInactivitySensor} object composed of all matching <code>RoutineScheduler</code> devices
          */
-        public ClockCompositeForInactivityLevelFromInactivitySensor whereId(java.lang.String id) throws CompositeException {
+        public RoutineSchedulerCompositeForInactivityLevelFromInactivitySensor whereId(java.lang.String id) throws CompositeException {
             return instantiateComposite().andId(id);
         }
     }
     
     /**
-     * A composite of several <code>Clock</code> devices to get their sources for the
+     * A composite of several <code>RoutineScheduler</code> devices to get their sources for the
      * <code>when provided inactivityLevel from InactivitySensor</code> interaction contract.
      * 
      * <pre>
-     * device Clock extends Service {
-     * 	source tickSecond as Integer;
-     * 	source tickMinute as Integer;
-     * 	source tickHour as Integer;
+     * device RoutineScheduler extends Service {
+     * 	source currentTime as DayTime;
+     * 	source startMonitoring as DailyActivityName;
+     * 	source stopMonitoring as DailyActivityName;
+     * 	action UpdateDayTime;
+     * 	action UpdateRoutines;
      * }
      * </pre>
      */
-    protected final static class ClockCompositeForInactivityLevelFromInactivitySensor extends fr.inria.diagen.core.service.composite.Composite<ClockProxyForInactivityLevelFromInactivitySensor> {
-        private ClockCompositeForInactivityLevelFromInactivitySensor(Service serviceParent) {
-            super(serviceParent, "/Device/Device/Service/Clock/");
+    protected final static class RoutineSchedulerCompositeForInactivityLevelFromInactivitySensor extends fr.inria.diagen.core.service.composite.Composite<RoutineSchedulerProxyForInactivityLevelFromInactivitySensor> {
+        private RoutineSchedulerCompositeForInactivityLevelFromInactivitySensor(Service serviceParent) {
+            super(serviceParent, "/Device/Device/Service/RoutineScheduler/");
         }
         
         @Override
-        protected ClockProxyForInactivityLevelFromInactivitySensor instantiateProxy(RemoteServiceInfo rsi) {
-            return new ClockProxyForInactivityLevelFromInactivitySensor(service, rsi);
+        protected RoutineSchedulerProxyForInactivityLevelFromInactivitySensor instantiateProxy(RemoteServiceInfo rsi) {
+            return new RoutineSchedulerProxyForInactivityLevelFromInactivitySensor(service, rsi);
         }
         
         /**
          * Returns this composite in which a filter was set to the attribute <code>id</code>.
          * 
          * @param id The <code>id<code> attribute value to match.
-         * @return this {@link ClockCompositeForInactivityLevelFromInactivitySensor}, filtered using the attribute <code>id</code>.
+         * @return this {@link RoutineSchedulerCompositeForInactivityLevelFromInactivitySensor}, filtered using the attribute <code>id</code>.
          */
-        public ClockCompositeForInactivityLevelFromInactivitySensor andId(java.lang.String id) throws CompositeException {
+        public RoutineSchedulerCompositeForInactivityLevelFromInactivitySensor andId(java.lang.String id) throws CompositeException {
             filterByAttribute("id", id);
             return this;
         }
     }
     
     /**
-     * A proxy to one <code>Clock</code> device to get its sources for the
+     * A proxy to one <code>RoutineScheduler</code> device to get its sources for the
      * <code>when provided inactivityLevel from InactivitySensor</code> interaction contract.
      * 
      * <pre>
-     * device Clock extends Service {
-     * 	source tickSecond as Integer;
-     * 	source tickMinute as Integer;
-     * 	source tickHour as Integer;
+     * device RoutineScheduler extends Service {
+     * 	source currentTime as DayTime;
+     * 	source startMonitoring as DailyActivityName;
+     * 	source stopMonitoring as DailyActivityName;
+     * 	action UpdateDayTime;
+     * 	action UpdateRoutines;
      * }
      * </pre>
      */
-    protected final static class ClockProxyForInactivityLevelFromInactivitySensor extends Proxy {
-        private ClockProxyForInactivityLevelFromInactivitySensor(Service service, RemoteServiceInfo remoteServiceInfo) {
+    protected final static class RoutineSchedulerProxyForInactivityLevelFromInactivitySensor extends Proxy {
+        private RoutineSchedulerProxyForInactivityLevelFromInactivitySensor(Service service, RemoteServiceInfo remoteServiceInfo) {
             super(service, remoteServiceInfo);
         }
         
         /**
-         * Returns the value of the <code>tickHour</code> source of this <code>Clock</code> device
+         * Returns the value of the <code>currentTime</code> source of this <code>RoutineScheduler</code> device
          * 
-         * @return the value of the <code>tickHour</code> source
+         * @return the value of the <code>currentTime</code> source
          */
-        public java.lang.Integer getTickHour() throws InvocationException {
-            return (java.lang.Integer) callGetValue("tickHour");
+        public fr.inria.phoenix.diasuite.framework.datatype.daytime.DayTime getCurrentTime() throws InvocationException {
+            return (fr.inria.phoenix.diasuite.framework.datatype.daytime.DayTime) callGetValue("currentTime");
         }
         
         /**
