@@ -4,7 +4,6 @@ import fr.inria.diagen.core.deploy.AbstractDeploy;
 
 import fr.inria.phoenix.diasuite.framework.context.alertmove.AbstractAlertMove;
 import fr.inria.phoenix.diasuite.framework.context.congratulation.AbstractCongratulation;
-import fr.inria.phoenix.diasuite.framework.context.propositiondactivity.AbstractPropositionDActivity;
 import fr.inria.phoenix.diasuite.framework.context.propositiongoout.AbstractPropositionGoOut;
 
 import fr.inria.phoenix.diasuite.framework.controller.coach_activitycontroller.AbstractCoach_activityController;
@@ -17,7 +16,6 @@ public abstract class AppComponentBinder extends AbstractDeploy {
     // Context instances
     private AbstractAlertMove alertMoveInstance = null;
     private AbstractCongratulation congratulationInstance = null;
-    private AbstractPropositionDActivity propositionDActivityInstance = null;
     private AbstractPropositionGoOut propositionGoOutInstance = null;
 
     // Controller instances
@@ -30,8 +28,6 @@ public abstract class AppComponentBinder extends AbstractDeploy {
             alertMoveInstance = getInstance(getAlertMoveClass());
         if (congratulationInstance == null)
             congratulationInstance = getInstance(getCongratulationClass());
-        if (propositionDActivityInstance == null)
-            propositionDActivityInstance = getInstance(getPropositionDActivityClass());
         if (propositionGoOutInstance == null)
             propositionGoOutInstance = getInstance(getPropositionGoOutClass());
         // Intialization of controllers
@@ -40,7 +36,6 @@ public abstract class AppComponentBinder extends AbstractDeploy {
         // Deploying contexts
         deploy(alertMoveInstance);
         deploy(congratulationInstance);
-        deploy(propositionDActivityInstance);
         deploy(propositionGoOutInstance);
         // Deploying controllers
         deploy(coach_activityControllerInstance);
@@ -51,7 +46,6 @@ public abstract class AppComponentBinder extends AbstractDeploy {
         // Undeploying contexts
         undeploy(alertMoveInstance);
         undeploy(congratulationInstance);
-        undeploy(propositionDActivityInstance);
         undeploy(propositionGoOutInstance);
         // Undeploying controllers
         undeploy(coach_activityControllerInstance);
@@ -62,8 +56,8 @@ public abstract class AppComponentBinder extends AbstractDeploy {
      * Overrides this method to provide the implementation class of the <code>AlertMove</code> context
     
     <pre>
-    context AlertMove as Boolean{
-     * 	when provided dailyActivity from ActivityNotifier
+    context AlertMove as CriticalNotification{
+     * 	when provided tickHour from Clock
      * 	get steps from Fitbit,
      * 		dailyActivity from ActivityNotifier
      * 	maybe publish;
@@ -79,8 +73,8 @@ public abstract class AppComponentBinder extends AbstractDeploy {
     Sortie context : Si nombre de pas suffisant alors féliciter
     
     <pre>
-    context Congratulation as Boolean {
-     * 	when provided steps from Fitbit
+    context Congratulation as CriticalNotification {
+     * 	when provided tickHour from Clock
      * 	get steps from Fitbit
      * 	maybe publish;
      * 	}
@@ -90,28 +84,14 @@ public abstract class AppComponentBinder extends AbstractDeploy {
     public abstract Class<? extends AbstractCongratulation> getCongratulationClass();
     
     /**
-     * Overrides this method to provide the implementation class of the <code>PropositionDActivity</code> context
-    
-    <pre>
-    context PropositionDActivity as Boolean {
-     * 	when provided dailyActivity from ActivityNotifier
-     * 	get dailyActivity from ActivityNotifier
-     * 	maybe publish;
-     * }
-    </pre>
-    @return a class object of a derivation of {@link AbstractPropositionDActivity} that implements the <code>PropositionDActivity</code> context
-     */
-    public abstract Class<? extends AbstractPropositionDActivity> getPropositionDActivityClass();
-    
-    /**
      * Overrides this method to provide the implementation class of the <code>PropositionGoOut</code> context
     <p>
     Boolean ou String ?
     Sortie context : Si nombre de pas insuffisant
     
     <pre>
-    context PropositionGoOut as Boolean {
-     * 	when provided steps from Fitbit
+    context PropositionGoOut as CriticalNotification {
+     * 	when provided tickHour from Clock
      * 	get steps from Fitbit,
      * 		events from Agenda
      * 	maybe publish;
@@ -132,13 +112,11 @@ public abstract class AppComponentBinder extends AbstractDeploy {
     <pre>
     controller Coach_activityController {
      * 	when provided PropositionGoOut
-     * 	do NotifyActivity on ActivityNotifier;
+     * 	do SendCriticalNotification on Notifier;
      * 	when provided Congratulation
-     * 	do NotifyActivity on ActivityNotifier;
-     * 	when provided PropositionDActivity
-     * 	do NotifyActivity on ActivityNotifier;
+     * 	do SendCriticalNotification on Notifier;
      * 	when provided AlertMove
-     * 	do NotifyActivity on ActivityNotifier;
+     * 	do SendCriticalNotification on Notifier;
      * }
     </pre>
     @return a class object of a derivation of {@link AbstractCoach_activityController} that implements the <code>Coach_activityController</code> controller

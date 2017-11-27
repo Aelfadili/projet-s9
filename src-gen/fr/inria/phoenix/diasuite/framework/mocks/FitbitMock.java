@@ -5,8 +5,8 @@ import fr.inria.phoenix.diasuite.framework.device.fitbit.AbstractFitbit;
 import fr.inria.phoenix.diasuite.framework.device.fitbit.CaloriesIndices;
 import fr.inria.phoenix.diasuite.framework.device.fitbit.DistanceInMetersIndices;
 import fr.inria.phoenix.diasuite.framework.device.fitbit.PulsesIndices;
-import fr.inria.phoenix.diasuite.framework.device.fitbit.SleepPeriodsIndices;
 import fr.inria.phoenix.diasuite.framework.device.fitbit.StepsIndices;
+import fr.inria.phoenix.diasuite.framework.device.fitbit.SleepPeriodsIndices;
 import fr.inria.phoenix.diasuite.framework.device.fitbit.AlarmIndices;
 
 // @internal

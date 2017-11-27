@@ -7,12 +7,12 @@ import fr.inria.diagen.core.network.RemoteServiceInfo;
 import fr.inria.diagen.core.service.local.Service;
 import fr.inria.diagen.core.service.proxy.Proxy;
 
-import fr.inria.phoenix.diasuite.framework.device.activitynotifier.DailyActivityFromActivityNotifier;
+import fr.inria.phoenix.diasuite.framework.device.clock.TickHourFromClock;
 
 /**
  * <pre>
-context AlertMove as Boolean{
- * 	when provided dailyActivity from ActivityNotifier
+context AlertMove as CriticalNotification{
+ * 	when provided tickHour from Clock
  * 	get steps from Fitbit,
  * 		dailyActivity from ActivityNotifier
  * 	maybe publish;
@@ -35,15 +35,15 @@ public abstract class AbstractAlertMove extends Service {
     @Override
     protected void postInitialize() {
         // Default implementation of post initialize: subscribe to all required devices
-        discoverActivityNotifierForSubscribe.all().subscribeDailyActivity(); // subscribe to dailyActivity from all ActivityNotifier devices
+        discoverClockForSubscribe.all().subscribeTickHour(); // subscribe to tickHour from all Clock devices
     }
     
     @Override
     public final void valueReceived(java.util.Map<String, Object> properties, RemoteServiceInfo source, String eventName, Object value, Object... indexes) {
-        if (eventName.equals("dailyActivity") && source.isCompatible("/Device/Device/Service/SoftwareSensor/ActivityNotifier/")) {
-            DailyActivityFromActivityNotifier dailyActivityFromActivityNotifier = new DailyActivityFromActivityNotifier(this, source, (fr.inria.phoenix.diasuite.framework.datatype.dailyactivity.DailyActivity) value);
+        if (eventName.equals("tickHour") && source.isCompatible("/Device/Device/Service/Clock/")) {
+            TickHourFromClock tickHourFromClock = new TickHourFromClock(this, source, (java.lang.Integer) value);
             
-            AlertMoveValuePublishable returnValue = onDailyActivityFromActivityNotifier(dailyActivityFromActivityNotifier, new DiscoverForDailyActivityFromActivityNotifier());
+            AlertMoveValuePublishable returnValue = onTickHourFromClock(tickHourFromClock, new DiscoverForTickHourFromClock());
             if(returnValue != null && returnValue.doPublish()) {
                 setAlertMove(returnValue.getValue());
             }
@@ -61,9 +61,9 @@ public abstract class AbstractAlertMove extends Service {
     // End of methods from the Service class
     
     // Code relative to the return value of the context
-    private java.lang.Boolean contextValue;
+    private fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification contextValue;
     
-    private void setAlertMove(java.lang.Boolean newContextValue) {
+    private void setAlertMove(fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification newContextValue) {
         contextValue = newContextValue;
         getProcessor().publishValue(getOutProperties(), "alertMove", newContextValue);
     }
@@ -73,7 +73,7 @@ public abstract class AbstractAlertMove extends Service {
      * 
      * @return the latest value published by the context
      */
-    protected final java.lang.Boolean getLastValue() {
+    protected final fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification getLastValue() {
         return contextValue;
     }
     
@@ -84,11 +84,11 @@ public abstract class AbstractAlertMove extends Service {
     protected final static class AlertMoveValuePublishable {
         
         // The value of the context
-        private java.lang.Boolean value;
+        private fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification value;
         // Whether the value should be published or not
         private boolean doPublish;
         
-        public AlertMoveValuePublishable(java.lang.Boolean value, boolean doPublish) {
+        public AlertMoveValuePublishable(fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification value, boolean doPublish) {
             this.value = value;
             this.doPublish = doPublish;
         }
@@ -96,7 +96,7 @@ public abstract class AbstractAlertMove extends Service {
         /**
          * @return the value of the context that might be published
          */
-        public java.lang.Boolean getValue() {
+        public fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification getValue() {
             return value;
         }
         
@@ -105,7 +105,7 @@ public abstract class AbstractAlertMove extends Service {
          * 
          * @param value the value that will be published if {@link #doPublish()} returns true
          */
-        public void setValue(java.lang.Boolean value) {
+        public void setValue(fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification value) {
             this.value = value;
         }
         
@@ -129,186 +129,170 @@ public abstract class AbstractAlertMove extends Service {
     
     // Interaction contract implementation
     /**
-     * This method is called when a <code>ActivityNotifier</code> device on which we have subscribed publish on its <code>dailyActivity</code> source.
+     * This method is called when a <code>Clock</code> device on which we have subscribed publish on its <code>tickHour</code> source.
     
     <pre>
-    when provided dailyActivity from ActivityNotifier
+    when provided tickHour from Clock
      * 	get steps from Fitbit,
      * 		dailyActivity from ActivityNotifier
      * 	maybe publish;
     </pre>
      * 
-     * @param dailyActivityFromActivityNotifier the value of the <code>dailyActivity</code> source and the <code>ActivityNotifier</code> device that published the value.
+     * @param tickHourFromClock the value of the <code>tickHour</code> source and the <code>Clock</code> device that published the value.
      * @param discover a discover object to get value from devices and contexts
      * @return a {@link AlertMoveValuePublishable} that says if the context should publish a value and which value it should publish
      */
-    protected abstract AlertMoveValuePublishable onDailyActivityFromActivityNotifier(DailyActivityFromActivityNotifier dailyActivityFromActivityNotifier, DiscoverForDailyActivityFromActivityNotifier discover);
+    protected abstract AlertMoveValuePublishable onTickHourFromClock(TickHourFromClock tickHourFromClock, DiscoverForTickHourFromClock discover);
     
     // End of interaction contract implementation
     
-    // Discover part for ActivityNotifier devices
+    // Discover part for Clock devices
     /**
-     * Use this object to discover ActivityNotifier devices.
-    <p>
-    ------------------------------------------------------------
-    ActivityNotifier					||
-    ------------------------------------------------------------
+     * Use this object to discover Clock devices.
     
     <pre>
-    device ActivityNotifier extends SoftwareSensor {
-     * 	source dailyActivity as DailyActivity;
-     * 	source periodActivity as PeriodActivity;
-     * 	action NotifyActivity;
+    device Clock extends Service {
+     * 	source tickSecond as Integer;
+     * 	source tickMinute as Integer;
+     * 	source tickHour as Integer;
      * }
     </pre>
      * 
-     * @see ActivityNotifierDiscoverer
+     * @see ClockDiscoverer
      */
-    protected final ActivityNotifierDiscoverer discoverActivityNotifierForSubscribe = new ActivityNotifierDiscoverer(this);
+    protected final ClockDiscoverer discoverClockForSubscribe = new ClockDiscoverer(this);
     
     /**
-     * Discover object that will exposes the <code>ActivityNotifier</code> devices that can be discovered
-    <p>
-    ------------------------------------------------------------
-    ActivityNotifier					||
-    ------------------------------------------------------------
+     * Discover object that will exposes the <code>Clock</code> devices that can be discovered
     
     <pre>
-    device ActivityNotifier extends SoftwareSensor {
-     * 	source dailyActivity as DailyActivity;
-     * 	source periodActivity as PeriodActivity;
-     * 	action NotifyActivity;
+    device Clock extends Service {
+     * 	source tickSecond as Integer;
+     * 	source tickMinute as Integer;
+     * 	source tickHour as Integer;
      * }
     </pre>
      */
-    protected final static class ActivityNotifierDiscoverer {
+    protected final static class ClockDiscoverer {
         private Service serviceParent;
         
-        private ActivityNotifierDiscoverer(Service serviceParent) {
+        private ClockDiscoverer(Service serviceParent) {
             super();
             this.serviceParent = serviceParent;
         }
         
-        private ActivityNotifierComposite instantiateComposite() {
-            return new ActivityNotifierComposite(serviceParent);
+        private ClockComposite instantiateComposite() {
+            return new ClockComposite(serviceParent);
         }
         
         /**
-         * Returns a composite of all accessible <code>ActivityNotifier</code> devices
+         * Returns a composite of all accessible <code>Clock</code> devices
          * 
-         * @return a {@link ActivityNotifierComposite} object composed of all discoverable <code>ActivityNotifier</code>
+         * @return a {@link ClockComposite} object composed of all discoverable <code>Clock</code>
          */
-        public ActivityNotifierComposite all() {
+        public ClockComposite all() {
             return instantiateComposite();
         }
         
         /**
-         * Returns a proxy to one out of all accessible <code>ActivityNotifier</code> devices
+         * Returns a proxy to one out of all accessible <code>Clock</code> devices
          * 
-         * @return a {@link ActivityNotifierProxy} object pointing to a random discoverable <code>ActivityNotifier</code> device
+         * @return a {@link ClockProxy} object pointing to a random discoverable <code>Clock</code> device
          */
-        public ActivityNotifierProxy anyOne() {
+        public ClockProxy anyOne() {
             return all().anyOne();
         }
         
         /**
-         * Returns a composite of all accessible <code>ActivityNotifier</code> devices whose attribute <code>id</code> matches a given value.
+         * Returns a composite of all accessible <code>Clock</code> devices whose attribute <code>id</code> matches a given value.
          * 
          * @param id The <code>id<code> attribute value to match.
-         * @return a {@link ActivityNotifierComposite} object composed of all matching <code>ActivityNotifier</code> devices
+         * @return a {@link ClockComposite} object composed of all matching <code>Clock</code> devices
          */
-        public ActivityNotifierComposite whereId(java.lang.String id) throws CompositeException {
+        public ClockComposite whereId(java.lang.String id) throws CompositeException {
             return instantiateComposite().andId(id);
         }
     }
     
     /**
-     * A composite of several <code>ActivityNotifier</code> devices
-    <p>
-    ------------------------------------------------------------
-    ActivityNotifier					||
-    ------------------------------------------------------------
+     * A composite of several <code>Clock</code> devices
     
     <pre>
-    device ActivityNotifier extends SoftwareSensor {
-     * 	source dailyActivity as DailyActivity;
-     * 	source periodActivity as PeriodActivity;
-     * 	action NotifyActivity;
+    device Clock extends Service {
+     * 	source tickSecond as Integer;
+     * 	source tickMinute as Integer;
+     * 	source tickHour as Integer;
      * }
     </pre>
      */
-    protected final static class ActivityNotifierComposite extends fr.inria.diagen.core.service.composite.Composite<ActivityNotifierProxy> {
-        private ActivityNotifierComposite(Service serviceParent) {
-            super(serviceParent, "/Device/Device/Service/SoftwareSensor/ActivityNotifier/");
+    protected final static class ClockComposite extends fr.inria.diagen.core.service.composite.Composite<ClockProxy> {
+        private ClockComposite(Service serviceParent) {
+            super(serviceParent, "/Device/Device/Service/Clock/");
         }
         
         @Override
-        protected ActivityNotifierProxy instantiateProxy(RemoteServiceInfo rsi) {
-            return new ActivityNotifierProxy(service, rsi);
+        protected ClockProxy instantiateProxy(RemoteServiceInfo rsi) {
+            return new ClockProxy(service, rsi);
         }
         
         /**
          * Returns this composite in which a filter was set to the attribute <code>id</code>.
          * 
          * @param id The <code>id<code> attribute value to match.
-         * @return this {@link ActivityNotifierComposite}, filtered using the attribute <code>id</code>.
+         * @return this {@link ClockComposite}, filtered using the attribute <code>id</code>.
          */
-        public ActivityNotifierComposite andId(java.lang.String id) throws CompositeException {
+        public ClockComposite andId(java.lang.String id) throws CompositeException {
             filterByAttribute("id", id);
             return this;
         }
         
         /**
-         * Subscribes to the <code>dailyActivity</code> source. After a call to this method, the context will be notified when a
-         * <code>ActivityNotifier</code> device of this composite publishes a value on its <code>dailyActivity</code> source.
+         * Subscribes to the <code>tickHour</code> source. After a call to this method, the context will be notified when a
+         * <code>Clock</code> device of this composite publishes a value on its <code>tickHour</code> source.
          */
-        public void subscribeDailyActivity() {
-            subscribeValue("dailyActivity");
+        public void subscribeTickHour() {
+            subscribeValue("tickHour");
         }
         
         /**
-         * Unsubscribes from the <code>dailyActivity</code> source. After a call to this method, the context will no more be notified
-         * when a <code>ActivityNotifier</code> device of this composite publishes a value on its <code>dailyActivity</code> source.
+         * Unsubscribes from the <code>tickHour</code> source. After a call to this method, the context will no more be notified
+         * when a <code>Clock</code> device of this composite publishes a value on its <code>tickHour</code> source.
          */
-        public void unsubscribeDailyActivity() {
-            unsubscribeValue("dailyActivity");
+        public void unsubscribeTickHour() {
+            unsubscribeValue("tickHour");
         }
     }
     
     /**
-     * A proxy to one <code>ActivityNotifier</code> device
-    <p>
-    ------------------------------------------------------------
-    ActivityNotifier					||
-    ------------------------------------------------------------
+     * A proxy to one <code>Clock</code> device
     
     <pre>
-    device ActivityNotifier extends SoftwareSensor {
-     * 	source dailyActivity as DailyActivity;
-     * 	source periodActivity as PeriodActivity;
-     * 	action NotifyActivity;
+    device Clock extends Service {
+     * 	source tickSecond as Integer;
+     * 	source tickMinute as Integer;
+     * 	source tickHour as Integer;
      * }
     </pre>
      */
-    protected final static class ActivityNotifierProxy extends Proxy {
-        private ActivityNotifierProxy(Service service, RemoteServiceInfo remoteServiceInfo) {
+    protected final static class ClockProxy extends Proxy {
+        private ClockProxy(Service service, RemoteServiceInfo remoteServiceInfo) {
             super(service, remoteServiceInfo);
         }
         
         /**
-         * Subscribes to the <code>dailyActivity</code> source. After a call to this method, the context will be notified when the
-         * <code>ActivityNotifier</code> device of this proxy publishes a value on its <code>dailyActivity</code> source.
+         * Subscribes to the <code>tickHour</code> source. After a call to this method, the context will be notified when the
+         * <code>Clock</code> device of this proxy publishes a value on its <code>tickHour</code> source.
          */
-        public void subscribeDailyActivity() {
-            subscribeValue("dailyActivity");
+        public void subscribeTickHour() {
+            subscribeValue("tickHour");
         }
         
         /**
-         * Unsubscribes from the <code>dailyActivity</code> source. After a call to this method, the context will no more be notified
-         * when the <code>ActivityNotifier</code> device of this proxy publishes a value on its <code>dailyActivity</code> source.
+         * Unsubscribes from the <code>tickHour</code> source. After a call to this method, the context will no more be notified
+         * when the <code>Clock</code> device of this proxy publishes a value on its <code>tickHour</code> source.
          */
-        public void unsubscribeDailyActivity() {
-            unsubscribeValue("dailyActivity");
+        public void unsubscribeTickHour() {
+            unsubscribeValue("tickHour");
         }
         
         /**
@@ -318,41 +302,41 @@ public abstract class AbstractAlertMove extends Service {
             return (java.lang.String) callGetValue("id");
         }
     }
-    // End of discover part for ActivityNotifier devices
+    // End of discover part for Clock devices
     
-    // Discover object for dailyActivity from ActivityNotifier
+    // Discover object for tickHour from Clock
     /**
      * An object to discover devices and contexts for the following interaction contract:
      * 
      * <code>
-     * when provided dailyActivity from ActivityNotifier
+     * when provided tickHour from Clock
      * 	get steps from Fitbit,
      * 		dailyActivity from ActivityNotifier
      * 	maybe publish;
      * </code>
      */
-    protected final class DiscoverForDailyActivityFromActivityNotifier {
-        private final FitbitDiscovererForDailyActivityFromActivityNotifier fitbitDiscoverer = new FitbitDiscovererForDailyActivityFromActivityNotifier(AbstractAlertMove.this);
-        private final ActivityNotifierDiscovererForDailyActivityFromActivityNotifier activityNotifierDiscoverer = new ActivityNotifierDiscovererForDailyActivityFromActivityNotifier(AbstractAlertMove.this);
+    protected final class DiscoverForTickHourFromClock {
+        private final FitbitDiscovererForTickHourFromClock fitbitDiscoverer = new FitbitDiscovererForTickHourFromClock(AbstractAlertMove.this);
+        private final ActivityNotifierDiscovererForTickHourFromClock activityNotifierDiscoverer = new ActivityNotifierDiscovererForTickHourFromClock(AbstractAlertMove.this);
         
         /**
-         * @return a {@link FitbitDiscovererForDailyActivityFromActivityNotifier} object to discover <code>Fitbit</code> devices
+         * @return a {@link FitbitDiscovererForTickHourFromClock} object to discover <code>Fitbit</code> devices
          */
-        public FitbitDiscovererForDailyActivityFromActivityNotifier fitbits() {
+        public FitbitDiscovererForTickHourFromClock fitbits() {
             return fitbitDiscoverer;
         }
         
         /**
-         * @return a {@link ActivityNotifierDiscovererForDailyActivityFromActivityNotifier} object to discover <code>ActivityNotifier</code> devices
+         * @return a {@link ActivityNotifierDiscovererForTickHourFromClock} object to discover <code>ActivityNotifier</code> devices
          */
-        public ActivityNotifierDiscovererForDailyActivityFromActivityNotifier activityNotifiers() {
+        public ActivityNotifierDiscovererForTickHourFromClock activityNotifiers() {
             return activityNotifierDiscoverer;
         }
     }
     
     /**
      * Discover object that will exposes the <code>Fitbit</code> devices to get their sources for the
-     * <code>when provided dailyActivity from ActivityNotifier</code> interaction contract.
+     * <code>when provided tickHour from Clock</code> interaction contract.
     <p>
     ------------------------------------------------------------
     Fitbit							||
@@ -371,33 +355,33 @@ public abstract class AbstractAlertMove extends Service {
      * }
     </pre>
      */
-    protected final static class FitbitDiscovererForDailyActivityFromActivityNotifier {
+    protected final static class FitbitDiscovererForTickHourFromClock {
         private Service serviceParent;
         
-        private FitbitDiscovererForDailyActivityFromActivityNotifier(Service serviceParent) {
+        private FitbitDiscovererForTickHourFromClock(Service serviceParent) {
             super();
             this.serviceParent = serviceParent;
         }
         
-        private FitbitCompositeForDailyActivityFromActivityNotifier instantiateComposite() {
-            return new FitbitCompositeForDailyActivityFromActivityNotifier(serviceParent);
+        private FitbitCompositeForTickHourFromClock instantiateComposite() {
+            return new FitbitCompositeForTickHourFromClock(serviceParent);
         }
         
         /**
          * Returns a composite of all accessible <code>Fitbit</code> devices
          * 
-         * @return a {@link FitbitCompositeForDailyActivityFromActivityNotifier} object composed of all discoverable <code>Fitbit</code>
+         * @return a {@link FitbitCompositeForTickHourFromClock} object composed of all discoverable <code>Fitbit</code>
          */
-        public FitbitCompositeForDailyActivityFromActivityNotifier all() {
+        public FitbitCompositeForTickHourFromClock all() {
             return instantiateComposite();
         }
         
         /**
          * Returns a proxy to one out of all accessible <code>Fitbit</code> devices
          * 
-         * @return a {@link FitbitProxyForDailyActivityFromActivityNotifier} object pointing to a random discoverable <code>Fitbit</code> device
+         * @return a {@link FitbitProxyForTickHourFromClock} object pointing to a random discoverable <code>Fitbit</code> device
          */
-        public FitbitProxyForDailyActivityFromActivityNotifier anyOne() {
+        public FitbitProxyForTickHourFromClock anyOne() {
             return all().anyOne();
         }
         
@@ -405,16 +389,16 @@ public abstract class AbstractAlertMove extends Service {
          * Returns a composite of all accessible <code>Fitbit</code> devices whose attribute <code>id</code> matches a given value.
          * 
          * @param id The <code>id<code> attribute value to match.
-         * @return a {@link FitbitCompositeForDailyActivityFromActivityNotifier} object composed of all matching <code>Fitbit</code> devices
+         * @return a {@link FitbitCompositeForTickHourFromClock} object composed of all matching <code>Fitbit</code> devices
          */
-        public FitbitCompositeForDailyActivityFromActivityNotifier whereId(java.lang.String id) throws CompositeException {
+        public FitbitCompositeForTickHourFromClock whereId(java.lang.String id) throws CompositeException {
             return instantiateComposite().andId(id);
         }
     }
     
     /**
      * A composite of several <code>Fitbit</code> devices to get their sources for the
-     * <code>when provided dailyActivity from ActivityNotifier</code> interaction contract.
+     * <code>when provided tickHour from Clock</code> interaction contract.
     <p>
     ------------------------------------------------------------
     Fitbit							||
@@ -433,23 +417,23 @@ public abstract class AbstractAlertMove extends Service {
      * }
     </pre>
      */
-    protected final static class FitbitCompositeForDailyActivityFromActivityNotifier extends fr.inria.diagen.core.service.composite.Composite<FitbitProxyForDailyActivityFromActivityNotifier> {
-        private FitbitCompositeForDailyActivityFromActivityNotifier(Service serviceParent) {
+    protected final static class FitbitCompositeForTickHourFromClock extends fr.inria.diagen.core.service.composite.Composite<FitbitProxyForTickHourFromClock> {
+        private FitbitCompositeForTickHourFromClock(Service serviceParent) {
             super(serviceParent, "/Device/Device/Fitbit/");
         }
         
         @Override
-        protected FitbitProxyForDailyActivityFromActivityNotifier instantiateProxy(RemoteServiceInfo rsi) {
-            return new FitbitProxyForDailyActivityFromActivityNotifier(service, rsi);
+        protected FitbitProxyForTickHourFromClock instantiateProxy(RemoteServiceInfo rsi) {
+            return new FitbitProxyForTickHourFromClock(service, rsi);
         }
         
         /**
          * Returns this composite in which a filter was set to the attribute <code>id</code>.
          * 
          * @param id The <code>id<code> attribute value to match.
-         * @return this {@link FitbitCompositeForDailyActivityFromActivityNotifier}, filtered using the attribute <code>id</code>.
+         * @return this {@link FitbitCompositeForTickHourFromClock}, filtered using the attribute <code>id</code>.
          */
-        public FitbitCompositeForDailyActivityFromActivityNotifier andId(java.lang.String id) throws CompositeException {
+        public FitbitCompositeForTickHourFromClock andId(java.lang.String id) throws CompositeException {
             filterByAttribute("id", id);
             return this;
         }
@@ -457,7 +441,7 @@ public abstract class AbstractAlertMove extends Service {
     
     /**
      * A proxy to one <code>Fitbit</code> device to get its sources for the
-     * <code>when provided dailyActivity from ActivityNotifier</code> interaction contract.
+     * <code>when provided tickHour from Clock</code> interaction contract.
     <p>
     ------------------------------------------------------------
     Fitbit							||
@@ -476,8 +460,8 @@ public abstract class AbstractAlertMove extends Service {
      * }
     </pre>
      */
-    protected final static class FitbitProxyForDailyActivityFromActivityNotifier extends Proxy {
-        private FitbitProxyForDailyActivityFromActivityNotifier(Service service, RemoteServiceInfo remoteServiceInfo) {
+    protected final static class FitbitProxyForTickHourFromClock extends Proxy {
+        private FitbitProxyForTickHourFromClock(Service service, RemoteServiceInfo remoteServiceInfo) {
             super(service, remoteServiceInfo);
         }
         
@@ -501,7 +485,7 @@ public abstract class AbstractAlertMove extends Service {
     
     /**
      * Discover object that will exposes the <code>ActivityNotifier</code> devices to get their sources for the
-     * <code>when provided dailyActivity from ActivityNotifier</code> interaction contract.
+     * <code>when provided tickHour from Clock</code> interaction contract.
     <p>
     ------------------------------------------------------------
     ActivityNotifier					||
@@ -515,33 +499,33 @@ public abstract class AbstractAlertMove extends Service {
      * }
     </pre>
      */
-    protected final static class ActivityNotifierDiscovererForDailyActivityFromActivityNotifier {
+    protected final static class ActivityNotifierDiscovererForTickHourFromClock {
         private Service serviceParent;
         
-        private ActivityNotifierDiscovererForDailyActivityFromActivityNotifier(Service serviceParent) {
+        private ActivityNotifierDiscovererForTickHourFromClock(Service serviceParent) {
             super();
             this.serviceParent = serviceParent;
         }
         
-        private ActivityNotifierCompositeForDailyActivityFromActivityNotifier instantiateComposite() {
-            return new ActivityNotifierCompositeForDailyActivityFromActivityNotifier(serviceParent);
+        private ActivityNotifierCompositeForTickHourFromClock instantiateComposite() {
+            return new ActivityNotifierCompositeForTickHourFromClock(serviceParent);
         }
         
         /**
          * Returns a composite of all accessible <code>ActivityNotifier</code> devices
          * 
-         * @return a {@link ActivityNotifierCompositeForDailyActivityFromActivityNotifier} object composed of all discoverable <code>ActivityNotifier</code>
+         * @return a {@link ActivityNotifierCompositeForTickHourFromClock} object composed of all discoverable <code>ActivityNotifier</code>
          */
-        public ActivityNotifierCompositeForDailyActivityFromActivityNotifier all() {
+        public ActivityNotifierCompositeForTickHourFromClock all() {
             return instantiateComposite();
         }
         
         /**
          * Returns a proxy to one out of all accessible <code>ActivityNotifier</code> devices
          * 
-         * @return a {@link ActivityNotifierProxyForDailyActivityFromActivityNotifier} object pointing to a random discoverable <code>ActivityNotifier</code> device
+         * @return a {@link ActivityNotifierProxyForTickHourFromClock} object pointing to a random discoverable <code>ActivityNotifier</code> device
          */
-        public ActivityNotifierProxyForDailyActivityFromActivityNotifier anyOne() {
+        public ActivityNotifierProxyForTickHourFromClock anyOne() {
             return all().anyOne();
         }
         
@@ -549,16 +533,16 @@ public abstract class AbstractAlertMove extends Service {
          * Returns a composite of all accessible <code>ActivityNotifier</code> devices whose attribute <code>id</code> matches a given value.
          * 
          * @param id The <code>id<code> attribute value to match.
-         * @return a {@link ActivityNotifierCompositeForDailyActivityFromActivityNotifier} object composed of all matching <code>ActivityNotifier</code> devices
+         * @return a {@link ActivityNotifierCompositeForTickHourFromClock} object composed of all matching <code>ActivityNotifier</code> devices
          */
-        public ActivityNotifierCompositeForDailyActivityFromActivityNotifier whereId(java.lang.String id) throws CompositeException {
+        public ActivityNotifierCompositeForTickHourFromClock whereId(java.lang.String id) throws CompositeException {
             return instantiateComposite().andId(id);
         }
     }
     
     /**
      * A composite of several <code>ActivityNotifier</code> devices to get their sources for the
-     * <code>when provided dailyActivity from ActivityNotifier</code> interaction contract.
+     * <code>when provided tickHour from Clock</code> interaction contract.
     <p>
     ------------------------------------------------------------
     ActivityNotifier					||
@@ -572,23 +556,23 @@ public abstract class AbstractAlertMove extends Service {
      * }
     </pre>
      */
-    protected final static class ActivityNotifierCompositeForDailyActivityFromActivityNotifier extends fr.inria.diagen.core.service.composite.Composite<ActivityNotifierProxyForDailyActivityFromActivityNotifier> {
-        private ActivityNotifierCompositeForDailyActivityFromActivityNotifier(Service serviceParent) {
+    protected final static class ActivityNotifierCompositeForTickHourFromClock extends fr.inria.diagen.core.service.composite.Composite<ActivityNotifierProxyForTickHourFromClock> {
+        private ActivityNotifierCompositeForTickHourFromClock(Service serviceParent) {
             super(serviceParent, "/Device/Device/Service/SoftwareSensor/ActivityNotifier/");
         }
         
         @Override
-        protected ActivityNotifierProxyForDailyActivityFromActivityNotifier instantiateProxy(RemoteServiceInfo rsi) {
-            return new ActivityNotifierProxyForDailyActivityFromActivityNotifier(service, rsi);
+        protected ActivityNotifierProxyForTickHourFromClock instantiateProxy(RemoteServiceInfo rsi) {
+            return new ActivityNotifierProxyForTickHourFromClock(service, rsi);
         }
         
         /**
          * Returns this composite in which a filter was set to the attribute <code>id</code>.
          * 
          * @param id The <code>id<code> attribute value to match.
-         * @return this {@link ActivityNotifierCompositeForDailyActivityFromActivityNotifier}, filtered using the attribute <code>id</code>.
+         * @return this {@link ActivityNotifierCompositeForTickHourFromClock}, filtered using the attribute <code>id</code>.
          */
-        public ActivityNotifierCompositeForDailyActivityFromActivityNotifier andId(java.lang.String id) throws CompositeException {
+        public ActivityNotifierCompositeForTickHourFromClock andId(java.lang.String id) throws CompositeException {
             filterByAttribute("id", id);
             return this;
         }
@@ -596,7 +580,7 @@ public abstract class AbstractAlertMove extends Service {
     
     /**
      * A proxy to one <code>ActivityNotifier</code> device to get its sources for the
-     * <code>when provided dailyActivity from ActivityNotifier</code> interaction contract.
+     * <code>when provided tickHour from Clock</code> interaction contract.
     <p>
     ------------------------------------------------------------
     ActivityNotifier					||
@@ -610,8 +594,8 @@ public abstract class AbstractAlertMove extends Service {
      * }
     </pre>
      */
-    protected final static class ActivityNotifierProxyForDailyActivityFromActivityNotifier extends Proxy {
-        private ActivityNotifierProxyForDailyActivityFromActivityNotifier(Service service, RemoteServiceInfo remoteServiceInfo) {
+    protected final static class ActivityNotifierProxyForTickHourFromClock extends Proxy {
+        private ActivityNotifierProxyForTickHourFromClock(Service service, RemoteServiceInfo remoteServiceInfo) {
             super(service, remoteServiceInfo);
         }
         
@@ -631,5 +615,5 @@ public abstract class AbstractAlertMove extends Service {
             return (java.lang.String) callGetValue("id");
         }
     }
-    // End of discover object for dailyActivity from ActivityNotifier
+    // End of discover object for tickHour from Clock
 }

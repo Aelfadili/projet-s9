@@ -5,7 +5,6 @@ import fr.inria.phoenix.diasuite.framework.misc.AppComponentBinder;
 import fr.inria.phoenix.diasuite.framework.controller.coach_activitycontroller.AbstractCoach_activityController;
 import fr.inria.phoenix.diasuite.framework.context.alertmove.AbstractAlertMove;
 import fr.inria.phoenix.diasuite.framework.context.congratulation.AbstractCongratulation;
-import fr.inria.phoenix.diasuite.framework.context.propositiondactivity.AbstractPropositionDActivity;
 import fr.inria.phoenix.diasuite.framework.context.propositiongoout.AbstractPropositionGoOut;
 
 /**
@@ -100,9 +99,6 @@ public final class Mock extends AppComponentBinder {
     }
     public Class<? extends AbstractCongratulation> getCongratulationClass() {
         return delegate.getCongratulationClass();
-    }
-    public Class<? extends AbstractPropositionDActivity> getPropositionDActivityClass() {
-        return delegate.getPropositionDActivityClass();
     }
     public Class<? extends AbstractPropositionGoOut> getPropositionGoOutClass() {
         return delegate.getPropositionGoOutClass();

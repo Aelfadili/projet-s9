@@ -9,8 +9,8 @@ import java.io.Serializable;
  * Sortie context : Si nombre de pas insuffisant
  *
  * <pre>
- * context PropositionGoOut as Boolean {
- * 	when provided steps from Fitbit
+ * context PropositionGoOut as CriticalNotification {
+ * 	when provided tickHour from Clock
  * 	get steps from Fitbit,
  * 		events from Agenda
  * 	maybe publish;
@@ -20,7 +20,7 @@ import java.io.Serializable;
 public final class PropositionGoOutValue implements Serializable {
     private static final long serialVersionUID = 0;
     
-    private java.lang.Boolean value;
+    private fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification value;
     
     /**
      * Get the value of the context <code>PropositionGoOut</code>
@@ -31,11 +31,11 @@ public final class PropositionGoOutValue implements Serializable {
      * 
      * @return the value of the context <code>PropositionGoOut</code>
      */
-    public java.lang.Boolean value() {
+    public fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification value() {
         return value;
     }
     
-    public PropositionGoOutValue(java.lang.Boolean value) {
+    public PropositionGoOutValue(fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification value) {
         this.value = value;
     }
     

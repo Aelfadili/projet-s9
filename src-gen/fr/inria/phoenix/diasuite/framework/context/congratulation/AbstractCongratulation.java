@@ -7,14 +7,14 @@ import fr.inria.diagen.core.network.RemoteServiceInfo;
 import fr.inria.diagen.core.service.local.Service;
 import fr.inria.diagen.core.service.proxy.Proxy;
 
-import fr.inria.phoenix.diasuite.framework.device.fitbit.StepsFromFitbit;
+import fr.inria.phoenix.diasuite.framework.device.clock.TickHourFromClock;
 
 /**
  * Sortie context : Si nombre de pas suffisant alors féliciter
 
 <pre>
-context Congratulation as Boolean {
- * 	when provided steps from Fitbit
+context Congratulation as CriticalNotification {
+ * 	when provided tickHour from Clock
  * 	get steps from Fitbit
  * 	maybe publish;
  * 	}
@@ -36,16 +36,15 @@ public abstract class AbstractCongratulation extends Service {
     @Override
     protected void postInitialize() {
         // Default implementation of post initialize: subscribe to all required devices
-        discoverFitbitForSubscribe.all().subscribeSteps(); // subscribe to steps from all Fitbit devices
+        discoverClockForSubscribe.all().subscribeTickHour(); // subscribe to tickHour from all Clock devices
     }
     
     @Override
     public final void valueReceived(java.util.Map<String, Object> properties, RemoteServiceInfo source, String eventName, Object value, Object... indexes) {
-        if (eventName.equals("steps") && source.isCompatible("/Device/Device/Fitbit/")) {
-            StepsFromFitbit stepsFromFitbit = new StepsFromFitbit(this, source, (java.lang.Integer) value,
-                    (fr.inria.phoenix.diasuite.framework.datatype.period.Period) indexes[0]);
+        if (eventName.equals("tickHour") && source.isCompatible("/Device/Device/Service/Clock/")) {
+            TickHourFromClock tickHourFromClock = new TickHourFromClock(this, source, (java.lang.Integer) value);
             
-            CongratulationValuePublishable returnValue = onStepsFromFitbit(stepsFromFitbit, new DiscoverForStepsFromFitbit());
+            CongratulationValuePublishable returnValue = onTickHourFromClock(tickHourFromClock, new DiscoverForTickHourFromClock());
             if(returnValue != null && returnValue.doPublish()) {
                 setCongratulation(returnValue.getValue());
             }
@@ -63,9 +62,9 @@ public abstract class AbstractCongratulation extends Service {
     // End of methods from the Service class
     
     // Code relative to the return value of the context
-    private java.lang.Boolean contextValue;
+    private fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification contextValue;
     
-    private void setCongratulation(java.lang.Boolean newContextValue) {
+    private void setCongratulation(fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification newContextValue) {
         contextValue = newContextValue;
         getProcessor().publishValue(getOutProperties(), "congratulation", newContextValue);
     }
@@ -75,7 +74,7 @@ public abstract class AbstractCongratulation extends Service {
      * 
      * @return the latest value published by the context
      */
-    protected final java.lang.Boolean getLastValue() {
+    protected final fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification getLastValue() {
         return contextValue;
     }
     
@@ -86,11 +85,11 @@ public abstract class AbstractCongratulation extends Service {
     protected final static class CongratulationValuePublishable {
         
         // The value of the context
-        private java.lang.Boolean value;
+        private fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification value;
         // Whether the value should be published or not
         private boolean doPublish;
         
-        public CongratulationValuePublishable(java.lang.Boolean value, boolean doPublish) {
+        public CongratulationValuePublishable(fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification value, boolean doPublish) {
             this.value = value;
             this.doPublish = doPublish;
         }
@@ -98,7 +97,7 @@ public abstract class AbstractCongratulation extends Service {
         /**
          * @return the value of the context that might be published
          */
-        public java.lang.Boolean getValue() {
+        public fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification getValue() {
             return value;
         }
         
@@ -107,7 +106,7 @@ public abstract class AbstractCongratulation extends Service {
          * 
          * @param value the value that will be published if {@link #doPublish()} returns true
          */
-        public void setValue(java.lang.Boolean value) {
+        public void setValue(fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification value) {
             this.value = value;
         }
         
@@ -131,205 +130,169 @@ public abstract class AbstractCongratulation extends Service {
     
     // Interaction contract implementation
     /**
-     * This method is called when a <code>Fitbit</code> device on which we have subscribed publish on its <code>steps</code> source.
+     * This method is called when a <code>Clock</code> device on which we have subscribed publish on its <code>tickHour</code> source.
     
     <pre>
-    when provided steps from Fitbit
+    when provided tickHour from Clock
      * 	get steps from Fitbit
      * 	maybe publish;
     </pre>
      * 
-     * @param stepsFromFitbit the value of the <code>steps</code> source and the <code>Fitbit</code> device that published the value.
+     * @param tickHourFromClock the value of the <code>tickHour</code> source and the <code>Clock</code> device that published the value.
      * @param discover a discover object to get value from devices and contexts
      * @return a {@link CongratulationValuePublishable} that says if the context should publish a value and which value it should publish
      */
-    protected abstract CongratulationValuePublishable onStepsFromFitbit(StepsFromFitbit stepsFromFitbit, DiscoverForStepsFromFitbit discover);
+    protected abstract CongratulationValuePublishable onTickHourFromClock(TickHourFromClock tickHourFromClock, DiscoverForTickHourFromClock discover);
     
     // End of interaction contract implementation
     
-    // Discover part for Fitbit devices
+    // Discover part for Clock devices
     /**
-     * Use this object to discover Fitbit devices.
-    <p>
-    ------------------------------------------------------------
-    Fitbit							||
-    ------------------------------------------------------------
+     * Use this object to discover Clock devices.
     
     <pre>
-    device Fitbit extends Device {
-     *         source calories as Integer indexed by period as Period;
-     *         source distanceInMeters as Integer indexed by period as Period;
-     *         source pulses as Pulse indexed by period as Period;
-     *         source steps as Integer indexed by period as Period;
-     *         source sleepPeriods as SleepPeriod [] indexed by period as Period;
-     *         source alarm as Alarm indexed by name as String;
-     *         action ScheduleAlarm;
-     *         action Vibrate;
+    device Clock extends Service {
+     * 	source tickSecond as Integer;
+     * 	source tickMinute as Integer;
+     * 	source tickHour as Integer;
      * }
     </pre>
      * 
-     * @see FitbitDiscoverer
+     * @see ClockDiscoverer
      */
-    protected final FitbitDiscoverer discoverFitbitForSubscribe = new FitbitDiscoverer(this);
+    protected final ClockDiscoverer discoverClockForSubscribe = new ClockDiscoverer(this);
     
     /**
-     * Discover object that will exposes the <code>Fitbit</code> devices that can be discovered
-    <p>
-    ------------------------------------------------------------
-    Fitbit							||
-    ------------------------------------------------------------
+     * Discover object that will exposes the <code>Clock</code> devices that can be discovered
     
     <pre>
-    device Fitbit extends Device {
-     *         source calories as Integer indexed by period as Period;
-     *         source distanceInMeters as Integer indexed by period as Period;
-     *         source pulses as Pulse indexed by period as Period;
-     *         source steps as Integer indexed by period as Period;
-     *         source sleepPeriods as SleepPeriod [] indexed by period as Period;
-     *         source alarm as Alarm indexed by name as String;
-     *         action ScheduleAlarm;
-     *         action Vibrate;
+    device Clock extends Service {
+     * 	source tickSecond as Integer;
+     * 	source tickMinute as Integer;
+     * 	source tickHour as Integer;
      * }
     </pre>
      */
-    protected final static class FitbitDiscoverer {
+    protected final static class ClockDiscoverer {
         private Service serviceParent;
         
-        private FitbitDiscoverer(Service serviceParent) {
+        private ClockDiscoverer(Service serviceParent) {
             super();
             this.serviceParent = serviceParent;
         }
         
-        private FitbitComposite instantiateComposite() {
-            return new FitbitComposite(serviceParent);
+        private ClockComposite instantiateComposite() {
+            return new ClockComposite(serviceParent);
         }
         
         /**
-         * Returns a composite of all accessible <code>Fitbit</code> devices
+         * Returns a composite of all accessible <code>Clock</code> devices
          * 
-         * @return a {@link FitbitComposite} object composed of all discoverable <code>Fitbit</code>
+         * @return a {@link ClockComposite} object composed of all discoverable <code>Clock</code>
          */
-        public FitbitComposite all() {
+        public ClockComposite all() {
             return instantiateComposite();
         }
         
         /**
-         * Returns a proxy to one out of all accessible <code>Fitbit</code> devices
+         * Returns a proxy to one out of all accessible <code>Clock</code> devices
          * 
-         * @return a {@link FitbitProxy} object pointing to a random discoverable <code>Fitbit</code> device
+         * @return a {@link ClockProxy} object pointing to a random discoverable <code>Clock</code> device
          */
-        public FitbitProxy anyOne() {
+        public ClockProxy anyOne() {
             return all().anyOne();
         }
         
         /**
-         * Returns a composite of all accessible <code>Fitbit</code> devices whose attribute <code>id</code> matches a given value.
+         * Returns a composite of all accessible <code>Clock</code> devices whose attribute <code>id</code> matches a given value.
          * 
          * @param id The <code>id<code> attribute value to match.
-         * @return a {@link FitbitComposite} object composed of all matching <code>Fitbit</code> devices
+         * @return a {@link ClockComposite} object composed of all matching <code>Clock</code> devices
          */
-        public FitbitComposite whereId(java.lang.String id) throws CompositeException {
+        public ClockComposite whereId(java.lang.String id) throws CompositeException {
             return instantiateComposite().andId(id);
         }
     }
     
     /**
-     * A composite of several <code>Fitbit</code> devices
-    <p>
-    ------------------------------------------------------------
-    Fitbit							||
-    ------------------------------------------------------------
+     * A composite of several <code>Clock</code> devices
     
     <pre>
-    device Fitbit extends Device {
-     *         source calories as Integer indexed by period as Period;
-     *         source distanceInMeters as Integer indexed by period as Period;
-     *         source pulses as Pulse indexed by period as Period;
-     *         source steps as Integer indexed by period as Period;
-     *         source sleepPeriods as SleepPeriod [] indexed by period as Period;
-     *         source alarm as Alarm indexed by name as String;
-     *         action ScheduleAlarm;
-     *         action Vibrate;
+    device Clock extends Service {
+     * 	source tickSecond as Integer;
+     * 	source tickMinute as Integer;
+     * 	source tickHour as Integer;
      * }
     </pre>
      */
-    protected final static class FitbitComposite extends fr.inria.diagen.core.service.composite.Composite<FitbitProxy> {
-        private FitbitComposite(Service serviceParent) {
-            super(serviceParent, "/Device/Device/Fitbit/");
+    protected final static class ClockComposite extends fr.inria.diagen.core.service.composite.Composite<ClockProxy> {
+        private ClockComposite(Service serviceParent) {
+            super(serviceParent, "/Device/Device/Service/Clock/");
         }
         
         @Override
-        protected FitbitProxy instantiateProxy(RemoteServiceInfo rsi) {
-            return new FitbitProxy(service, rsi);
+        protected ClockProxy instantiateProxy(RemoteServiceInfo rsi) {
+            return new ClockProxy(service, rsi);
         }
         
         /**
          * Returns this composite in which a filter was set to the attribute <code>id</code>.
          * 
          * @param id The <code>id<code> attribute value to match.
-         * @return this {@link FitbitComposite}, filtered using the attribute <code>id</code>.
+         * @return this {@link ClockComposite}, filtered using the attribute <code>id</code>.
          */
-        public FitbitComposite andId(java.lang.String id) throws CompositeException {
+        public ClockComposite andId(java.lang.String id) throws CompositeException {
             filterByAttribute("id", id);
             return this;
         }
         
         /**
-         * Subscribes to the <code>steps</code> source. After a call to this method, the context will be notified when a
-         * <code>Fitbit</code> device of this composite publishes a value on its <code>steps</code> source.
+         * Subscribes to the <code>tickHour</code> source. After a call to this method, the context will be notified when a
+         * <code>Clock</code> device of this composite publishes a value on its <code>tickHour</code> source.
          */
-        public void subscribeSteps() {
-            subscribeValue("steps");
+        public void subscribeTickHour() {
+            subscribeValue("tickHour");
         }
         
         /**
-         * Unsubscribes from the <code>steps</code> source. After a call to this method, the context will no more be notified
-         * when a <code>Fitbit</code> device of this composite publishes a value on its <code>steps</code> source.
+         * Unsubscribes from the <code>tickHour</code> source. After a call to this method, the context will no more be notified
+         * when a <code>Clock</code> device of this composite publishes a value on its <code>tickHour</code> source.
          */
-        public void unsubscribeSteps() {
-            unsubscribeValue("steps");
+        public void unsubscribeTickHour() {
+            unsubscribeValue("tickHour");
         }
     }
     
     /**
-     * A proxy to one <code>Fitbit</code> device
-    <p>
-    ------------------------------------------------------------
-    Fitbit							||
-    ------------------------------------------------------------
+     * A proxy to one <code>Clock</code> device
     
     <pre>
-    device Fitbit extends Device {
-     *         source calories as Integer indexed by period as Period;
-     *         source distanceInMeters as Integer indexed by period as Period;
-     *         source pulses as Pulse indexed by period as Period;
-     *         source steps as Integer indexed by period as Period;
-     *         source sleepPeriods as SleepPeriod [] indexed by period as Period;
-     *         source alarm as Alarm indexed by name as String;
-     *         action ScheduleAlarm;
-     *         action Vibrate;
+    device Clock extends Service {
+     * 	source tickSecond as Integer;
+     * 	source tickMinute as Integer;
+     * 	source tickHour as Integer;
      * }
     </pre>
      */
-    protected final static class FitbitProxy extends Proxy {
-        private FitbitProxy(Service service, RemoteServiceInfo remoteServiceInfo) {
+    protected final static class ClockProxy extends Proxy {
+        private ClockProxy(Service service, RemoteServiceInfo remoteServiceInfo) {
             super(service, remoteServiceInfo);
         }
         
         /**
-         * Subscribes to the <code>steps</code> source. After a call to this method, the context will be notified when the
-         * <code>Fitbit</code> device of this proxy publishes a value on its <code>steps</code> source.
+         * Subscribes to the <code>tickHour</code> source. After a call to this method, the context will be notified when the
+         * <code>Clock</code> device of this proxy publishes a value on its <code>tickHour</code> source.
          */
-        public void subscribeSteps() {
-            subscribeValue("steps");
+        public void subscribeTickHour() {
+            subscribeValue("tickHour");
         }
         
         /**
-         * Unsubscribes from the <code>steps</code> source. After a call to this method, the context will no more be notified
-         * when the <code>Fitbit</code> device of this proxy publishes a value on its <code>steps</code> source.
+         * Unsubscribes from the <code>tickHour</code> source. After a call to this method, the context will no more be notified
+         * when the <code>Clock</code> device of this proxy publishes a value on its <code>tickHour</code> source.
          */
-        public void unsubscribeSteps() {
-            unsubscribeValue("steps");
+        public void unsubscribeTickHour() {
+            unsubscribeValue("tickHour");
         }
         
         /**
@@ -339,32 +302,32 @@ public abstract class AbstractCongratulation extends Service {
             return (java.lang.String) callGetValue("id");
         }
     }
-    // End of discover part for Fitbit devices
+    // End of discover part for Clock devices
     
-    // Discover object for steps from Fitbit
+    // Discover object for tickHour from Clock
     /**
      * An object to discover devices and contexts for the following interaction contract:
      * 
      * <code>
-     * when provided steps from Fitbit
+     * when provided tickHour from Clock
      * 	get steps from Fitbit
      * 	maybe publish;
      * </code>
      */
-    protected final class DiscoverForStepsFromFitbit {
-        private final FitbitDiscovererForStepsFromFitbit fitbitDiscoverer = new FitbitDiscovererForStepsFromFitbit(AbstractCongratulation.this);
+    protected final class DiscoverForTickHourFromClock {
+        private final FitbitDiscovererForTickHourFromClock fitbitDiscoverer = new FitbitDiscovererForTickHourFromClock(AbstractCongratulation.this);
         
         /**
-         * @return a {@link FitbitDiscovererForStepsFromFitbit} object to discover <code>Fitbit</code> devices
+         * @return a {@link FitbitDiscovererForTickHourFromClock} object to discover <code>Fitbit</code> devices
          */
-        public FitbitDiscovererForStepsFromFitbit fitbits() {
+        public FitbitDiscovererForTickHourFromClock fitbits() {
             return fitbitDiscoverer;
         }
     }
     
     /**
      * Discover object that will exposes the <code>Fitbit</code> devices to get their sources for the
-     * <code>when provided steps from Fitbit</code> interaction contract.
+     * <code>when provided tickHour from Clock</code> interaction contract.
     <p>
     ------------------------------------------------------------
     Fitbit							||
@@ -383,33 +346,33 @@ public abstract class AbstractCongratulation extends Service {
      * }
     </pre>
      */
-    protected final static class FitbitDiscovererForStepsFromFitbit {
+    protected final static class FitbitDiscovererForTickHourFromClock {
         private Service serviceParent;
         
-        private FitbitDiscovererForStepsFromFitbit(Service serviceParent) {
+        private FitbitDiscovererForTickHourFromClock(Service serviceParent) {
             super();
             this.serviceParent = serviceParent;
         }
         
-        private FitbitCompositeForStepsFromFitbit instantiateComposite() {
-            return new FitbitCompositeForStepsFromFitbit(serviceParent);
+        private FitbitCompositeForTickHourFromClock instantiateComposite() {
+            return new FitbitCompositeForTickHourFromClock(serviceParent);
         }
         
         /**
          * Returns a composite of all accessible <code>Fitbit</code> devices
          * 
-         * @return a {@link FitbitCompositeForStepsFromFitbit} object composed of all discoverable <code>Fitbit</code>
+         * @return a {@link FitbitCompositeForTickHourFromClock} object composed of all discoverable <code>Fitbit</code>
          */
-        public FitbitCompositeForStepsFromFitbit all() {
+        public FitbitCompositeForTickHourFromClock all() {
             return instantiateComposite();
         }
         
         /**
          * Returns a proxy to one out of all accessible <code>Fitbit</code> devices
          * 
-         * @return a {@link FitbitProxyForStepsFromFitbit} object pointing to a random discoverable <code>Fitbit</code> device
+         * @return a {@link FitbitProxyForTickHourFromClock} object pointing to a random discoverable <code>Fitbit</code> device
          */
-        public FitbitProxyForStepsFromFitbit anyOne() {
+        public FitbitProxyForTickHourFromClock anyOne() {
             return all().anyOne();
         }
         
@@ -417,16 +380,16 @@ public abstract class AbstractCongratulation extends Service {
          * Returns a composite of all accessible <code>Fitbit</code> devices whose attribute <code>id</code> matches a given value.
          * 
          * @param id The <code>id<code> attribute value to match.
-         * @return a {@link FitbitCompositeForStepsFromFitbit} object composed of all matching <code>Fitbit</code> devices
+         * @return a {@link FitbitCompositeForTickHourFromClock} object composed of all matching <code>Fitbit</code> devices
          */
-        public FitbitCompositeForStepsFromFitbit whereId(java.lang.String id) throws CompositeException {
+        public FitbitCompositeForTickHourFromClock whereId(java.lang.String id) throws CompositeException {
             return instantiateComposite().andId(id);
         }
     }
     
     /**
      * A composite of several <code>Fitbit</code> devices to get their sources for the
-     * <code>when provided steps from Fitbit</code> interaction contract.
+     * <code>when provided tickHour from Clock</code> interaction contract.
     <p>
     ------------------------------------------------------------
     Fitbit							||
@@ -445,23 +408,23 @@ public abstract class AbstractCongratulation extends Service {
      * }
     </pre>
      */
-    protected final static class FitbitCompositeForStepsFromFitbit extends fr.inria.diagen.core.service.composite.Composite<FitbitProxyForStepsFromFitbit> {
-        private FitbitCompositeForStepsFromFitbit(Service serviceParent) {
+    protected final static class FitbitCompositeForTickHourFromClock extends fr.inria.diagen.core.service.composite.Composite<FitbitProxyForTickHourFromClock> {
+        private FitbitCompositeForTickHourFromClock(Service serviceParent) {
             super(serviceParent, "/Device/Device/Fitbit/");
         }
         
         @Override
-        protected FitbitProxyForStepsFromFitbit instantiateProxy(RemoteServiceInfo rsi) {
-            return new FitbitProxyForStepsFromFitbit(service, rsi);
+        protected FitbitProxyForTickHourFromClock instantiateProxy(RemoteServiceInfo rsi) {
+            return new FitbitProxyForTickHourFromClock(service, rsi);
         }
         
         /**
          * Returns this composite in which a filter was set to the attribute <code>id</code>.
          * 
          * @param id The <code>id<code> attribute value to match.
-         * @return this {@link FitbitCompositeForStepsFromFitbit}, filtered using the attribute <code>id</code>.
+         * @return this {@link FitbitCompositeForTickHourFromClock}, filtered using the attribute <code>id</code>.
          */
-        public FitbitCompositeForStepsFromFitbit andId(java.lang.String id) throws CompositeException {
+        public FitbitCompositeForTickHourFromClock andId(java.lang.String id) throws CompositeException {
             filterByAttribute("id", id);
             return this;
         }
@@ -469,7 +432,7 @@ public abstract class AbstractCongratulation extends Service {
     
     /**
      * A proxy to one <code>Fitbit</code> device to get its sources for the
-     * <code>when provided steps from Fitbit</code> interaction contract.
+     * <code>when provided tickHour from Clock</code> interaction contract.
     <p>
     ------------------------------------------------------------
     Fitbit							||
@@ -488,8 +451,8 @@ public abstract class AbstractCongratulation extends Service {
      * }
     </pre>
      */
-    protected final static class FitbitProxyForStepsFromFitbit extends Proxy {
-        private FitbitProxyForStepsFromFitbit(Service service, RemoteServiceInfo remoteServiceInfo) {
+    protected final static class FitbitProxyForTickHourFromClock extends Proxy {
+        private FitbitProxyForTickHourFromClock(Service service, RemoteServiceInfo remoteServiceInfo) {
             super(service, remoteServiceInfo);
         }
         
@@ -510,5 +473,5 @@ public abstract class AbstractCongratulation extends Service {
             return (java.lang.String) callGetValue("id");
         }
     }
-    // End of discover object for steps from Fitbit
+    // End of discover object for tickHour from Clock
 }

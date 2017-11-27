@@ -3,8 +3,8 @@ include "taxonomy.diaspec";
 // Boolean ou String ? 
 
 // Sortie context : Si nombre de pas insuffisant
-context PropositionGoOut as Boolean {
-	when provided steps from Fitbit
+context PropositionGoOut as CriticalNotification {
+	when provided tickHour from Clock
 	get steps from Fitbit,
 		events from Agenda
 	
@@ -12,20 +12,16 @@ context PropositionGoOut as Boolean {
 	}
 
 // Sortie context : Si nombre de pas suffisant alors féliciter
-context Congratulation as Boolean {
-	when provided steps from Fitbit
+context Congratulation as CriticalNotification {
+	when provided tickHour from Clock
 	get steps from Fitbit
 	maybe publish;
 	}
 
-context PropositionDActivity as Boolean {
-	when provided dailyActivity from ActivityNotifier
-	get dailyActivity from ActivityNotifier
-	maybe publish;
-}
 
-context AlertMove as Boolean{
-	when provided dailyActivity from ActivityNotifier
+
+context AlertMove as CriticalNotification{
+	when provided tickHour from Clock
 	get steps from Fitbit,
 		dailyActivity from ActivityNotifier
 	maybe publish;
@@ -34,11 +30,9 @@ context AlertMove as Boolean{
 // Coach_activity controller
 controller Coach_activityController {
 	when provided PropositionGoOut
-	do NotifyActivity on ActivityNotifier;
+	do SendCriticalNotification on Notifier;
 	when provided Congratulation
-	do NotifyActivity on ActivityNotifier;
-	when provided PropositionDActivity
-	do NotifyActivity on ActivityNotifier;
+	do SendCriticalNotification on Notifier;
 	when provided AlertMove
-	do NotifyActivity on ActivityNotifier;
+	do SendCriticalNotification on Notifier;
 }

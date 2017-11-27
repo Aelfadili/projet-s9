@@ -6,8 +6,8 @@ import java.io.Serializable;
  * An object to store a value published by the context <code>AlertMove</code>.
  *
  * <pre>
- * context AlertMove as Boolean{
- * 	when provided dailyActivity from ActivityNotifier
+ * context AlertMove as CriticalNotification{
+ * 	when provided tickHour from Clock
  * 	get steps from Fitbit,
  * 		dailyActivity from ActivityNotifier
  * 	maybe publish;
@@ -17,18 +17,18 @@ import java.io.Serializable;
 public final class AlertMoveValue implements Serializable {
     private static final long serialVersionUID = 0;
     
-    private java.lang.Boolean value;
+    private fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification value;
     
     /**
      * Get the value of the context <code>AlertMove</code>
      * 
      * @return the value of the context <code>AlertMove</code>
      */
-    public java.lang.Boolean value() {
+    public fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification value() {
         return value;
     }
     
-    public AlertMoveValue(java.lang.Boolean value) {
+    public AlertMoveValue(fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification value) {
         this.value = value;
     }
     

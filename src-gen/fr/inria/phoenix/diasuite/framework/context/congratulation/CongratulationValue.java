@@ -8,8 +8,8 @@ import java.io.Serializable;
  * Sortie context : Si nombre de pas suffisant alors féliciter
  *
  * <pre>
- * context Congratulation as Boolean {
- * 	when provided steps from Fitbit
+ * context Congratulation as CriticalNotification {
+ * 	when provided tickHour from Clock
  * 	get steps from Fitbit
  * 	maybe publish;
  * 	}
@@ -18,7 +18,7 @@ import java.io.Serializable;
 public final class CongratulationValue implements Serializable {
     private static final long serialVersionUID = 0;
     
-    private java.lang.Boolean value;
+    private fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification value;
     
     /**
      * Get the value of the context <code>Congratulation</code>
@@ -28,11 +28,11 @@ public final class CongratulationValue implements Serializable {
      * 
      * @return the value of the context <code>Congratulation</code>
      */
-    public java.lang.Boolean value() {
+    public fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification value() {
         return value;
     }
     
-    public CongratulationValue(java.lang.Boolean value) {
+    public CongratulationValue(fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification value) {
         this.value = value;
     }
     

@@ -9,7 +9,6 @@ import fr.inria.diagen.core.service.proxy.Proxy;
 
 import fr.inria.phoenix.diasuite.framework.context.alertmove.AlertMoveValue;
 import fr.inria.phoenix.diasuite.framework.context.congratulation.CongratulationValue;
-import fr.inria.phoenix.diasuite.framework.context.propositiondactivity.PropositionDActivityValue;
 import fr.inria.phoenix.diasuite.framework.context.propositiongoout.PropositionGoOutValue;
 
 /**
@@ -18,13 +17,11 @@ import fr.inria.phoenix.diasuite.framework.context.propositiongoout.PropositionG
 <pre>
 controller Coach_activityController {
  * 	when provided PropositionGoOut
- * 	do NotifyActivity on ActivityNotifier;
+ * 	do SendCriticalNotification on Notifier;
  * 	when provided Congratulation
- * 	do NotifyActivity on ActivityNotifier;
- * 	when provided PropositionDActivity
- * 	do NotifyActivity on ActivityNotifier;
+ * 	do SendCriticalNotification on Notifier;
  * 	when provided AlertMove
- * 	do NotifyActivity on ActivityNotifier;
+ * 	do SendCriticalNotification on Notifier;
  * }
 </pre>
  */
@@ -40,7 +37,6 @@ public abstract class AbstractCoach_activityController extends Service {
     protected final void internalPostInitialize() {
         subscribeValue("alertMove", "/Context/AlertMove/"); // subscribe to AlertMove context
         subscribeValue("congratulation", "/Context/Congratulation/"); // subscribe to Congratulation context
-        subscribeValue("propositionDActivity", "/Context/PropositionDActivity/"); // subscribe to PropositionDActivity context
         subscribeValue("propositionGoOut", "/Context/PropositionGoOut/"); // subscribe to PropositionGoOut context
         postInitialize();
     }
@@ -48,22 +44,17 @@ public abstract class AbstractCoach_activityController extends Service {
     @Override
     public final void valueReceived(java.util.Map<String, Object> properties, RemoteServiceInfo source, String eventName, Object value, Object... indexes) {
         if (eventName.equals("alertMove") && source.isCompatible("/Context/AlertMove/")) {
-            AlertMoveValue alertMoveValue = new AlertMoveValue((java.lang.Boolean) value);
+            AlertMoveValue alertMoveValue = new AlertMoveValue((fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification) value);
             
             onAlertMove(alertMoveValue, new DiscoverForAlertMove());
         }
         if (eventName.equals("congratulation") && source.isCompatible("/Context/Congratulation/")) {
-            CongratulationValue congratulationValue = new CongratulationValue((java.lang.Boolean) value);
+            CongratulationValue congratulationValue = new CongratulationValue((fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification) value);
             
             onCongratulation(congratulationValue, new DiscoverForCongratulation());
         }
-        if (eventName.equals("propositionDActivity") && source.isCompatible("/Context/PropositionDActivity/")) {
-            PropositionDActivityValue propositionDActivityValue = new PropositionDActivityValue((java.lang.Boolean) value);
-            
-            onPropositionDActivity(propositionDActivityValue, new DiscoverForPropositionDActivity());
-        }
         if (eventName.equals("propositionGoOut") && source.isCompatible("/Context/PropositionGoOut/")) {
-            PropositionGoOutValue propositionGoOutValue = new PropositionGoOutValue((java.lang.Boolean) value);
+            PropositionGoOutValue propositionGoOutValue = new PropositionGoOutValue((fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification) value);
             
             onPropositionGoOut(propositionGoOutValue, new DiscoverForPropositionGoOut());
         }
@@ -76,7 +67,7 @@ public abstract class AbstractCoach_activityController extends Service {
      * 
      * <pre>
      * when provided PropositionGoOut
-     * 	do NotifyActivity on ActivityNotifier;
+     * 	do SendCriticalNotification on Notifier;
      * </pre>
      * 
      * @param propositionGoOut the value of the <code>PropositionGoOut</code> context.
@@ -89,7 +80,7 @@ public abstract class AbstractCoach_activityController extends Service {
      * 
      * <pre>
      * when provided Congratulation
-     * 	do NotifyActivity on ActivityNotifier;
+     * 	do SendCriticalNotification on Notifier;
      * </pre>
      * 
      * @param congratulation the value of the <code>Congratulation</code> context.
@@ -98,24 +89,11 @@ public abstract class AbstractCoach_activityController extends Service {
     protected abstract void onCongratulation(CongratulationValue congratulation, DiscoverForCongratulation discover);
     
     /**
-     * This method is called when the <code>PropositionDActivity</code> context publishes a value.
-     * 
-     * <pre>
-     * when provided PropositionDActivity
-     * 	do NotifyActivity on ActivityNotifier;
-     * </pre>
-     * 
-     * @param propositionDActivity the value of the <code>PropositionDActivity</code> context.
-     * @param discover a discover object to get context values and action methods
-     */
-    protected abstract void onPropositionDActivity(PropositionDActivityValue propositionDActivity, DiscoverForPropositionDActivity discover);
-    
-    /**
      * This method is called when the <code>AlertMove</code> context publishes a value.
      * 
      * <pre>
      * when provided AlertMove
-     * 	do NotifyActivity on ActivityNotifier;
+     * 	do SendCriticalNotification on Notifier;
      * </pre>
      * 
      * @param alertMove the value of the <code>AlertMove</code> context.
@@ -131,176 +109,195 @@ public abstract class AbstractCoach_activityController extends Service {
      * 
      * <code>
      * when provided PropositionGoOut
-     * 	do NotifyActivity on ActivityNotifier;
+     * 	do SendCriticalNotification on Notifier;
      * </code>
      */
     protected final class DiscoverForPropositionGoOut {
-        private final ActivityNotifierDiscovererForPropositionGoOut activityNotifierDiscoverer = new ActivityNotifierDiscovererForPropositionGoOut(AbstractCoach_activityController.this);
+        private final NotifierDiscovererForPropositionGoOut notifierDiscoverer = new NotifierDiscovererForPropositionGoOut(AbstractCoach_activityController.this);
         
         /**
-         * @return a {@link ActivityNotifierDiscovererForPropositionGoOut} object to discover <code>ActivityNotifier</code> devices
+         * @return a {@link NotifierDiscovererForPropositionGoOut} object to discover <code>Notifier</code> devices
          */
-        public ActivityNotifierDiscovererForPropositionGoOut activityNotifiers() {
-            return activityNotifierDiscoverer;
+        public NotifierDiscovererForPropositionGoOut notifiers() {
+            return notifierDiscoverer;
         }
     }
     
     /**
-     * Discover object that will exposes the <code>ActivityNotifier</code> devices to execute action on for the
+     * Discover object that will exposes the <code>Notifier</code> devices to execute action on for the
      * <code>when provided PropositionGoOut</code> interaction contract.
-    <p>
-    ------------------------------------------------------------
-    ActivityNotifier					||
-    ------------------------------------------------------------
     
     <pre>
-    device ActivityNotifier extends SoftwareSensor {
-     * 	source dailyActivity as DailyActivity;
-     * 	source periodActivity as PeriodActivity;
-     * 	action NotifyActivity;
+    device Notifier extends HomeService {
+     * 	source cancelled as Boolean indexed by id as String;
+     * 	source expired as Boolean indexed by id as String;
+     * 	source reply as Integer indexed by id as String;
+     * 	action SendCriticalNotification;
+     * 	action SendNonCriticalNotification;
      * }
     </pre>
      */
-    protected final static class ActivityNotifierDiscovererForPropositionGoOut {
+    protected final static class NotifierDiscovererForPropositionGoOut {
         private Service serviceParent;
         
-        private ActivityNotifierDiscovererForPropositionGoOut(Service serviceParent) {
+        private NotifierDiscovererForPropositionGoOut(Service serviceParent) {
             super();
             this.serviceParent = serviceParent;
         }
         
-        private ActivityNotifierCompositeForPropositionGoOut instantiateComposite() {
-            return new ActivityNotifierCompositeForPropositionGoOut(serviceParent);
+        private NotifierCompositeForPropositionGoOut instantiateComposite() {
+            return new NotifierCompositeForPropositionGoOut(serviceParent);
         }
         
         /**
-         * Returns a composite of all accessible <code>ActivityNotifier</code> devices
+         * Returns a composite of all accessible <code>Notifier</code> devices
          * 
-         * @return a {@link ActivityNotifierCompositeForPropositionGoOut} object composed of all discoverable <code>ActivityNotifier</code>
+         * @return a {@link NotifierCompositeForPropositionGoOut} object composed of all discoverable <code>Notifier</code>
          */
-        public ActivityNotifierCompositeForPropositionGoOut all() {
+        public NotifierCompositeForPropositionGoOut all() {
             return instantiateComposite();
         }
         
         /**
-         * Returns a proxy to one out of all accessible <code>ActivityNotifier</code> devices
+         * Returns a proxy to one out of all accessible <code>Notifier</code> devices
          * 
-         * @return a {@link ActivityNotifierProxyForPropositionGoOut} object pointing to a random discoverable <code>ActivityNotifier</code> device
+         * @return a {@link NotifierProxyForPropositionGoOut} object pointing to a random discoverable <code>Notifier</code> device
          */
-        public ActivityNotifierProxyForPropositionGoOut anyOne() {
+        public NotifierProxyForPropositionGoOut anyOne() {
             return all().anyOne();
         }
         
         /**
-         * Returns a composite of all accessible <code>ActivityNotifier</code> devices whose attribute <code>id</code> matches a given value.
+         * Returns a composite of all accessible <code>Notifier</code> devices whose attribute <code>id</code> matches a given value.
          * 
          * @param id The <code>id<code> attribute value to match.
-         * @return a {@link ActivityNotifierCompositeForPropositionGoOut} object composed of all matching <code>ActivityNotifier</code> devices
+         * @return a {@link NotifierCompositeForPropositionGoOut} object composed of all matching <code>Notifier</code> devices
          */
-        public ActivityNotifierCompositeForPropositionGoOut whereId(java.lang.String id) throws CompositeException {
+        public NotifierCompositeForPropositionGoOut whereId(java.lang.String id) throws CompositeException {
             return instantiateComposite().andId(id);
         }
     }
     
     /**
-     * A composite of several <code>ActivityNotifier</code> devices to execute action on for the
+     * A composite of several <code>Notifier</code> devices to execute action on for the
      * <code>when provided PropositionGoOut</code> interaction contract.
-    <p>
-    ------------------------------------------------------------
-    ActivityNotifier					||
-    ------------------------------------------------------------
     
     <pre>
-    device ActivityNotifier extends SoftwareSensor {
-     * 	source dailyActivity as DailyActivity;
-     * 	source periodActivity as PeriodActivity;
-     * 	action NotifyActivity;
+    device Notifier extends HomeService {
+     * 	source cancelled as Boolean indexed by id as String;
+     * 	source expired as Boolean indexed by id as String;
+     * 	source reply as Integer indexed by id as String;
+     * 	action SendCriticalNotification;
+     * 	action SendNonCriticalNotification;
      * }
     </pre>
      */
-    protected final static class ActivityNotifierCompositeForPropositionGoOut extends fr.inria.diagen.core.service.composite.Composite<ActivityNotifierProxyForPropositionGoOut> {
-        private ActivityNotifierCompositeForPropositionGoOut(Service serviceParent) {
-            super(serviceParent, "/Device/Device/Service/SoftwareSensor/ActivityNotifier/");
+    protected final static class NotifierCompositeForPropositionGoOut extends fr.inria.diagen.core.service.composite.Composite<NotifierProxyForPropositionGoOut> {
+        private NotifierCompositeForPropositionGoOut(Service serviceParent) {
+            super(serviceParent, "/Device/Device/Service/HomeService/Notifier/");
         }
         
         @Override
-        protected ActivityNotifierProxyForPropositionGoOut instantiateProxy(RemoteServiceInfo rsi) {
-            return new ActivityNotifierProxyForPropositionGoOut(service, rsi);
+        protected NotifierProxyForPropositionGoOut instantiateProxy(RemoteServiceInfo rsi) {
+            return new NotifierProxyForPropositionGoOut(service, rsi);
         }
         
         /**
          * Returns this composite in which a filter was set to the attribute <code>id</code>.
          * 
          * @param id The <code>id<code> attribute value to match.
-         * @return this {@link ActivityNotifierCompositeForPropositionGoOut}, filtered using the attribute <code>id</code>.
+         * @return this {@link NotifierCompositeForPropositionGoOut}, filtered using the attribute <code>id</code>.
          */
-        public ActivityNotifierCompositeForPropositionGoOut andId(java.lang.String id) throws CompositeException {
+        public NotifierCompositeForPropositionGoOut andId(java.lang.String id) throws CompositeException {
             filterByAttribute("id", id);
             return this;
         }
         
         /**
-         * Executes the <code>notifyDailyActivity(activity as DailyActivity)</code> action's method on all devices of this composite.
+         * Executes the <code>sendCriticalNotification(notification as CriticalNotification)</code> action's method on all devices of this composite.
          * 
-         * @param activity the <code>activity</code> parameter of the <code>notifyDailyActivity(activity as DailyActivity)</code> method.
+         * @param notification the <code>notification</code> parameter of the <code>sendCriticalNotification(notification as CriticalNotification)</code> method.
          */
-        public void notifyDailyActivity(fr.inria.phoenix.diasuite.framework.datatype.dailyactivity.DailyActivity activity) throws InvocationException {
+        public void sendCriticalNotification(fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification notification) throws InvocationException {
             launchDiscovering();
-            for (ActivityNotifierProxyForPropositionGoOut proxy : proxies) {
-                proxy.notifyDailyActivity(activity);
+            for (NotifierProxyForPropositionGoOut proxy : proxies) {
+                proxy.sendCriticalNotification(notification);
             }
         }
         
         /**
-         * Executes the <code>notifyPeriodActivity(activity as PeriodActivity)</code> action's method on all devices of this composite.
+         * Executes the <code>registerCriticalNotification(notification as CriticalNotification, displayDate as Date)</code> action's method on all devices of this composite.
          * 
-         * @param activity the <code>activity</code> parameter of the <code>notifyPeriodActivity(activity as PeriodActivity)</code> method.
+         * @param notification the <code>notification</code> parameter of the <code>registerCriticalNotification(notification as CriticalNotification, displayDate as Date)</code> method.
+         * @param displayDate the <code>displayDate</code> parameter of the <code>registerCriticalNotification(notification as CriticalNotification, displayDate as Date)</code> method.
          */
-        public void notifyPeriodActivity(fr.inria.phoenix.diasuite.framework.datatype.periodactivity.PeriodActivity activity) throws InvocationException {
+        public void registerCriticalNotification(fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification notification,
+                fr.inria.phoenix.diasuite.framework.datatype.date.Date displayDate) throws InvocationException {
             launchDiscovering();
-            for (ActivityNotifierProxyForPropositionGoOut proxy : proxies) {
-                proxy.notifyPeriodActivity(activity);
+            for (NotifierProxyForPropositionGoOut proxy : proxies) {
+                proxy.registerCriticalNotification(notification, displayDate);
+            }
+        }
+        
+        /**
+         * Executes the <code>cancelCriticalNotification(id as String)</code> action's method on all devices of this composite.
+         * 
+         * @param id the <code>id</code> parameter of the <code>cancelCriticalNotification(id as String)</code> method.
+         */
+        public void cancelCriticalNotification(java.lang.String id) throws InvocationException {
+            launchDiscovering();
+            for (NotifierProxyForPropositionGoOut proxy : proxies) {
+                proxy.cancelCriticalNotification(id);
             }
         }
     }
     
     /**
-     * A proxy to one <code>ActivityNotifier</code> device to execute action on for the
+     * A proxy to one <code>Notifier</code> device to execute action on for the
      * <code>when provided PropositionGoOut</code> interaction contract.
-    <p>
-    ------------------------------------------------------------
-    ActivityNotifier					||
-    ------------------------------------------------------------
     
     <pre>
-    device ActivityNotifier extends SoftwareSensor {
-     * 	source dailyActivity as DailyActivity;
-     * 	source periodActivity as PeriodActivity;
-     * 	action NotifyActivity;
+    device Notifier extends HomeService {
+     * 	source cancelled as Boolean indexed by id as String;
+     * 	source expired as Boolean indexed by id as String;
+     * 	source reply as Integer indexed by id as String;
+     * 	action SendCriticalNotification;
+     * 	action SendNonCriticalNotification;
      * }
     </pre>
      */
-    protected final static class ActivityNotifierProxyForPropositionGoOut extends Proxy {
-        private ActivityNotifierProxyForPropositionGoOut(Service service, RemoteServiceInfo remoteServiceInfo) {
+    protected final static class NotifierProxyForPropositionGoOut extends Proxy {
+        private NotifierProxyForPropositionGoOut(Service service, RemoteServiceInfo remoteServiceInfo) {
             super(service, remoteServiceInfo);
         }
         
         /**
-         * Executes the <code>notifyDailyActivity(activity as DailyActivity)</code> action's method on this device.
+         * Executes the <code>sendCriticalNotification(notification as CriticalNotification)</code> action's method on this device.
          * 
-         * @param activity the <code>activity</code> parameter of the <code>notifyDailyActivity(activity as DailyActivity)</code> method.
+         * @param notification the <code>notification</code> parameter of the <code>sendCriticalNotification(notification as CriticalNotification)</code> method.
          */
-        public void notifyDailyActivity(fr.inria.phoenix.diasuite.framework.datatype.dailyactivity.DailyActivity activity) throws InvocationException {
-            callOrder("notifyDailyActivity", activity);
+        public void sendCriticalNotification(fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification notification) throws InvocationException {
+            callOrder("sendCriticalNotification", notification);
         }
         
         /**
-         * Executes the <code>notifyPeriodActivity(activity as PeriodActivity)</code> action's method on this device.
+         * Executes the <code>registerCriticalNotification(notification as CriticalNotification, displayDate as Date)</code> action's method on this device.
          * 
-         * @param activity the <code>activity</code> parameter of the <code>notifyPeriodActivity(activity as PeriodActivity)</code> method.
+         * @param notification the <code>notification</code> parameter of the <code>registerCriticalNotification(notification as CriticalNotification, displayDate as Date)</code> method.
+         * @param displayDate the <code>displayDate</code> parameter of the <code>registerCriticalNotification(notification as CriticalNotification, displayDate as Date)</code> method.
          */
-        public void notifyPeriodActivity(fr.inria.phoenix.diasuite.framework.datatype.periodactivity.PeriodActivity activity) throws InvocationException {
-            callOrder("notifyPeriodActivity", activity);
+        public void registerCriticalNotification(fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification notification,
+                fr.inria.phoenix.diasuite.framework.datatype.date.Date displayDate) throws InvocationException {
+            callOrder("registerCriticalNotification", notification, displayDate);
+        }
+        
+        /**
+         * Executes the <code>cancelCriticalNotification(id as String)</code> action's method on this device.
+         * 
+         * @param id the <code>id</code> parameter of the <code>cancelCriticalNotification(id as String)</code> method.
+         */
+        public void cancelCriticalNotification(java.lang.String id) throws InvocationException {
+            callOrder("cancelCriticalNotification", id);
         }
         
         /**
@@ -318,176 +315,195 @@ public abstract class AbstractCoach_activityController extends Service {
      * 
      * <code>
      * when provided Congratulation
-     * 	do NotifyActivity on ActivityNotifier;
+     * 	do SendCriticalNotification on Notifier;
      * </code>
      */
     protected final class DiscoverForCongratulation {
-        private final ActivityNotifierDiscovererForCongratulation activityNotifierDiscoverer = new ActivityNotifierDiscovererForCongratulation(AbstractCoach_activityController.this);
+        private final NotifierDiscovererForCongratulation notifierDiscoverer = new NotifierDiscovererForCongratulation(AbstractCoach_activityController.this);
         
         /**
-         * @return a {@link ActivityNotifierDiscovererForCongratulation} object to discover <code>ActivityNotifier</code> devices
+         * @return a {@link NotifierDiscovererForCongratulation} object to discover <code>Notifier</code> devices
          */
-        public ActivityNotifierDiscovererForCongratulation activityNotifiers() {
-            return activityNotifierDiscoverer;
+        public NotifierDiscovererForCongratulation notifiers() {
+            return notifierDiscoverer;
         }
     }
     
     /**
-     * Discover object that will exposes the <code>ActivityNotifier</code> devices to execute action on for the
+     * Discover object that will exposes the <code>Notifier</code> devices to execute action on for the
      * <code>when provided Congratulation</code> interaction contract.
-    <p>
-    ------------------------------------------------------------
-    ActivityNotifier					||
-    ------------------------------------------------------------
     
     <pre>
-    device ActivityNotifier extends SoftwareSensor {
-     * 	source dailyActivity as DailyActivity;
-     * 	source periodActivity as PeriodActivity;
-     * 	action NotifyActivity;
+    device Notifier extends HomeService {
+     * 	source cancelled as Boolean indexed by id as String;
+     * 	source expired as Boolean indexed by id as String;
+     * 	source reply as Integer indexed by id as String;
+     * 	action SendCriticalNotification;
+     * 	action SendNonCriticalNotification;
      * }
     </pre>
      */
-    protected final static class ActivityNotifierDiscovererForCongratulation {
+    protected final static class NotifierDiscovererForCongratulation {
         private Service serviceParent;
         
-        private ActivityNotifierDiscovererForCongratulation(Service serviceParent) {
+        private NotifierDiscovererForCongratulation(Service serviceParent) {
             super();
             this.serviceParent = serviceParent;
         }
         
-        private ActivityNotifierCompositeForCongratulation instantiateComposite() {
-            return new ActivityNotifierCompositeForCongratulation(serviceParent);
+        private NotifierCompositeForCongratulation instantiateComposite() {
+            return new NotifierCompositeForCongratulation(serviceParent);
         }
         
         /**
-         * Returns a composite of all accessible <code>ActivityNotifier</code> devices
+         * Returns a composite of all accessible <code>Notifier</code> devices
          * 
-         * @return a {@link ActivityNotifierCompositeForCongratulation} object composed of all discoverable <code>ActivityNotifier</code>
+         * @return a {@link NotifierCompositeForCongratulation} object composed of all discoverable <code>Notifier</code>
          */
-        public ActivityNotifierCompositeForCongratulation all() {
+        public NotifierCompositeForCongratulation all() {
             return instantiateComposite();
         }
         
         /**
-         * Returns a proxy to one out of all accessible <code>ActivityNotifier</code> devices
+         * Returns a proxy to one out of all accessible <code>Notifier</code> devices
          * 
-         * @return a {@link ActivityNotifierProxyForCongratulation} object pointing to a random discoverable <code>ActivityNotifier</code> device
+         * @return a {@link NotifierProxyForCongratulation} object pointing to a random discoverable <code>Notifier</code> device
          */
-        public ActivityNotifierProxyForCongratulation anyOne() {
+        public NotifierProxyForCongratulation anyOne() {
             return all().anyOne();
         }
         
         /**
-         * Returns a composite of all accessible <code>ActivityNotifier</code> devices whose attribute <code>id</code> matches a given value.
+         * Returns a composite of all accessible <code>Notifier</code> devices whose attribute <code>id</code> matches a given value.
          * 
          * @param id The <code>id<code> attribute value to match.
-         * @return a {@link ActivityNotifierCompositeForCongratulation} object composed of all matching <code>ActivityNotifier</code> devices
+         * @return a {@link NotifierCompositeForCongratulation} object composed of all matching <code>Notifier</code> devices
          */
-        public ActivityNotifierCompositeForCongratulation whereId(java.lang.String id) throws CompositeException {
+        public NotifierCompositeForCongratulation whereId(java.lang.String id) throws CompositeException {
             return instantiateComposite().andId(id);
         }
     }
     
     /**
-     * A composite of several <code>ActivityNotifier</code> devices to execute action on for the
+     * A composite of several <code>Notifier</code> devices to execute action on for the
      * <code>when provided Congratulation</code> interaction contract.
-    <p>
-    ------------------------------------------------------------
-    ActivityNotifier					||
-    ------------------------------------------------------------
     
     <pre>
-    device ActivityNotifier extends SoftwareSensor {
-     * 	source dailyActivity as DailyActivity;
-     * 	source periodActivity as PeriodActivity;
-     * 	action NotifyActivity;
+    device Notifier extends HomeService {
+     * 	source cancelled as Boolean indexed by id as String;
+     * 	source expired as Boolean indexed by id as String;
+     * 	source reply as Integer indexed by id as String;
+     * 	action SendCriticalNotification;
+     * 	action SendNonCriticalNotification;
      * }
     </pre>
      */
-    protected final static class ActivityNotifierCompositeForCongratulation extends fr.inria.diagen.core.service.composite.Composite<ActivityNotifierProxyForCongratulation> {
-        private ActivityNotifierCompositeForCongratulation(Service serviceParent) {
-            super(serviceParent, "/Device/Device/Service/SoftwareSensor/ActivityNotifier/");
+    protected final static class NotifierCompositeForCongratulation extends fr.inria.diagen.core.service.composite.Composite<NotifierProxyForCongratulation> {
+        private NotifierCompositeForCongratulation(Service serviceParent) {
+            super(serviceParent, "/Device/Device/Service/HomeService/Notifier/");
         }
         
         @Override
-        protected ActivityNotifierProxyForCongratulation instantiateProxy(RemoteServiceInfo rsi) {
-            return new ActivityNotifierProxyForCongratulation(service, rsi);
+        protected NotifierProxyForCongratulation instantiateProxy(RemoteServiceInfo rsi) {
+            return new NotifierProxyForCongratulation(service, rsi);
         }
         
         /**
          * Returns this composite in which a filter was set to the attribute <code>id</code>.
          * 
          * @param id The <code>id<code> attribute value to match.
-         * @return this {@link ActivityNotifierCompositeForCongratulation}, filtered using the attribute <code>id</code>.
+         * @return this {@link NotifierCompositeForCongratulation}, filtered using the attribute <code>id</code>.
          */
-        public ActivityNotifierCompositeForCongratulation andId(java.lang.String id) throws CompositeException {
+        public NotifierCompositeForCongratulation andId(java.lang.String id) throws CompositeException {
             filterByAttribute("id", id);
             return this;
         }
         
         /**
-         * Executes the <code>notifyDailyActivity(activity as DailyActivity)</code> action's method on all devices of this composite.
+         * Executes the <code>sendCriticalNotification(notification as CriticalNotification)</code> action's method on all devices of this composite.
          * 
-         * @param activity the <code>activity</code> parameter of the <code>notifyDailyActivity(activity as DailyActivity)</code> method.
+         * @param notification the <code>notification</code> parameter of the <code>sendCriticalNotification(notification as CriticalNotification)</code> method.
          */
-        public void notifyDailyActivity(fr.inria.phoenix.diasuite.framework.datatype.dailyactivity.DailyActivity activity) throws InvocationException {
+        public void sendCriticalNotification(fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification notification) throws InvocationException {
             launchDiscovering();
-            for (ActivityNotifierProxyForCongratulation proxy : proxies) {
-                proxy.notifyDailyActivity(activity);
+            for (NotifierProxyForCongratulation proxy : proxies) {
+                proxy.sendCriticalNotification(notification);
             }
         }
         
         /**
-         * Executes the <code>notifyPeriodActivity(activity as PeriodActivity)</code> action's method on all devices of this composite.
+         * Executes the <code>registerCriticalNotification(notification as CriticalNotification, displayDate as Date)</code> action's method on all devices of this composite.
          * 
-         * @param activity the <code>activity</code> parameter of the <code>notifyPeriodActivity(activity as PeriodActivity)</code> method.
+         * @param notification the <code>notification</code> parameter of the <code>registerCriticalNotification(notification as CriticalNotification, displayDate as Date)</code> method.
+         * @param displayDate the <code>displayDate</code> parameter of the <code>registerCriticalNotification(notification as CriticalNotification, displayDate as Date)</code> method.
          */
-        public void notifyPeriodActivity(fr.inria.phoenix.diasuite.framework.datatype.periodactivity.PeriodActivity activity) throws InvocationException {
+        public void registerCriticalNotification(fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification notification,
+                fr.inria.phoenix.diasuite.framework.datatype.date.Date displayDate) throws InvocationException {
             launchDiscovering();
-            for (ActivityNotifierProxyForCongratulation proxy : proxies) {
-                proxy.notifyPeriodActivity(activity);
+            for (NotifierProxyForCongratulation proxy : proxies) {
+                proxy.registerCriticalNotification(notification, displayDate);
+            }
+        }
+        
+        /**
+         * Executes the <code>cancelCriticalNotification(id as String)</code> action's method on all devices of this composite.
+         * 
+         * @param id the <code>id</code> parameter of the <code>cancelCriticalNotification(id as String)</code> method.
+         */
+        public void cancelCriticalNotification(java.lang.String id) throws InvocationException {
+            launchDiscovering();
+            for (NotifierProxyForCongratulation proxy : proxies) {
+                proxy.cancelCriticalNotification(id);
             }
         }
     }
     
     /**
-     * A proxy to one <code>ActivityNotifier</code> device to execute action on for the
+     * A proxy to one <code>Notifier</code> device to execute action on for the
      * <code>when provided Congratulation</code> interaction contract.
-    <p>
-    ------------------------------------------------------------
-    ActivityNotifier					||
-    ------------------------------------------------------------
     
     <pre>
-    device ActivityNotifier extends SoftwareSensor {
-     * 	source dailyActivity as DailyActivity;
-     * 	source periodActivity as PeriodActivity;
-     * 	action NotifyActivity;
+    device Notifier extends HomeService {
+     * 	source cancelled as Boolean indexed by id as String;
+     * 	source expired as Boolean indexed by id as String;
+     * 	source reply as Integer indexed by id as String;
+     * 	action SendCriticalNotification;
+     * 	action SendNonCriticalNotification;
      * }
     </pre>
      */
-    protected final static class ActivityNotifierProxyForCongratulation extends Proxy {
-        private ActivityNotifierProxyForCongratulation(Service service, RemoteServiceInfo remoteServiceInfo) {
+    protected final static class NotifierProxyForCongratulation extends Proxy {
+        private NotifierProxyForCongratulation(Service service, RemoteServiceInfo remoteServiceInfo) {
             super(service, remoteServiceInfo);
         }
         
         /**
-         * Executes the <code>notifyDailyActivity(activity as DailyActivity)</code> action's method on this device.
+         * Executes the <code>sendCriticalNotification(notification as CriticalNotification)</code> action's method on this device.
          * 
-         * @param activity the <code>activity</code> parameter of the <code>notifyDailyActivity(activity as DailyActivity)</code> method.
+         * @param notification the <code>notification</code> parameter of the <code>sendCriticalNotification(notification as CriticalNotification)</code> method.
          */
-        public void notifyDailyActivity(fr.inria.phoenix.diasuite.framework.datatype.dailyactivity.DailyActivity activity) throws InvocationException {
-            callOrder("notifyDailyActivity", activity);
+        public void sendCriticalNotification(fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification notification) throws InvocationException {
+            callOrder("sendCriticalNotification", notification);
         }
         
         /**
-         * Executes the <code>notifyPeriodActivity(activity as PeriodActivity)</code> action's method on this device.
+         * Executes the <code>registerCriticalNotification(notification as CriticalNotification, displayDate as Date)</code> action's method on this device.
          * 
-         * @param activity the <code>activity</code> parameter of the <code>notifyPeriodActivity(activity as PeriodActivity)</code> method.
+         * @param notification the <code>notification</code> parameter of the <code>registerCriticalNotification(notification as CriticalNotification, displayDate as Date)</code> method.
+         * @param displayDate the <code>displayDate</code> parameter of the <code>registerCriticalNotification(notification as CriticalNotification, displayDate as Date)</code> method.
          */
-        public void notifyPeriodActivity(fr.inria.phoenix.diasuite.framework.datatype.periodactivity.PeriodActivity activity) throws InvocationException {
-            callOrder("notifyPeriodActivity", activity);
+        public void registerCriticalNotification(fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification notification,
+                fr.inria.phoenix.diasuite.framework.datatype.date.Date displayDate) throws InvocationException {
+            callOrder("registerCriticalNotification", notification, displayDate);
+        }
+        
+        /**
+         * Executes the <code>cancelCriticalNotification(id as String)</code> action's method on this device.
+         * 
+         * @param id the <code>id</code> parameter of the <code>cancelCriticalNotification(id as String)</code> method.
+         */
+        public void cancelCriticalNotification(java.lang.String id) throws InvocationException {
+            callOrder("cancelCriticalNotification", id);
         }
         
         /**
@@ -499,369 +515,201 @@ public abstract class AbstractCoach_activityController extends Service {
     }
     // End of discover object for Congratulation
     
-    // Discover object for PropositionDActivity
-    /**
-     * An object to discover devices and contexts for the following interaction contract:
-     * 
-     * <code>
-     * when provided PropositionDActivity
-     * 	do NotifyActivity on ActivityNotifier;
-     * </code>
-     */
-    protected final class DiscoverForPropositionDActivity {
-        private final ActivityNotifierDiscovererForPropositionDActivity activityNotifierDiscoverer = new ActivityNotifierDiscovererForPropositionDActivity(AbstractCoach_activityController.this);
-        
-        /**
-         * @return a {@link ActivityNotifierDiscovererForPropositionDActivity} object to discover <code>ActivityNotifier</code> devices
-         */
-        public ActivityNotifierDiscovererForPropositionDActivity activityNotifiers() {
-            return activityNotifierDiscoverer;
-        }
-    }
-    
-    /**
-     * Discover object that will exposes the <code>ActivityNotifier</code> devices to execute action on for the
-     * <code>when provided PropositionDActivity</code> interaction contract.
-    <p>
-    ------------------------------------------------------------
-    ActivityNotifier					||
-    ------------------------------------------------------------
-    
-    <pre>
-    device ActivityNotifier extends SoftwareSensor {
-     * 	source dailyActivity as DailyActivity;
-     * 	source periodActivity as PeriodActivity;
-     * 	action NotifyActivity;
-     * }
-    </pre>
-     */
-    protected final static class ActivityNotifierDiscovererForPropositionDActivity {
-        private Service serviceParent;
-        
-        private ActivityNotifierDiscovererForPropositionDActivity(Service serviceParent) {
-            super();
-            this.serviceParent = serviceParent;
-        }
-        
-        private ActivityNotifierCompositeForPropositionDActivity instantiateComposite() {
-            return new ActivityNotifierCompositeForPropositionDActivity(serviceParent);
-        }
-        
-        /**
-         * Returns a composite of all accessible <code>ActivityNotifier</code> devices
-         * 
-         * @return a {@link ActivityNotifierCompositeForPropositionDActivity} object composed of all discoverable <code>ActivityNotifier</code>
-         */
-        public ActivityNotifierCompositeForPropositionDActivity all() {
-            return instantiateComposite();
-        }
-        
-        /**
-         * Returns a proxy to one out of all accessible <code>ActivityNotifier</code> devices
-         * 
-         * @return a {@link ActivityNotifierProxyForPropositionDActivity} object pointing to a random discoverable <code>ActivityNotifier</code> device
-         */
-        public ActivityNotifierProxyForPropositionDActivity anyOne() {
-            return all().anyOne();
-        }
-        
-        /**
-         * Returns a composite of all accessible <code>ActivityNotifier</code> devices whose attribute <code>id</code> matches a given value.
-         * 
-         * @param id The <code>id<code> attribute value to match.
-         * @return a {@link ActivityNotifierCompositeForPropositionDActivity} object composed of all matching <code>ActivityNotifier</code> devices
-         */
-        public ActivityNotifierCompositeForPropositionDActivity whereId(java.lang.String id) throws CompositeException {
-            return instantiateComposite().andId(id);
-        }
-    }
-    
-    /**
-     * A composite of several <code>ActivityNotifier</code> devices to execute action on for the
-     * <code>when provided PropositionDActivity</code> interaction contract.
-    <p>
-    ------------------------------------------------------------
-    ActivityNotifier					||
-    ------------------------------------------------------------
-    
-    <pre>
-    device ActivityNotifier extends SoftwareSensor {
-     * 	source dailyActivity as DailyActivity;
-     * 	source periodActivity as PeriodActivity;
-     * 	action NotifyActivity;
-     * }
-    </pre>
-     */
-    protected final static class ActivityNotifierCompositeForPropositionDActivity extends fr.inria.diagen.core.service.composite.Composite<ActivityNotifierProxyForPropositionDActivity> {
-        private ActivityNotifierCompositeForPropositionDActivity(Service serviceParent) {
-            super(serviceParent, "/Device/Device/Service/SoftwareSensor/ActivityNotifier/");
-        }
-        
-        @Override
-        protected ActivityNotifierProxyForPropositionDActivity instantiateProxy(RemoteServiceInfo rsi) {
-            return new ActivityNotifierProxyForPropositionDActivity(service, rsi);
-        }
-        
-        /**
-         * Returns this composite in which a filter was set to the attribute <code>id</code>.
-         * 
-         * @param id The <code>id<code> attribute value to match.
-         * @return this {@link ActivityNotifierCompositeForPropositionDActivity}, filtered using the attribute <code>id</code>.
-         */
-        public ActivityNotifierCompositeForPropositionDActivity andId(java.lang.String id) throws CompositeException {
-            filterByAttribute("id", id);
-            return this;
-        }
-        
-        /**
-         * Executes the <code>notifyDailyActivity(activity as DailyActivity)</code> action's method on all devices of this composite.
-         * 
-         * @param activity the <code>activity</code> parameter of the <code>notifyDailyActivity(activity as DailyActivity)</code> method.
-         */
-        public void notifyDailyActivity(fr.inria.phoenix.diasuite.framework.datatype.dailyactivity.DailyActivity activity) throws InvocationException {
-            launchDiscovering();
-            for (ActivityNotifierProxyForPropositionDActivity proxy : proxies) {
-                proxy.notifyDailyActivity(activity);
-            }
-        }
-        
-        /**
-         * Executes the <code>notifyPeriodActivity(activity as PeriodActivity)</code> action's method on all devices of this composite.
-         * 
-         * @param activity the <code>activity</code> parameter of the <code>notifyPeriodActivity(activity as PeriodActivity)</code> method.
-         */
-        public void notifyPeriodActivity(fr.inria.phoenix.diasuite.framework.datatype.periodactivity.PeriodActivity activity) throws InvocationException {
-            launchDiscovering();
-            for (ActivityNotifierProxyForPropositionDActivity proxy : proxies) {
-                proxy.notifyPeriodActivity(activity);
-            }
-        }
-    }
-    
-    /**
-     * A proxy to one <code>ActivityNotifier</code> device to execute action on for the
-     * <code>when provided PropositionDActivity</code> interaction contract.
-    <p>
-    ------------------------------------------------------------
-    ActivityNotifier					||
-    ------------------------------------------------------------
-    
-    <pre>
-    device ActivityNotifier extends SoftwareSensor {
-     * 	source dailyActivity as DailyActivity;
-     * 	source periodActivity as PeriodActivity;
-     * 	action NotifyActivity;
-     * }
-    </pre>
-     */
-    protected final static class ActivityNotifierProxyForPropositionDActivity extends Proxy {
-        private ActivityNotifierProxyForPropositionDActivity(Service service, RemoteServiceInfo remoteServiceInfo) {
-            super(service, remoteServiceInfo);
-        }
-        
-        /**
-         * Executes the <code>notifyDailyActivity(activity as DailyActivity)</code> action's method on this device.
-         * 
-         * @param activity the <code>activity</code> parameter of the <code>notifyDailyActivity(activity as DailyActivity)</code> method.
-         */
-        public void notifyDailyActivity(fr.inria.phoenix.diasuite.framework.datatype.dailyactivity.DailyActivity activity) throws InvocationException {
-            callOrder("notifyDailyActivity", activity);
-        }
-        
-        /**
-         * Executes the <code>notifyPeriodActivity(activity as PeriodActivity)</code> action's method on this device.
-         * 
-         * @param activity the <code>activity</code> parameter of the <code>notifyPeriodActivity(activity as PeriodActivity)</code> method.
-         */
-        public void notifyPeriodActivity(fr.inria.phoenix.diasuite.framework.datatype.periodactivity.PeriodActivity activity) throws InvocationException {
-            callOrder("notifyPeriodActivity", activity);
-        }
-        
-        /**
-         * @return the value of the <code>id</code> attribute
-         */
-        public java.lang.String id() {
-            return (java.lang.String) callGetValue("id");
-        }
-    }
-    // End of discover object for PropositionDActivity
-    
     // Discover object for AlertMove
     /**
      * An object to discover devices and contexts for the following interaction contract:
      * 
      * <code>
      * when provided AlertMove
-     * 	do NotifyActivity on ActivityNotifier;
+     * 	do SendCriticalNotification on Notifier;
      * </code>
      */
     protected final class DiscoverForAlertMove {
-        private final ActivityNotifierDiscovererForAlertMove activityNotifierDiscoverer = new ActivityNotifierDiscovererForAlertMove(AbstractCoach_activityController.this);
+        private final NotifierDiscovererForAlertMove notifierDiscoverer = new NotifierDiscovererForAlertMove(AbstractCoach_activityController.this);
         
         /**
-         * @return a {@link ActivityNotifierDiscovererForAlertMove} object to discover <code>ActivityNotifier</code> devices
+         * @return a {@link NotifierDiscovererForAlertMove} object to discover <code>Notifier</code> devices
          */
-        public ActivityNotifierDiscovererForAlertMove activityNotifiers() {
-            return activityNotifierDiscoverer;
+        public NotifierDiscovererForAlertMove notifiers() {
+            return notifierDiscoverer;
         }
     }
     
     /**
-     * Discover object that will exposes the <code>ActivityNotifier</code> devices to execute action on for the
+     * Discover object that will exposes the <code>Notifier</code> devices to execute action on for the
      * <code>when provided AlertMove</code> interaction contract.
-    <p>
-    ------------------------------------------------------------
-    ActivityNotifier					||
-    ------------------------------------------------------------
     
     <pre>
-    device ActivityNotifier extends SoftwareSensor {
-     * 	source dailyActivity as DailyActivity;
-     * 	source periodActivity as PeriodActivity;
-     * 	action NotifyActivity;
+    device Notifier extends HomeService {
+     * 	source cancelled as Boolean indexed by id as String;
+     * 	source expired as Boolean indexed by id as String;
+     * 	source reply as Integer indexed by id as String;
+     * 	action SendCriticalNotification;
+     * 	action SendNonCriticalNotification;
      * }
     </pre>
      */
-    protected final static class ActivityNotifierDiscovererForAlertMove {
+    protected final static class NotifierDiscovererForAlertMove {
         private Service serviceParent;
         
-        private ActivityNotifierDiscovererForAlertMove(Service serviceParent) {
+        private NotifierDiscovererForAlertMove(Service serviceParent) {
             super();
             this.serviceParent = serviceParent;
         }
         
-        private ActivityNotifierCompositeForAlertMove instantiateComposite() {
-            return new ActivityNotifierCompositeForAlertMove(serviceParent);
+        private NotifierCompositeForAlertMove instantiateComposite() {
+            return new NotifierCompositeForAlertMove(serviceParent);
         }
         
         /**
-         * Returns a composite of all accessible <code>ActivityNotifier</code> devices
+         * Returns a composite of all accessible <code>Notifier</code> devices
          * 
-         * @return a {@link ActivityNotifierCompositeForAlertMove} object composed of all discoverable <code>ActivityNotifier</code>
+         * @return a {@link NotifierCompositeForAlertMove} object composed of all discoverable <code>Notifier</code>
          */
-        public ActivityNotifierCompositeForAlertMove all() {
+        public NotifierCompositeForAlertMove all() {
             return instantiateComposite();
         }
         
         /**
-         * Returns a proxy to one out of all accessible <code>ActivityNotifier</code> devices
+         * Returns a proxy to one out of all accessible <code>Notifier</code> devices
          * 
-         * @return a {@link ActivityNotifierProxyForAlertMove} object pointing to a random discoverable <code>ActivityNotifier</code> device
+         * @return a {@link NotifierProxyForAlertMove} object pointing to a random discoverable <code>Notifier</code> device
          */
-        public ActivityNotifierProxyForAlertMove anyOne() {
+        public NotifierProxyForAlertMove anyOne() {
             return all().anyOne();
         }
         
         /**
-         * Returns a composite of all accessible <code>ActivityNotifier</code> devices whose attribute <code>id</code> matches a given value.
+         * Returns a composite of all accessible <code>Notifier</code> devices whose attribute <code>id</code> matches a given value.
          * 
          * @param id The <code>id<code> attribute value to match.
-         * @return a {@link ActivityNotifierCompositeForAlertMove} object composed of all matching <code>ActivityNotifier</code> devices
+         * @return a {@link NotifierCompositeForAlertMove} object composed of all matching <code>Notifier</code> devices
          */
-        public ActivityNotifierCompositeForAlertMove whereId(java.lang.String id) throws CompositeException {
+        public NotifierCompositeForAlertMove whereId(java.lang.String id) throws CompositeException {
             return instantiateComposite().andId(id);
         }
     }
     
     /**
-     * A composite of several <code>ActivityNotifier</code> devices to execute action on for the
+     * A composite of several <code>Notifier</code> devices to execute action on for the
      * <code>when provided AlertMove</code> interaction contract.
-    <p>
-    ------------------------------------------------------------
-    ActivityNotifier					||
-    ------------------------------------------------------------
     
     <pre>
-    device ActivityNotifier extends SoftwareSensor {
-     * 	source dailyActivity as DailyActivity;
-     * 	source periodActivity as PeriodActivity;
-     * 	action NotifyActivity;
+    device Notifier extends HomeService {
+     * 	source cancelled as Boolean indexed by id as String;
+     * 	source expired as Boolean indexed by id as String;
+     * 	source reply as Integer indexed by id as String;
+     * 	action SendCriticalNotification;
+     * 	action SendNonCriticalNotification;
      * }
     </pre>
      */
-    protected final static class ActivityNotifierCompositeForAlertMove extends fr.inria.diagen.core.service.composite.Composite<ActivityNotifierProxyForAlertMove> {
-        private ActivityNotifierCompositeForAlertMove(Service serviceParent) {
-            super(serviceParent, "/Device/Device/Service/SoftwareSensor/ActivityNotifier/");
+    protected final static class NotifierCompositeForAlertMove extends fr.inria.diagen.core.service.composite.Composite<NotifierProxyForAlertMove> {
+        private NotifierCompositeForAlertMove(Service serviceParent) {
+            super(serviceParent, "/Device/Device/Service/HomeService/Notifier/");
         }
         
         @Override
-        protected ActivityNotifierProxyForAlertMove instantiateProxy(RemoteServiceInfo rsi) {
-            return new ActivityNotifierProxyForAlertMove(service, rsi);
+        protected NotifierProxyForAlertMove instantiateProxy(RemoteServiceInfo rsi) {
+            return new NotifierProxyForAlertMove(service, rsi);
         }
         
         /**
          * Returns this composite in which a filter was set to the attribute <code>id</code>.
          * 
          * @param id The <code>id<code> attribute value to match.
-         * @return this {@link ActivityNotifierCompositeForAlertMove}, filtered using the attribute <code>id</code>.
+         * @return this {@link NotifierCompositeForAlertMove}, filtered using the attribute <code>id</code>.
          */
-        public ActivityNotifierCompositeForAlertMove andId(java.lang.String id) throws CompositeException {
+        public NotifierCompositeForAlertMove andId(java.lang.String id) throws CompositeException {
             filterByAttribute("id", id);
             return this;
         }
         
         /**
-         * Executes the <code>notifyDailyActivity(activity as DailyActivity)</code> action's method on all devices of this composite.
+         * Executes the <code>sendCriticalNotification(notification as CriticalNotification)</code> action's method on all devices of this composite.
          * 
-         * @param activity the <code>activity</code> parameter of the <code>notifyDailyActivity(activity as DailyActivity)</code> method.
+         * @param notification the <code>notification</code> parameter of the <code>sendCriticalNotification(notification as CriticalNotification)</code> method.
          */
-        public void notifyDailyActivity(fr.inria.phoenix.diasuite.framework.datatype.dailyactivity.DailyActivity activity) throws InvocationException {
+        public void sendCriticalNotification(fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification notification) throws InvocationException {
             launchDiscovering();
-            for (ActivityNotifierProxyForAlertMove proxy : proxies) {
-                proxy.notifyDailyActivity(activity);
+            for (NotifierProxyForAlertMove proxy : proxies) {
+                proxy.sendCriticalNotification(notification);
             }
         }
         
         /**
-         * Executes the <code>notifyPeriodActivity(activity as PeriodActivity)</code> action's method on all devices of this composite.
+         * Executes the <code>registerCriticalNotification(notification as CriticalNotification, displayDate as Date)</code> action's method on all devices of this composite.
          * 
-         * @param activity the <code>activity</code> parameter of the <code>notifyPeriodActivity(activity as PeriodActivity)</code> method.
+         * @param notification the <code>notification</code> parameter of the <code>registerCriticalNotification(notification as CriticalNotification, displayDate as Date)</code> method.
+         * @param displayDate the <code>displayDate</code> parameter of the <code>registerCriticalNotification(notification as CriticalNotification, displayDate as Date)</code> method.
          */
-        public void notifyPeriodActivity(fr.inria.phoenix.diasuite.framework.datatype.periodactivity.PeriodActivity activity) throws InvocationException {
+        public void registerCriticalNotification(fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification notification,
+                fr.inria.phoenix.diasuite.framework.datatype.date.Date displayDate) throws InvocationException {
             launchDiscovering();
-            for (ActivityNotifierProxyForAlertMove proxy : proxies) {
-                proxy.notifyPeriodActivity(activity);
+            for (NotifierProxyForAlertMove proxy : proxies) {
+                proxy.registerCriticalNotification(notification, displayDate);
+            }
+        }
+        
+        /**
+         * Executes the <code>cancelCriticalNotification(id as String)</code> action's method on all devices of this composite.
+         * 
+         * @param id the <code>id</code> parameter of the <code>cancelCriticalNotification(id as String)</code> method.
+         */
+        public void cancelCriticalNotification(java.lang.String id) throws InvocationException {
+            launchDiscovering();
+            for (NotifierProxyForAlertMove proxy : proxies) {
+                proxy.cancelCriticalNotification(id);
             }
         }
     }
     
     /**
-     * A proxy to one <code>ActivityNotifier</code> device to execute action on for the
+     * A proxy to one <code>Notifier</code> device to execute action on for the
      * <code>when provided AlertMove</code> interaction contract.
-    <p>
-    ------------------------------------------------------------
-    ActivityNotifier					||
-    ------------------------------------------------------------
     
     <pre>
-    device ActivityNotifier extends SoftwareSensor {
-     * 	source dailyActivity as DailyActivity;
-     * 	source periodActivity as PeriodActivity;
-     * 	action NotifyActivity;
+    device Notifier extends HomeService {
+     * 	source cancelled as Boolean indexed by id as String;
+     * 	source expired as Boolean indexed by id as String;
+     * 	source reply as Integer indexed by id as String;
+     * 	action SendCriticalNotification;
+     * 	action SendNonCriticalNotification;
      * }
     </pre>
      */
-    protected final static class ActivityNotifierProxyForAlertMove extends Proxy {
-        private ActivityNotifierProxyForAlertMove(Service service, RemoteServiceInfo remoteServiceInfo) {
+    protected final static class NotifierProxyForAlertMove extends Proxy {
+        private NotifierProxyForAlertMove(Service service, RemoteServiceInfo remoteServiceInfo) {
             super(service, remoteServiceInfo);
         }
         
         /**
-         * Executes the <code>notifyDailyActivity(activity as DailyActivity)</code> action's method on this device.
+         * Executes the <code>sendCriticalNotification(notification as CriticalNotification)</code> action's method on this device.
          * 
-         * @param activity the <code>activity</code> parameter of the <code>notifyDailyActivity(activity as DailyActivity)</code> method.
+         * @param notification the <code>notification</code> parameter of the <code>sendCriticalNotification(notification as CriticalNotification)</code> method.
          */
-        public void notifyDailyActivity(fr.inria.phoenix.diasuite.framework.datatype.dailyactivity.DailyActivity activity) throws InvocationException {
-            callOrder("notifyDailyActivity", activity);
+        public void sendCriticalNotification(fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification notification) throws InvocationException {
+            callOrder("sendCriticalNotification", notification);
         }
         
         /**
-         * Executes the <code>notifyPeriodActivity(activity as PeriodActivity)</code> action's method on this device.
+         * Executes the <code>registerCriticalNotification(notification as CriticalNotification, displayDate as Date)</code> action's method on this device.
          * 
-         * @param activity the <code>activity</code> parameter of the <code>notifyPeriodActivity(activity as PeriodActivity)</code> method.
+         * @param notification the <code>notification</code> parameter of the <code>registerCriticalNotification(notification as CriticalNotification, displayDate as Date)</code> method.
+         * @param displayDate the <code>displayDate</code> parameter of the <code>registerCriticalNotification(notification as CriticalNotification, displayDate as Date)</code> method.
          */
-        public void notifyPeriodActivity(fr.inria.phoenix.diasuite.framework.datatype.periodactivity.PeriodActivity activity) throws InvocationException {
-            callOrder("notifyPeriodActivity", activity);
+        public void registerCriticalNotification(fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.CriticalNotification notification,
+                fr.inria.phoenix.diasuite.framework.datatype.date.Date displayDate) throws InvocationException {
+            callOrder("registerCriticalNotification", notification, displayDate);
+        }
+        
+        /**
+         * Executes the <code>cancelCriticalNotification(id as String)</code> action's method on this device.
+         * 
+         * @param id the <code>id</code> parameter of the <code>cancelCriticalNotification(id as String)</code> method.
+         */
+        public void cancelCriticalNotification(java.lang.String id) throws InvocationException {
+            callOrder("cancelCriticalNotification", id);
         }
         
         /**
