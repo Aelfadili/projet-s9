@@ -6,7 +6,7 @@ import java.io.Serializable;
  * An object to store a value published by the context <code>Sleep</code>.
  *
  * <pre>
- * context Sleep as String {
+ * context Sleep as Period[] {
  * 	when provided inactivityLevel from InactivitySensor 
  * 		get currentTime from RoutineScheduler,
  * 		lastInteraction from InactivitySensor
@@ -17,18 +17,18 @@ import java.io.Serializable;
 public final class SleepValue implements Serializable {
     private static final long serialVersionUID = 0;
     
-    private java.lang.String value;
+    private java.util.List<fr.inria.phoenix.diasuite.framework.datatype.period.Period> value;
     
     /**
      * Get the value of the context <code>Sleep</code>
      * 
      * @return the value of the context <code>Sleep</code>
      */
-    public java.lang.String value() {
+    public java.util.List<fr.inria.phoenix.diasuite.framework.datatype.period.Period> value() {
         return value;
     }
     
-    public SleepValue(java.lang.String value) {
+    public SleepValue(java.util.List<fr.inria.phoenix.diasuite.framework.datatype.period.Period> value) {
         this.value = value;
     }
     

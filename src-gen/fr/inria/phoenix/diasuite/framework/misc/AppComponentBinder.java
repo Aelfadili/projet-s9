@@ -61,6 +61,7 @@ public abstract class AppComponentBinder extends AbstractDeploy {
      * <pre>
      * context Coupling as SleepPeriod[] indexed by period as Period {
      * 	when provided GetFitbitInfos 
+     * 		get Sleep
      * 		maybe publish;
      * }
      * </pre>
@@ -89,11 +90,13 @@ public abstract class AppComponentBinder extends AbstractDeploy {
      * }
      * 
      * <pre>
-     * context GetFitbitInfos as SleepPeriod[] indexed by period as Period  {
+     * context GetFitbitInfos as SleepPeriod[] {
      * 	when provided currentTime from RoutineScheduler
-     * 		get	sleepPeriods from Fitbit,
-     * 		tickHour from Clock
-     * 		always publish;
+     * 		get	lastSynchronization from Fitbit, sleepPeriods from Fitbit
+     * 		maybe publish;
+     * 	when provided tickHour from Clock
+     * 		get lastSynchronization from Fitbit, sleepPeriods from Fitbit
+     * 		maybe publish;
      * }
      * </pre>
      * @return a class object of a derivation of {@link AbstractGetFitbitInfos} that implements the <code>GetFitbitInfos</code> context
@@ -104,7 +107,7 @@ public abstract class AppComponentBinder extends AbstractDeploy {
      * Overrides this method to provide the implementation class of the <code>Sleep</code> context
      * 
      * <pre>
-     * context Sleep as String {
+     * context Sleep as Period[] {
      * 	when provided inactivityLevel from InactivitySensor 
      * 		get currentTime from RoutineScheduler,
      * 		lastInteraction from InactivitySensor

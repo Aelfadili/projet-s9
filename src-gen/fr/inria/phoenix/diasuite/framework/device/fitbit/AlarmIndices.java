@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 /**
  * Container for the indices of the source <code>alarm</code> from device <code>Fitbit</code>.
- * <p>
- * alarm
  * 
  * <pre>
  * source alarm as Alarm indexed by name as String;

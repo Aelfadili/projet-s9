@@ -23,11 +23,13 @@ import java.io.Serializable;
  * }
  *
  * <pre>
- * context GetFitbitInfos as SleepPeriod[] indexed by period as Period  {
+ * context GetFitbitInfos as SleepPeriod[] {
  * 	when provided currentTime from RoutineScheduler
- * 		get	sleepPeriods from Fitbit,
- * 		tickHour from Clock
- * 		always publish;
+ * 		get	lastSynchronization from Fitbit, sleepPeriods from Fitbit
+ * 		maybe publish;
+ * 	when provided tickHour from Clock
+ * 		get lastSynchronization from Fitbit, sleepPeriods from Fitbit
+ * 		maybe publish;
  * }
  * </pre>
  */
@@ -63,26 +65,8 @@ public final class GetFitbitInfosValue implements Serializable {
         return value;
     }
     
-    private GetFitbitInfosIndices indices;
-    
-    /**
-     * Get the value of the indices of the context <code>GetFitbitInfos</code>
-     * 
-     * @return the value of the indices
-     */
-    public GetFitbitInfosIndices indices() {
-        return indices;
-    }
-    
-    public GetFitbitInfosValue(java.util.List<fr.inria.phoenix.diasuite.framework.datatype.sleepperiod.SleepPeriod> value, GetFitbitInfosIndices indices) {
+    public GetFitbitInfosValue(java.util.List<fr.inria.phoenix.diasuite.framework.datatype.sleepperiod.SleepPeriod> value) {
         this.value = value;
-        this.indices = indices;
-    }
-    
-    public GetFitbitInfosValue(java.util.List<fr.inria.phoenix.diasuite.framework.datatype.sleepperiod.SleepPeriod> value,
-            fr.inria.phoenix.diasuite.framework.datatype.period.Period period) {
-        this.value = value;
-        this.indices = new GetFitbitInfosIndices(period);
     }
     
     @Override
@@ -90,7 +74,6 @@ public final class GetFitbitInfosValue implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((value == null) ? 0 : value.hashCode());
-        result = prime * result + ((indices == null) ? 0 : indices.hashCode());
         return result;
     }
     
@@ -107,11 +90,6 @@ public final class GetFitbitInfosValue implements Serializable {
             if (other.value != null)
                 return false;
         } else if (!value.equals(other.value))
-            return false;
-        if (indices == null) {
-            if (other.indices != null)
-                return false;
-        } else if (!indices.equals(other.indices))
             return false;
         return true;
     }

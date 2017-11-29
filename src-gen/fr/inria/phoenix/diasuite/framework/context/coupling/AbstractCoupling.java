@@ -15,6 +15,7 @@ import fr.inria.phoenix.diasuite.framework.context.getfitbitinfos.GetFitbitInfos
  * <pre>
  * context Coupling as SleepPeriod[] indexed by period as Period {
  * 	when provided GetFitbitInfos 
+ * 		get Sleep
  * 		maybe publish;
  * }
  * </pre>
@@ -36,10 +37,9 @@ public abstract class AbstractCoupling extends Service {
     @Override
     public final void valueReceived(java.util.Map<String, Object> properties, RemoteServiceInfo source, String eventName, Object value, Object... indexes) {
         if (eventName.equals("getFitbitInfos") && source.isCompatible("/Context/GetFitbitInfos/")) {
-            GetFitbitInfosValue getFitbitInfosValue = new GetFitbitInfosValue((java.util.List<fr.inria.phoenix.diasuite.framework.datatype.sleepperiod.SleepPeriod>) value,
-                    (fr.inria.phoenix.diasuite.framework.datatype.period.Period) indexes[0]);
+            GetFitbitInfosValue getFitbitInfosValue = new GetFitbitInfosValue((java.util.List<fr.inria.phoenix.diasuite.framework.datatype.sleepperiod.SleepPeriod>) value);
             
-            CouplingValuePublishable returnValue = onGetFitbitInfos(getFitbitInfosValue);
+            CouplingValuePublishable returnValue = onGetFitbitInfos(getFitbitInfosValue, new DiscoverForGetFitbitInfos());
             if(returnValue != null && returnValue.doPublish()) {
                 setCoupling(returnValue.getValue(), returnValue.getPeriod());
             }
@@ -153,13 +153,43 @@ public abstract class AbstractCoupling extends Service {
      * 
      * <pre>
      * when provided GetFitbitInfos 
+     * 		get Sleep
      * 		maybe publish;
      * </pre>
      * 
      * @param getFitbitInfosValue the value of the <code>GetFitbitInfos</code> context.
+     * @param discover a discover object to get value from devices and contexts
      * @return a {@link CouplingValuePublishable} that says if the context should publish a value and which value it should publish
      */
-    protected abstract CouplingValuePublishable onGetFitbitInfos(GetFitbitInfosValue getFitbitInfosValue);
+    protected abstract CouplingValuePublishable onGetFitbitInfos(GetFitbitInfosValue getFitbitInfosValue, DiscoverForGetFitbitInfos discover);
     
     // End of interaction contract implementation
+    
+    // Discover object for GetFitbitInfos
+    /**
+     * An object to discover devices and contexts for the following interaction contract:
+     * 
+     * <code>
+     * when provided GetFitbitInfos 
+     * 		get Sleep
+     * 		maybe publish;
+     * </code>
+     */
+    protected final class DiscoverForGetFitbitInfos {
+        private final fr.inria.diagen.core.service.filter.service.ServiceFilter sleepFilter = new fr.inria.diagen.core.service.filter.service.ServiceFilter("/Context/Sleep/");
+        
+        private RemoteServiceInfo getSleepRsi() {
+            return getProcessor().discoverComponents(getOutProperties(), sleepFilter).get(0);
+        }
+        
+        /**
+         * Get the value of the <code>Sleep</code> context
+         * 
+         * @return the value of the <code>Sleep</code> context
+         */
+        public java.util.List<fr.inria.phoenix.diasuite.framework.datatype.period.Period> sleep() {
+            return (java.util.List<fr.inria.phoenix.diasuite.framework.datatype.period.Period>) getProcessor().callGetValue(getOutProperties(), getSleepRsi(), "sleep");
+        }
+    }
+    // End of discover object for GetFitbitInfos
 }

@@ -1,6 +1,6 @@
 include "taxonomy.diaspec";
 
-context Sleep as String {
+context Sleep as Period[] {
 	when provided inactivityLevel from InactivitySensor 
 		get currentTime from RoutineScheduler,
 		lastInteraction from InactivitySensor
@@ -28,15 +28,18 @@ context Sleep as String {
 		maybe publish;
 }*/
 
-context GetFitbitInfos as SleepPeriod[] indexed by period as Period  {
+context GetFitbitInfos as SleepPeriod[] {
 	when provided currentTime from RoutineScheduler
-		get	sleepPeriods from Fitbit,
-		tickHour from Clock
-		always publish;
+		get	lastSynchronization from Fitbit, sleepPeriods from Fitbit
+		maybe publish;
+	when provided tickHour from Clock
+		get lastSynchronization from Fitbit, sleepPeriods from Fitbit
+		maybe publish;
 }
 
 context Coupling as SleepPeriod[] indexed by period as Period {
 	when provided GetFitbitInfos 
+		get Sleep
 		maybe publish;
 	/*when provided GetSavedTime 
 		maybe publish;*/

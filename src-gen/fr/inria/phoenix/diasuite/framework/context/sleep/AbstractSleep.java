@@ -11,7 +11,7 @@ import fr.inria.phoenix.diasuite.framework.device.inactivitysensor.InactivityLev
 
 /**
  * <pre>
- * context Sleep as String {
+ * context Sleep as Period[] {
  * 	when provided inactivityLevel from InactivitySensor 
  * 		get currentTime from RoutineScheduler,
  * 		lastInteraction from InactivitySensor
@@ -61,9 +61,9 @@ public abstract class AbstractSleep extends Service {
     // End of methods from the Service class
     
     // Code relative to the return value of the context
-    private java.lang.String contextValue;
+    private java.util.List<fr.inria.phoenix.diasuite.framework.datatype.period.Period> contextValue;
     
-    private void setSleep(java.lang.String newContextValue) {
+    private void setSleep(java.util.List<fr.inria.phoenix.diasuite.framework.datatype.period.Period> newContextValue) {
         contextValue = newContextValue;
         getProcessor().publishValue(getOutProperties(), "sleep", newContextValue);
     }
@@ -73,7 +73,7 @@ public abstract class AbstractSleep extends Service {
      * 
      * @return the latest value published by the context
      */
-    protected final java.lang.String getLastValue() {
+    protected final java.util.List<fr.inria.phoenix.diasuite.framework.datatype.period.Period> getLastValue() {
         return contextValue;
     }
     
@@ -84,11 +84,11 @@ public abstract class AbstractSleep extends Service {
     protected final static class SleepValuePublishable {
         
         // The value of the context
-        private java.lang.String value;
+        private java.util.List<fr.inria.phoenix.diasuite.framework.datatype.period.Period> value;
         // Whether the value should be published or not
         private boolean doPublish;
         
-        public SleepValuePublishable(java.lang.String value, boolean doPublish) {
+        public SleepValuePublishable(java.util.List<fr.inria.phoenix.diasuite.framework.datatype.period.Period> value, boolean doPublish) {
             this.value = value;
             this.doPublish = doPublish;
         }
@@ -96,7 +96,7 @@ public abstract class AbstractSleep extends Service {
         /**
          * @return the value of the context that might be published
          */
-        public java.lang.String getValue() {
+        public java.util.List<fr.inria.phoenix.diasuite.framework.datatype.period.Period> getValue() {
             return value;
         }
         
@@ -105,7 +105,7 @@ public abstract class AbstractSleep extends Service {
          * 
          * @param value the value that will be published if {@link #doPublish()} returns true
          */
-        public void setValue(java.lang.String value) {
+        public void setValue(java.util.List<fr.inria.phoenix.diasuite.framework.datatype.period.Period> value) {
             this.value = value;
         }
         

@@ -11,6 +11,7 @@ import java.io.Serializable;
  * <pre>
  * context Coupling as SleepPeriod[] indexed by period as Period {
  * 	when provided GetFitbitInfos 
+ * 		get Sleep
  * 		maybe publish;
  * }
  * </pre>

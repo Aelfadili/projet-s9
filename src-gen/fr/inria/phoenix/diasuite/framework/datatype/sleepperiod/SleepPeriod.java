@@ -5,13 +5,13 @@ import java.io.Serializable;
 /**
  * <pre>
  * structure SleepPeriod {
- *         period as Period;
- *         efficiency as Float;
- *         timeToFallAsleep as Integer;
- *         timeAsleep as Integer;
- *         timeAwake as Integer;
- *         timeAfterWakeup as Integer;
- *         timeInBed as Integer;
+ * 	period as Period;
+ * 	efficiency as Float;
+ * 	timeToFallAsleep as Integer;
+ * 	timeAsleep as Integer;
+ * 	timeAwake as Integer;
+ * 	timeAfterWakeup as Integer;
+ * 	timeInBed as Integer;
  * }
  * </pre>
  */

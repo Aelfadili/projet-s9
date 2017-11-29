@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <DiaGraph>
-	<controller id="SleepAnalyser" x="118.0" y="191.0"/>
-	<context id="Coupling" x="118.0" y="311.0"/>
-	<context id="GetFitbitInfos" x="118.0" y="431.0"/>
-	<source id="RoutineScheduler/currentTime" x="298.0" y="551.0"/>
-	<source id="Fitbit/sleepPeriods" x="118.0" y="551.0"/>
-	<source id="Clock/tickHour" x="-61.0" y="551.0"/>
-	<source id="InactivitySensor/lastInteraction" x="478.0" y="551.0"/>
-	<source id="InactivitySensor/inactivityLevel" x="658.0" y="551.0"/>
-	<action id="Notifier/SendNonCriticalNotification" x="-61.0" y="71.0"/>
-	<action id="Storage/PutStringData" x="298.0" y="71.0"/>
-	<context id="Sleep" x="478.0" y="431.0"/>
+	<controller id="SleepAnalyser" x="512.0" y="144.0"/>
+	<action id="Notifier/SendNonCriticalNotification" x="666.0" y="57.0"/>
+	<action id="Storage/PutStringData" x="392.0" y="45.0"/>
+	<context id="Coupling" x="491.0" y="269.0"/>
+	<context id="Sleep" x="280.0" y="379.0"/>
+	<source id="InactivitySensor/inactivityLevel" x="298.0" y="553.0"/>
+	<source id="RoutineScheduler/currentTime" x="478.0" y="553.0"/>
+	<source id="InactivitySensor/lastInteraction" x="118.0" y="553.0"/>
+	<context id="GetFitbitInfos" x="681.0" y="411.0"/>
+	<source id="Fitbit/lastSynchronization" x="840.0" y="547.0"/>
+	<source id="Fitbit/sleepPeriods" x="658.0" y="553.0"/>
+	<source id="Clock/tickHour" x="1018.0" y="553.0"/>
 </DiaGraph>

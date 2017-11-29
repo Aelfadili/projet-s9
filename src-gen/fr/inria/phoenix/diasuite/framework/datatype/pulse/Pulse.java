@@ -5,8 +5,8 @@ import java.io.Serializable;
 /**
  * <pre>
  * structure Pulse {
- *         period as Period;
- *         pulsations as Integer [];
+ * 	period as Period;
+ * 	pulsations as Integer [];
  * }
  * </pre>
  */
