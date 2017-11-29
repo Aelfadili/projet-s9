@@ -487,49 +487,84 @@ device Android extends Device {
 //------------------------------------------------------------
 
 device Fitbit extends Device {
-        source calories as Integer indexed by period as Period;
-        source distanceInMeters as Integer indexed by period as Period;
-        source pulses as Pulse indexed by period as Period;
-        source steps as Integer indexed by period as Period;
-        source sleepPeriods as SleepPeriod [] indexed by period as Period;
+	source lastSynchronization as Date;
+	source calories as Integer indexed by period as Period;
+	source distanceInMeters as Integer indexed by period as Period;
+	source pulses as Pulse indexed by period as Period;
+	source steps as Integer indexed by period as Period;
+	source heartActivity as HeartActivity indexed by period as Period, heartZone as HeartRate;
+	source sleepPeriods as SleepPeriod [] indexed by period as Period;
+	source physiologicalActivities as PhysiologicalActivity [] indexed by period as Period;
+	source alarm as Alarm indexed by name as String;
 
-        //alarm
-        source alarm as Alarm indexed by name as String;
-        action ScheduleAlarm;
-        action Vibrate;
+	
+	action Vibrate;
+	action ScheduleAlarm;
+	action RegisterPhysiologicalActivity;
 }
 
 structure SleepPeriod {
-        period as Period;
-        efficiency as Float;
-        timeToFallAsleep as Integer;
-        timeAsleep as Integer;
-        timeAwake as Integer;
-        timeAfterWakeup as Integer;
-        timeInBed as Integer;
+	period as Period;
+	efficiency as Float;
+	timeToFallAsleep as Integer;
+	timeAsleep as Integer;
+	timeAwake as Integer;
+	timeAfterWakeup as Integer;
+	timeInBed as Integer;
 }
 
 structure Pulse {
-        period as Period;
-        pulsations as Integer [];
+	period as Period;
+	pulsations as Integer [];
 }
 
 structure Alarm {
-        name as String;
-        date as Date;
-        minutesBetweenReminders as Integer;
-        reminders as Integer;
+	name as String;
+	date as Date;
+	minutesBetweenReminders as Integer;
+	reminders as Integer;
 }
 
 action Vibrate {
-        vibrateIn(delayInMinutes as Integer);
-        vibrateAt(date as Date);
+	vibrateIn(delayInMinutes as Integer);
+	vibrateAt(date as Date);
 }
 
 action ScheduleAlarm {
-        scheduleAlarm(alarm as Alarm);
-        removeAlarm(name as String);
+	scheduleAlarm(alarm as Alarm);
+	removeAlarm(name as String);
 }
+
+structure HeartActivity {
+	name as HeartRate;
+	minPulsation as Integer;
+	maxPulsation as Integer;
+	durationInMinutes as Integer;
+}
+
+enumeration HeartRate {
+	LIGHT, MODERATE, HARD, MAXIMUM
+}
+
+structure PhysiologicalActivity {
+	name as String; // DailyActivityName or PeriodActivityName
+	period as Period;
+	physiologicalData as PhysiologicalData;
+}
+
+structure PhysiologicalData {
+	distanceInMeters as Integer;
+	calories as Integer;
+	pulsations as Integer [];
+	steps as Integer;
+}
+
+action RegisterPhysiologicalActivity {
+	storePhysiologicalActivity(physioActivity as PhysiologicalActivity);
+	registerPhysiologicalDailyActivity(name as DailyActivityName, period as Period);
+	registerPhysiologicalPeriodActivity(name as PeriodActivityName, period as Period);
+}
+
 
 
 //------------------------------------------------------------

@@ -12,14 +12,18 @@ Fitbit							||
 
 <pre>
 device Fitbit extends Device {
- *         source calories as Integer indexed by period as Period;
- *         source distanceInMeters as Integer indexed by period as Period;
- *         source pulses as Pulse indexed by period as Period;
- *         source steps as Integer indexed by period as Period;
- *         source sleepPeriods as SleepPeriod [] indexed by period as Period;
- *         source alarm as Alarm indexed by name as String;
- *         action ScheduleAlarm;
- *         action Vibrate;
+ * 	source lastSynchronization as Date;
+ * 	source calories as Integer indexed by period as Period;
+ * 	source distanceInMeters as Integer indexed by period as Period;
+ * 	source pulses as Pulse indexed by period as Period;
+ * 	source steps as Integer indexed by period as Period;
+ * 	source heartActivity as HeartActivity indexed by period as Period, heartZone as HeartRate;
+ * 	source sleepPeriods as SleepPeriod [] indexed by period as Period;
+ * 	source physiologicalActivities as PhysiologicalActivity [] indexed by period as Period;
+ * 	source alarm as Alarm indexed by name as String;
+ * 	action Vibrate;
+ * 	action ScheduleAlarm;
+ * 	action RegisterPhysiologicalActivity;
  * }
 </pre>
  */
@@ -47,12 +51,26 @@ public abstract class AbstractFitbit extends Service {
     @SuppressWarnings("all")
     @Override
     public final Object orderCalled(java.util.Map<String, Object> properties, RemoteServiceInfo source, String orderName, Object... args) throws Exception {
+        if (orderName.equals("registerPhysiologicalDailyActivity")) {
+            registerPhysiologicalDailyActivity((fr.inria.phoenix.diasuite.framework.datatype.dailyactivityname.DailyActivityName) args[0],
+                    (fr.inria.phoenix.diasuite.framework.datatype.period.Period) args[1]);
+            return null;
+        }
+        if (orderName.equals("registerPhysiologicalPeriodActivity")) {
+            registerPhysiologicalPeriodActivity((fr.inria.phoenix.diasuite.framework.datatype.periodactivityname.PeriodActivityName) args[0],
+                    (fr.inria.phoenix.diasuite.framework.datatype.period.Period) args[1]);
+            return null;
+        }
         if (orderName.equals("removeAlarm")) {
             removeAlarm((java.lang.String) args[0]);
             return null;
         }
         if (orderName.equals("scheduleAlarm")) {
             scheduleAlarm((fr.inria.phoenix.diasuite.framework.datatype.alarm.Alarm) args[0]);
+            return null;
+        }
+        if (orderName.equals("storePhysiologicalActivity")) {
+            storePhysiologicalActivity((fr.inria.phoenix.diasuite.framework.datatype.physiologicalactivity.PhysiologicalActivity) args[0]);
             return null;
         }
         if (orderName.equals("vibrateAt")) {
@@ -80,8 +98,18 @@ public abstract class AbstractFitbit extends Service {
         if (orderName.equals("distanceInMeters")) {
             return getDistanceInMeters((fr.inria.phoenix.diasuite.framework.datatype.period.Period) args[0]);
         }
+        if (orderName.equals("heartActivity")) {
+            return getHeartActivity((fr.inria.phoenix.diasuite.framework.datatype.period.Period) args[0],
+                    (fr.inria.phoenix.diasuite.framework.datatype.heartrate.HeartRate) args[1]);
+        }
         if (orderName.equals("isAlive")) {
             return getIsAlive();
+        }
+        if (orderName.equals("lastSynchronization")) {
+            return getLastSynchronization();
+        }
+        if (orderName.equals("physiologicalActivities")) {
+            return getPhysiologicalActivities((fr.inria.phoenix.diasuite.framework.datatype.period.Period) args[0]);
         }
         if (orderName.equals("pulses")) {
             return getPulses((fr.inria.phoenix.diasuite.framework.datatype.period.Period) args[0]);
@@ -132,8 +160,6 @@ public abstract class AbstractFitbit extends Service {
     
     /**
      * Publish the value of source <code>alarm</code> from device <code>Fitbit</code>.
-    <p>
-    alarm
     
     <pre>
     source alarm as Alarm indexed by name as String;
@@ -150,8 +176,6 @@ public abstract class AbstractFitbit extends Service {
     
     /**
      * Returns the value of source <code>alarm</code> from device <code>Fitbit</code>.
-    <p>
-    alarm
     
     <pre>
     source alarm as Alarm indexed by name as String;
@@ -230,6 +254,43 @@ public abstract class AbstractFitbit extends Service {
     }
     // End of code for source distanceInMeters from device Fitbit
     
+    // Code for source heartActivity from device Fitbit
+    private java.util.HashMap<HeartActivityIndices, fr.inria.phoenix.diasuite.framework.datatype.heartactivity.HeartActivity> _heartActivity = new java.util.HashMap<HeartActivityIndices, fr.inria.phoenix.diasuite.framework.datatype.heartactivity.HeartActivity>();
+    
+    /**
+     * Publish the value of source <code>heartActivity</code> from device <code>Fitbit</code>.
+    
+    <pre>
+    source heartActivity as HeartActivity indexed by period as Period, heartZone as HeartRate;
+    </pre>
+    @param newHeartActivityValue the new value for the source <code>heartActivity</code>
+    @param period the value of the index <code>period</code>
+    @param heartZone the value of the index <code>heartZone</code>
+     */
+    protected void publishHeartActivity(fr.inria.phoenix.diasuite.framework.datatype.heartactivity.HeartActivity newHeartActivityValue,
+            fr.inria.phoenix.diasuite.framework.datatype.period.Period period,
+            fr.inria.phoenix.diasuite.framework.datatype.heartrate.HeartRate heartZone) {
+        HeartActivityIndices _indices_ = new HeartActivityIndices(period, heartZone);
+        _heartActivity.put(_indices_, newHeartActivityValue);
+        getProcessor().publishValue(getOutProperties(), "heartActivity", newHeartActivityValue, period, heartZone); 
+    }
+    
+    /**
+     * Returns the value of source <code>heartActivity</code> from device <code>Fitbit</code>.
+    
+    <pre>
+    source heartActivity as HeartActivity indexed by period as Period, heartZone as HeartRate;
+    </pre>
+    @param period the value of the index <code>period</code>
+    @param heartZone the value of the index <code>heartZone</code>
+    @return the value of the source <code>heartActivity</code>
+     */
+    protected fr.inria.phoenix.diasuite.framework.datatype.heartactivity.HeartActivity getHeartActivity(fr.inria.phoenix.diasuite.framework.datatype.period.Period period,
+            fr.inria.phoenix.diasuite.framework.datatype.heartrate.HeartRate heartZone) throws Exception {
+        return _heartActivity.get(new HeartActivityIndices(period, heartZone));
+    }
+    // End of code for source heartActivity from device Fitbit
+    
     // Code for source isAlive from device Device
     private java.lang.Boolean _isAlive;
     
@@ -258,6 +319,68 @@ public abstract class AbstractFitbit extends Service {
         return _isAlive;
     }
     // End of code for source isAlive from device Device
+    
+    // Code for source lastSynchronization from device Fitbit
+    private fr.inria.phoenix.diasuite.framework.datatype.date.Date _lastSynchronization;
+    
+    /**
+     * Publish the value of source <code>lastSynchronization</code> from device <code>Fitbit</code>.
+    
+    <pre>
+    source lastSynchronization as Date;
+    </pre>
+    @param newLastSynchronizationValue the new value for the source <code>lastSynchronization</code>
+     */
+    protected void publishLastSynchronization(fr.inria.phoenix.diasuite.framework.datatype.date.Date newLastSynchronizationValue) {
+        _lastSynchronization = newLastSynchronizationValue;
+        getProcessor().publishValue(getOutProperties(), "lastSynchronization", newLastSynchronizationValue); 
+    }
+    
+    /**
+     * Returns the value of source <code>lastSynchronization</code> from device <code>Fitbit</code>.
+    
+    <pre>
+    source lastSynchronization as Date;
+    </pre>
+    @return the value of the source <code>lastSynchronization</code>
+     */
+    protected fr.inria.phoenix.diasuite.framework.datatype.date.Date getLastSynchronization() throws Exception {
+        return _lastSynchronization;
+    }
+    // End of code for source lastSynchronization from device Fitbit
+    
+    // Code for source physiologicalActivities from device Fitbit
+    private java.util.HashMap<PhysiologicalActivitiesIndices, java.util.List<fr.inria.phoenix.diasuite.framework.datatype.physiologicalactivity.PhysiologicalActivity>> _physiologicalActivities = new java.util.HashMap<PhysiologicalActivitiesIndices, java.util.List<fr.inria.phoenix.diasuite.framework.datatype.physiologicalactivity.PhysiologicalActivity>>();
+    
+    /**
+     * Publish the value of source <code>physiologicalActivities</code> from device <code>Fitbit</code>.
+    
+    <pre>
+    source physiologicalActivities as PhysiologicalActivity [] indexed by period as Period;
+    </pre>
+    @param newPhysiologicalActivitiesValue the new value for the source <code>physiologicalActivities</code>
+    @param period the value of the index <code>period</code>
+     */
+    protected void publishPhysiologicalActivities(java.util.List<fr.inria.phoenix.diasuite.framework.datatype.physiologicalactivity.PhysiologicalActivity> newPhysiologicalActivitiesValue,
+            fr.inria.phoenix.diasuite.framework.datatype.period.Period period) {
+        PhysiologicalActivitiesIndices _indices_ = new PhysiologicalActivitiesIndices(period);
+        _physiologicalActivities.put(_indices_, newPhysiologicalActivitiesValue);
+        getProcessor().publishValue(getOutProperties(), "physiologicalActivities", newPhysiologicalActivitiesValue, period); 
+    }
+    
+    /**
+     * Returns the value of source <code>physiologicalActivities</code> from device <code>Fitbit</code>.
+    
+    <pre>
+    source physiologicalActivities as PhysiologicalActivity [] indexed by period as Period;
+    </pre>
+    @param period the value of the index <code>period</code>
+    @return the value of the source <code>physiologicalActivities</code>
+     */
+    protected java.util.List<fr.inria.phoenix.diasuite.framework.datatype.physiologicalactivity.PhysiologicalActivity> getPhysiologicalActivities(fr.inria.phoenix.diasuite.framework.datatype.period.Period period) throws Exception {
+        return _physiologicalActivities.get(new PhysiologicalActivitiesIndices(period));
+    }
+    // End of code for source physiologicalActivities from device Fitbit
     
     // Code for source pulses from device Fitbit
     private java.util.HashMap<PulsesIndices, fr.inria.phoenix.diasuite.framework.datatype.pulse.Pulse> _pulses = new java.util.HashMap<PulsesIndices, fr.inria.phoenix.diasuite.framework.datatype.pulse.Pulse>();
@@ -359,6 +482,34 @@ public abstract class AbstractFitbit extends Service {
     // End of code for source steps from device Fitbit
     
     /**
+     * Implement this method to define the <code>registerPhysiologicalDailyActivity</code> order from the <code>RegisterPhysiologicalActivity</code> action
+     * defined in device Fitbit.
+     * 
+    
+    <pre>
+    registerPhysiologicalDailyActivity(name as DailyActivityName, period as Period);
+    </pre>
+     * @param name parameter 1 of the order.
+     * @param period parameter 2 of the order.
+     */
+    protected abstract void registerPhysiologicalDailyActivity(fr.inria.phoenix.diasuite.framework.datatype.dailyactivityname.DailyActivityName name,
+            fr.inria.phoenix.diasuite.framework.datatype.period.Period period) throws Exception;
+    
+    /**
+     * Implement this method to define the <code>registerPhysiologicalPeriodActivity</code> order from the <code>RegisterPhysiologicalActivity</code> action
+     * defined in device Fitbit.
+     * 
+    
+    <pre>
+    registerPhysiologicalPeriodActivity(name as PeriodActivityName, period as Period);
+    </pre>
+     * @param name parameter 1 of the order.
+     * @param period parameter 2 of the order.
+     */
+    protected abstract void registerPhysiologicalPeriodActivity(fr.inria.phoenix.diasuite.framework.datatype.periodactivityname.PeriodActivityName name,
+            fr.inria.phoenix.diasuite.framework.datatype.period.Period period) throws Exception;
+    
+    /**
      * Implement this method to define the <code>removeAlarm</code> order from the <code>ScheduleAlarm</code> action
      * defined in device Fitbit.
      * 
@@ -381,6 +532,18 @@ public abstract class AbstractFitbit extends Service {
      * @param alarm parameter 1 of the order.
      */
     protected abstract void scheduleAlarm(fr.inria.phoenix.diasuite.framework.datatype.alarm.Alarm alarm) throws Exception;
+    
+    /**
+     * Implement this method to define the <code>storePhysiologicalActivity</code> order from the <code>RegisterPhysiologicalActivity</code> action
+     * defined in device Fitbit.
+     * 
+    
+    <pre>
+    storePhysiologicalActivity(physioActivity as PhysiologicalActivity);
+    </pre>
+     * @param physioActivity parameter 1 of the order.
+     */
+    protected abstract void storePhysiologicalActivity(fr.inria.phoenix.diasuite.framework.datatype.physiologicalactivity.PhysiologicalActivity physioActivity) throws Exception;
     
     /**
      * Implement this method to define the <code>vibrateAt</code> order from the <code>Vibrate</code> action

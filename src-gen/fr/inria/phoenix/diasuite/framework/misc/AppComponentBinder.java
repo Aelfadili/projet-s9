@@ -75,7 +75,8 @@ public abstract class AppComponentBinder extends AbstractDeploy {
     <pre>
     context Congratulation as CriticalNotification {
      * 	when provided tickHour from Clock
-     * 	get steps from Fitbit
+     * 	get steps from Fitbit,
+     * 		sleepPeriods from Fitbit
      * 	maybe publish;
      * 	}
     </pre>

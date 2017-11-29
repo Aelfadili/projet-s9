@@ -15,7 +15,8 @@ import fr.inria.phoenix.diasuite.framework.device.clock.TickHourFromClock;
 <pre>
 context Congratulation as CriticalNotification {
  * 	when provided tickHour from Clock
- * 	get steps from Fitbit
+ * 	get steps from Fitbit,
+ * 		sleepPeriods from Fitbit
  * 	maybe publish;
  * 	}
 </pre>
@@ -134,7 +135,8 @@ public abstract class AbstractCongratulation extends Service {
     
     <pre>
     when provided tickHour from Clock
-     * 	get steps from Fitbit
+     * 	get steps from Fitbit,
+     * 		sleepPeriods from Fitbit
      * 	maybe publish;
     </pre>
      * 
@@ -310,7 +312,8 @@ public abstract class AbstractCongratulation extends Service {
      * 
      * <code>
      * when provided tickHour from Clock
-     * 	get steps from Fitbit
+     * 	get steps from Fitbit,
+     * 		sleepPeriods from Fitbit
      * 	maybe publish;
      * </code>
      */
@@ -335,14 +338,18 @@ public abstract class AbstractCongratulation extends Service {
     
     <pre>
     device Fitbit extends Device {
-     *         source calories as Integer indexed by period as Period;
-     *         source distanceInMeters as Integer indexed by period as Period;
-     *         source pulses as Pulse indexed by period as Period;
-     *         source steps as Integer indexed by period as Period;
-     *         source sleepPeriods as SleepPeriod [] indexed by period as Period;
-     *         source alarm as Alarm indexed by name as String;
-     *         action ScheduleAlarm;
-     *         action Vibrate;
+     * 	source lastSynchronization as Date;
+     * 	source calories as Integer indexed by period as Period;
+     * 	source distanceInMeters as Integer indexed by period as Period;
+     * 	source pulses as Pulse indexed by period as Period;
+     * 	source steps as Integer indexed by period as Period;
+     * 	source heartActivity as HeartActivity indexed by period as Period, heartZone as HeartRate;
+     * 	source sleepPeriods as SleepPeriod [] indexed by period as Period;
+     * 	source physiologicalActivities as PhysiologicalActivity [] indexed by period as Period;
+     * 	source alarm as Alarm indexed by name as String;
+     * 	action Vibrate;
+     * 	action ScheduleAlarm;
+     * 	action RegisterPhysiologicalActivity;
      * }
     </pre>
      */
@@ -397,14 +404,18 @@ public abstract class AbstractCongratulation extends Service {
     
     <pre>
     device Fitbit extends Device {
-     *         source calories as Integer indexed by period as Period;
-     *         source distanceInMeters as Integer indexed by period as Period;
-     *         source pulses as Pulse indexed by period as Period;
-     *         source steps as Integer indexed by period as Period;
-     *         source sleepPeriods as SleepPeriod [] indexed by period as Period;
-     *         source alarm as Alarm indexed by name as String;
-     *         action ScheduleAlarm;
-     *         action Vibrate;
+     * 	source lastSynchronization as Date;
+     * 	source calories as Integer indexed by period as Period;
+     * 	source distanceInMeters as Integer indexed by period as Period;
+     * 	source pulses as Pulse indexed by period as Period;
+     * 	source steps as Integer indexed by period as Period;
+     * 	source heartActivity as HeartActivity indexed by period as Period, heartZone as HeartRate;
+     * 	source sleepPeriods as SleepPeriod [] indexed by period as Period;
+     * 	source physiologicalActivities as PhysiologicalActivity [] indexed by period as Period;
+     * 	source alarm as Alarm indexed by name as String;
+     * 	action Vibrate;
+     * 	action ScheduleAlarm;
+     * 	action RegisterPhysiologicalActivity;
      * }
     </pre>
      */
@@ -440,14 +451,18 @@ public abstract class AbstractCongratulation extends Service {
     
     <pre>
     device Fitbit extends Device {
-     *         source calories as Integer indexed by period as Period;
-     *         source distanceInMeters as Integer indexed by period as Period;
-     *         source pulses as Pulse indexed by period as Period;
-     *         source steps as Integer indexed by period as Period;
-     *         source sleepPeriods as SleepPeriod [] indexed by period as Period;
-     *         source alarm as Alarm indexed by name as String;
-     *         action ScheduleAlarm;
-     *         action Vibrate;
+     * 	source lastSynchronization as Date;
+     * 	source calories as Integer indexed by period as Period;
+     * 	source distanceInMeters as Integer indexed by period as Period;
+     * 	source pulses as Pulse indexed by period as Period;
+     * 	source steps as Integer indexed by period as Period;
+     * 	source heartActivity as HeartActivity indexed by period as Period, heartZone as HeartRate;
+     * 	source sleepPeriods as SleepPeriod [] indexed by period as Period;
+     * 	source physiologicalActivities as PhysiologicalActivity [] indexed by period as Period;
+     * 	source alarm as Alarm indexed by name as String;
+     * 	action Vibrate;
+     * 	action ScheduleAlarm;
+     * 	action RegisterPhysiologicalActivity;
      * }
     </pre>
      */
@@ -464,6 +479,16 @@ public abstract class AbstractCongratulation extends Service {
          */
         public java.lang.Integer getSteps(fr.inria.phoenix.diasuite.framework.datatype.period.Period period) throws InvocationException {
             return (java.lang.Integer) callGetValue("steps", period);
+        }
+        
+        /**
+         * Returns the value of the <code>sleepPeriods</code> source of this <code>Fitbit</code> device
+         * 
+         * @param period the value of the <code>period</code> index.
+         * @return the value of the <code>sleepPeriods</code> source
+         */
+        public java.util.List<fr.inria.phoenix.diasuite.framework.datatype.sleepperiod.SleepPeriod> getSleepPeriods(fr.inria.phoenix.diasuite.framework.datatype.period.Period period) throws InvocationException {
+            return (java.util.List<fr.inria.phoenix.diasuite.framework.datatype.sleepperiod.SleepPeriod>) callGetValue("sleepPeriods", period);
         }
         
         /**

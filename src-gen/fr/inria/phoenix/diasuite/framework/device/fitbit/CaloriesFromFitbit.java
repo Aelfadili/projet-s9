@@ -11,14 +11,18 @@ import fr.inria.diagen.core.service.proxy.Proxy;
  *
  * <pre>
  * device Fitbit extends Device {
- *         source calories as Integer indexed by period as Period;
- *         source distanceInMeters as Integer indexed by period as Period;
- *         source pulses as Pulse indexed by period as Period;
- *         source steps as Integer indexed by period as Period;
- *         source sleepPeriods as SleepPeriod [] indexed by period as Period;
- *         source alarm as Alarm indexed by name as String;
- *         action ScheduleAlarm;
- *         action Vibrate;
+ * 	source lastSynchronization as Date;
+ * 	source calories as Integer indexed by period as Period;
+ * 	source distanceInMeters as Integer indexed by period as Period;
+ * 	source pulses as Pulse indexed by period as Period;
+ * 	source steps as Integer indexed by period as Period;
+ * 	source heartActivity as HeartActivity indexed by period as Period, heartZone as HeartRate;
+ * 	source sleepPeriods as SleepPeriod [] indexed by period as Period;
+ * 	source physiologicalActivities as PhysiologicalActivity [] indexed by period as Period;
+ * 	source alarm as Alarm indexed by name as String;
+ * 	action Vibrate;
+ * 	action ScheduleAlarm;
+ * 	action RegisterPhysiologicalActivity;
  * }
  * </pre>
  */

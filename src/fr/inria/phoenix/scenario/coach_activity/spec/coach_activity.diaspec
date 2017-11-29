@@ -14,7 +14,9 @@ context PropositionGoOut as CriticalNotification {
 // Sortie context : Si nombre de pas suffisant alors féliciter
 context Congratulation as CriticalNotification {
 	when provided tickHour from Clock
-	get steps from Fitbit
+	get steps from Fitbit,
+		sleepPeriods from Fitbit
+		
 	maybe publish;
 	}
 

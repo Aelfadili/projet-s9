@@ -6,7 +6,8 @@
 	<source id="ActivityNotifier/dailyActivity" x="383.0" y="429.0"/>
 	<source id="Fitbit/steps" x="173.0" y="433.0"/>
 	<source id="Clock/tickHour" x="587.0" y="414.0"/>
-	<context id="Congratulation" x="113.0" y="309.0"/>
 	<context id="PropositionGoOut" x="473.0" y="309.0"/>
 	<source id="Agenda/events" x="743.0" y="429.0"/>
+	<context id="Congratulation" x="113.0" y="309.0"/>
+	<source id="Fitbit/lastSynchronization" x="0.0" y="0.0"/>
 </DiaGraph>

@@ -2,12 +2,14 @@ package fr.inria.phoenix.diasuite.framework.mocks;
 
 import fr.inria.diagen.core.ServiceConfiguration;
 import fr.inria.phoenix.diasuite.framework.device.fitbit.AbstractFitbit;
-import fr.inria.phoenix.diasuite.framework.device.fitbit.CaloriesIndices;
 import fr.inria.phoenix.diasuite.framework.device.fitbit.DistanceInMetersIndices;
+import fr.inria.phoenix.diasuite.framework.device.fitbit.AlarmIndices;
+import fr.inria.phoenix.diasuite.framework.device.fitbit.CaloriesIndices;
 import fr.inria.phoenix.diasuite.framework.device.fitbit.PulsesIndices;
+import fr.inria.phoenix.diasuite.framework.device.fitbit.PhysiologicalActivitiesIndices;
 import fr.inria.phoenix.diasuite.framework.device.fitbit.StepsIndices;
 import fr.inria.phoenix.diasuite.framework.device.fitbit.SleepPeriodsIndices;
-import fr.inria.phoenix.diasuite.framework.device.fitbit.AlarmIndices;
+import fr.inria.phoenix.diasuite.framework.device.fitbit.HeartActivityIndices;
 
 // @internal
 public final class FitbitMock {
@@ -66,6 +68,22 @@ public final class FitbitMock {
                 period);
         }
         
+        protected fr.inria.phoenix.diasuite.framework.datatype.heartactivity.HeartActivity getHeartActivity(fr.inria.phoenix.diasuite.framework.datatype.period.Period period,
+                fr.inria.phoenix.diasuite.framework.datatype.heartrate.HeartRate heartZone) throws Exception {
+            fr.inria.phoenix.diasuite.framework.datatype.heartactivity.HeartActivity result = __heartActivity.get(new HeartActivityIndices(period, heartZone));
+            if(result == null)
+                return super.getHeartActivity(period, heartZone);
+            return result;
+        }
+        
+        public void _publishHeartActivity(fr.inria.phoenix.diasuite.framework.datatype.heartactivity.HeartActivity newHeartActivityValue,
+                fr.inria.phoenix.diasuite.framework.datatype.period.Period period,
+                fr.inria.phoenix.diasuite.framework.datatype.heartrate.HeartRate heartZone) {
+            publishHeartActivity(newHeartActivityValue,
+                period,
+                heartZone);
+        }
+        
         protected java.lang.Boolean getIsAlive() throws Exception {
             java.lang.Boolean result = __isAlive;
             if(result == null)
@@ -75,6 +93,30 @@ public final class FitbitMock {
         
         public void _publishIsAlive(java.lang.Boolean newIsAliveValue) {
             publishIsAlive(newIsAliveValue);
+        }
+        
+        protected fr.inria.phoenix.diasuite.framework.datatype.date.Date getLastSynchronization() throws Exception {
+            fr.inria.phoenix.diasuite.framework.datatype.date.Date result = __lastSynchronization;
+            if(result == null)
+                return super.getLastSynchronization();
+            return result;
+        }
+        
+        public void _publishLastSynchronization(fr.inria.phoenix.diasuite.framework.datatype.date.Date newLastSynchronizationValue) {
+            publishLastSynchronization(newLastSynchronizationValue);
+        }
+        
+        protected java.util.List<fr.inria.phoenix.diasuite.framework.datatype.physiologicalactivity.PhysiologicalActivity> getPhysiologicalActivities(fr.inria.phoenix.diasuite.framework.datatype.period.Period period) throws Exception {
+            java.util.List<fr.inria.phoenix.diasuite.framework.datatype.physiologicalactivity.PhysiologicalActivity> result = __physiologicalActivities.get(new PhysiologicalActivitiesIndices(period));
+            if(result == null)
+                return super.getPhysiologicalActivities(period);
+            return result;
+        }
+        
+        public void _publishPhysiologicalActivities(java.util.List<fr.inria.phoenix.diasuite.framework.datatype.physiologicalactivity.PhysiologicalActivity> newPhysiologicalActivitiesValue,
+                fr.inria.phoenix.diasuite.framework.datatype.period.Period period) {
+            publishPhysiologicalActivities(newPhysiologicalActivitiesValue,
+                period);
         }
         
         protected fr.inria.phoenix.diasuite.framework.datatype.pulse.Pulse getPulses(fr.inria.phoenix.diasuite.framework.datatype.period.Period period) throws Exception {
@@ -116,6 +158,30 @@ public final class FitbitMock {
                 period);
         }
         
+        protected void registerPhysiologicalDailyActivity(fr.inria.phoenix.diasuite.framework.datatype.dailyactivityname.DailyActivityName name,
+                fr.inria.phoenix.diasuite.framework.datatype.period.Period period) throws Exception {
+            synchronized(__actions) {
+                java.util.Queue<Object> __action = new java.util.LinkedList<Object>();
+                __action.add("registerPhysiologicalDailyActivity");
+                __action.add(name);
+                __action.add(period);
+                __actions.add(__action);
+                __actions.notifyAll();
+             }
+        }
+        
+        protected void registerPhysiologicalPeriodActivity(fr.inria.phoenix.diasuite.framework.datatype.periodactivityname.PeriodActivityName name,
+                fr.inria.phoenix.diasuite.framework.datatype.period.Period period) throws Exception {
+            synchronized(__actions) {
+                java.util.Queue<Object> __action = new java.util.LinkedList<Object>();
+                __action.add("registerPhysiologicalPeriodActivity");
+                __action.add(name);
+                __action.add(period);
+                __actions.add(__action);
+                __actions.notifyAll();
+             }
+        }
+        
         protected void removeAlarm(java.lang.String name) throws Exception {
             synchronized(__actions) {
                 java.util.Queue<Object> __action = new java.util.LinkedList<Object>();
@@ -131,6 +197,16 @@ public final class FitbitMock {
                 java.util.Queue<Object> __action = new java.util.LinkedList<Object>();
                 __action.add("scheduleAlarm");
                 __action.add(alarm);
+                __actions.add(__action);
+                __actions.notifyAll();
+             }
+        }
+        
+        protected void storePhysiologicalActivity(fr.inria.phoenix.diasuite.framework.datatype.physiologicalactivity.PhysiologicalActivity physioActivity) throws Exception {
+            synchronized(__actions) {
+                java.util.Queue<Object> __action = new java.util.LinkedList<Object>();
+                __action.add("storePhysiologicalActivity");
+                __action.add(physioActivity);
                 __actions.add(__action);
                 __actions.notifyAll();
              }
@@ -184,8 +260,6 @@ public final class FitbitMock {
     // Code for source alarm from device Fitbit
     /**
      * Publish the value of source <code>alarm</code> from device <code>Fitbit</code>.
-    <p>
-    alarm
     
     <pre>
     source alarm as Alarm indexed by name as String;
@@ -204,8 +278,6 @@ public final class FitbitMock {
     private java.util.HashMap<AlarmIndices, fr.inria.phoenix.diasuite.framework.datatype.alarm.Alarm> __alarm = new java.util.HashMap<AlarmIndices, fr.inria.phoenix.diasuite.framework.datatype.alarm.Alarm>();
     /**
      * Set the value (without publication) of source <code>alarm</code> from device <code>Fitbit</code>.
-    <p>
-    alarm
     
     <pre>
     source alarm as Alarm indexed by name as String;
@@ -296,6 +368,48 @@ public final class FitbitMock {
     }
     // End of code for source distanceInMeters from device Fitbit
     
+    // Code for source heartActivity from device Fitbit
+    /**
+     * Publish the value of source <code>heartActivity</code> from device <code>Fitbit</code>.
+    
+    <pre>
+    source heartActivity as HeartActivity indexed by period as Period, heartZone as HeartRate;
+    </pre>
+    @param newHeartActivityValue the new value for the source <code>heartActivity</code>
+    @param period the value of the index <code>period</code>
+    @param heartZone the value of the index <code>heartZone</code>
+    @return this for fluent interface
+     */
+    public FitbitMock heartActivity(fr.inria.phoenix.diasuite.framework.datatype.heartactivity.HeartActivity newHeartActivityValue,
+            fr.inria.phoenix.diasuite.framework.datatype.period.Period period,
+            fr.inria.phoenix.diasuite.framework.datatype.heartrate.HeartRate heartZone) {
+        proxy._publishHeartActivity(newHeartActivityValue,
+            period,
+            heartZone);
+        return this;
+    }
+    
+    private java.util.HashMap<HeartActivityIndices, fr.inria.phoenix.diasuite.framework.datatype.heartactivity.HeartActivity> __heartActivity = new java.util.HashMap<HeartActivityIndices, fr.inria.phoenix.diasuite.framework.datatype.heartactivity.HeartActivity>();
+    /**
+     * Set the value (without publication) of source <code>heartActivity</code> from device <code>Fitbit</code>.
+    
+    <pre>
+    source heartActivity as HeartActivity indexed by period as Period, heartZone as HeartRate;
+    </pre>
+    @param newHeartActivityValue the new value for the source <code>heartActivity</code>
+    @param period the value of the index <code>period</code>
+    @param heartZone the value of the index <code>heartZone</code>
+    @return this for fluent interface
+     */
+    public FitbitMock setHeartActivity(fr.inria.phoenix.diasuite.framework.datatype.heartactivity.HeartActivity newHeartActivityValue,
+            fr.inria.phoenix.diasuite.framework.datatype.period.Period period,
+            fr.inria.phoenix.diasuite.framework.datatype.heartrate.HeartRate heartZone) {
+        HeartActivityIndices _indices_ = new HeartActivityIndices(period, heartZone);
+        __heartActivity.put(_indices_, newHeartActivityValue);
+        return this;
+    }
+    // End of code for source heartActivity from device Fitbit
+    
     // Code for source isAlive from device Device
     /**
      * Publish the value of source <code>isAlive</code> from device <code>Device</code>.
@@ -326,6 +440,74 @@ public final class FitbitMock {
         return this;
     }
     // End of code for source isAlive from device Device
+    
+    // Code for source lastSynchronization from device Fitbit
+    /**
+     * Publish the value of source <code>lastSynchronization</code> from device <code>Fitbit</code>.
+    
+    <pre>
+    source lastSynchronization as Date;
+    </pre>
+    @param newLastSynchronizationValue the new value for the source <code>lastSynchronization</code>
+    @return this for fluent interface
+     */
+    public FitbitMock lastSynchronization(fr.inria.phoenix.diasuite.framework.datatype.date.Date newLastSynchronizationValue) {
+        proxy._publishLastSynchronization(newLastSynchronizationValue);
+        return this;
+    }
+    
+    private fr.inria.phoenix.diasuite.framework.datatype.date.Date __lastSynchronization = null;
+    /**
+     * Set the value (without publication) of source <code>lastSynchronization</code> from device <code>Fitbit</code>.
+    
+    <pre>
+    source lastSynchronization as Date;
+    </pre>
+    @param newLastSynchronizationValue the new value for the source <code>lastSynchronization</code>
+    @return this for fluent interface
+     */
+    public FitbitMock setLastSynchronization(fr.inria.phoenix.diasuite.framework.datatype.date.Date newLastSynchronizationValue) {
+        __lastSynchronization = newLastSynchronizationValue;
+        return this;
+    }
+    // End of code for source lastSynchronization from device Fitbit
+    
+    // Code for source physiologicalActivities from device Fitbit
+    /**
+     * Publish the value of source <code>physiologicalActivities</code> from device <code>Fitbit</code>.
+    
+    <pre>
+    source physiologicalActivities as PhysiologicalActivity [] indexed by period as Period;
+    </pre>
+    @param newPhysiologicalActivitiesValue the new value for the source <code>physiologicalActivities</code>
+    @param period the value of the index <code>period</code>
+    @return this for fluent interface
+     */
+    public FitbitMock physiologicalActivities(java.util.List<fr.inria.phoenix.diasuite.framework.datatype.physiologicalactivity.PhysiologicalActivity> newPhysiologicalActivitiesValue,
+            fr.inria.phoenix.diasuite.framework.datatype.period.Period period) {
+        proxy._publishPhysiologicalActivities(newPhysiologicalActivitiesValue,
+            period);
+        return this;
+    }
+    
+    private java.util.HashMap<PhysiologicalActivitiesIndices, java.util.List<fr.inria.phoenix.diasuite.framework.datatype.physiologicalactivity.PhysiologicalActivity>> __physiologicalActivities = new java.util.HashMap<PhysiologicalActivitiesIndices, java.util.List<fr.inria.phoenix.diasuite.framework.datatype.physiologicalactivity.PhysiologicalActivity>>();
+    /**
+     * Set the value (without publication) of source <code>physiologicalActivities</code> from device <code>Fitbit</code>.
+    
+    <pre>
+    source physiologicalActivities as PhysiologicalActivity [] indexed by period as Period;
+    </pre>
+    @param newPhysiologicalActivitiesValue the new value for the source <code>physiologicalActivities</code>
+    @param period the value of the index <code>period</code>
+    @return this for fluent interface
+     */
+    public FitbitMock setPhysiologicalActivities(java.util.List<fr.inria.phoenix.diasuite.framework.datatype.physiologicalactivity.PhysiologicalActivity> newPhysiologicalActivitiesValue,
+            fr.inria.phoenix.diasuite.framework.datatype.period.Period period) {
+        PhysiologicalActivitiesIndices _indices_ = new PhysiologicalActivitiesIndices(period);
+        __physiologicalActivities.put(_indices_, newPhysiologicalActivitiesValue);
+        return this;
+    }
+    // End of code for source physiologicalActivities from device Fitbit
     
     // Code for source pulses from device Fitbit
     /**
@@ -441,6 +623,194 @@ public final class FitbitMock {
     private java.util.Queue<java.util.Queue<Object>> __actions = new java.util.LinkedList<java.util.Queue<Object>>();
     
     /**
+     * Check that the <code>registerPhysiologicalDailyActivity</code> order from the <code>RegisterPhysiologicalActivity</code> action
+     * defined in device Fitbit was called.
+     * 
+    
+    <pre>
+    registerPhysiologicalDailyActivity(name as DailyActivityName, period as Period);
+    </pre>    @return true if the action happened with the given parameters, remaining parameters are ignored
+     */
+    public boolean expectRegisterPhysiologicalDailyActivity() {
+        try {
+            synchronized(__actions) {
+                java.util.Queue<Object> __action = __actions.poll();
+                if(__action == null) {
+                    __actions.wait(TIMEOUT);
+                    __action = __actions.poll();
+                }
+                if(__action == null)
+                    return false;
+                if(!("registerPhysiologicalDailyActivity".equals(__action.poll())))
+                    return false;
+                return true;
+            }
+         } catch(InterruptedException e) {
+             return false;
+         }
+    }
+    /**
+     * Check that the <code>registerPhysiologicalDailyActivity</code> order from the <code>RegisterPhysiologicalActivity</code> action
+     * defined in device Fitbit was called.
+     * 
+    
+    <pre>
+    registerPhysiologicalDailyActivity(name as DailyActivityName, period as Period);
+    </pre>
+     * @param name parameter 1 of the order.
+     *     @return true if the action happened with the given parameters, remaining parameters are ignored
+     */
+    public boolean expectRegisterPhysiologicalDailyActivity(fr.inria.phoenix.diasuite.framework.datatype.dailyactivityname.DailyActivityName name) {
+        try {
+            synchronized(__actions) {
+                java.util.Queue<Object> __action = __actions.poll();
+                if(__action == null) {
+                    __actions.wait(TIMEOUT);
+                    __action = __actions.poll();
+                }
+                if(__action == null)
+                    return false;
+                if(!("registerPhysiologicalDailyActivity".equals(__action.poll())))
+                    return false;
+                if(!name.equals(__action.poll()))
+                    return false;
+                return true;
+            }
+         } catch(InterruptedException e) {
+             return false;
+         }
+    }
+    /**
+     * Check that the <code>registerPhysiologicalDailyActivity</code> order from the <code>RegisterPhysiologicalActivity</code> action
+     * defined in device Fitbit was called.
+     * 
+    
+    <pre>
+    registerPhysiologicalDailyActivity(name as DailyActivityName, period as Period);
+    </pre>
+     * @param name parameter 1 of the order.
+     * @param period parameter 2 of the order.
+     *     @return true if the action happened with the given parameters
+     */
+    public boolean expectRegisterPhysiologicalDailyActivity(fr.inria.phoenix.diasuite.framework.datatype.dailyactivityname.DailyActivityName name,
+            fr.inria.phoenix.diasuite.framework.datatype.period.Period period) {
+        try {
+            synchronized(__actions) {
+                java.util.Queue<Object> __action = __actions.poll();
+                if(__action == null) {
+                    __actions.wait(TIMEOUT);
+                    __action = __actions.poll();
+                }
+                if(__action == null)
+                    return false;
+                if(!("registerPhysiologicalDailyActivity".equals(__action.poll())))
+                    return false;
+                if(!name.equals(__action.poll()))
+                    return false;
+                if(!period.equals(__action.poll()))
+                    return false;
+                return true;
+            }
+         } catch(InterruptedException e) {
+             return false;
+         }
+    }
+    
+    /**
+     * Check that the <code>registerPhysiologicalPeriodActivity</code> order from the <code>RegisterPhysiologicalActivity</code> action
+     * defined in device Fitbit was called.
+     * 
+    
+    <pre>
+    registerPhysiologicalPeriodActivity(name as PeriodActivityName, period as Period);
+    </pre>    @return true if the action happened with the given parameters, remaining parameters are ignored
+     */
+    public boolean expectRegisterPhysiologicalPeriodActivity() {
+        try {
+            synchronized(__actions) {
+                java.util.Queue<Object> __action = __actions.poll();
+                if(__action == null) {
+                    __actions.wait(TIMEOUT);
+                    __action = __actions.poll();
+                }
+                if(__action == null)
+                    return false;
+                if(!("registerPhysiologicalPeriodActivity".equals(__action.poll())))
+                    return false;
+                return true;
+            }
+         } catch(InterruptedException e) {
+             return false;
+         }
+    }
+    /**
+     * Check that the <code>registerPhysiologicalPeriodActivity</code> order from the <code>RegisterPhysiologicalActivity</code> action
+     * defined in device Fitbit was called.
+     * 
+    
+    <pre>
+    registerPhysiologicalPeriodActivity(name as PeriodActivityName, period as Period);
+    </pre>
+     * @param name parameter 1 of the order.
+     *     @return true if the action happened with the given parameters, remaining parameters are ignored
+     */
+    public boolean expectRegisterPhysiologicalPeriodActivity(fr.inria.phoenix.diasuite.framework.datatype.periodactivityname.PeriodActivityName name) {
+        try {
+            synchronized(__actions) {
+                java.util.Queue<Object> __action = __actions.poll();
+                if(__action == null) {
+                    __actions.wait(TIMEOUT);
+                    __action = __actions.poll();
+                }
+                if(__action == null)
+                    return false;
+                if(!("registerPhysiologicalPeriodActivity".equals(__action.poll())))
+                    return false;
+                if(!name.equals(__action.poll()))
+                    return false;
+                return true;
+            }
+         } catch(InterruptedException e) {
+             return false;
+         }
+    }
+    /**
+     * Check that the <code>registerPhysiologicalPeriodActivity</code> order from the <code>RegisterPhysiologicalActivity</code> action
+     * defined in device Fitbit was called.
+     * 
+    
+    <pre>
+    registerPhysiologicalPeriodActivity(name as PeriodActivityName, period as Period);
+    </pre>
+     * @param name parameter 1 of the order.
+     * @param period parameter 2 of the order.
+     *     @return true if the action happened with the given parameters
+     */
+    public boolean expectRegisterPhysiologicalPeriodActivity(fr.inria.phoenix.diasuite.framework.datatype.periodactivityname.PeriodActivityName name,
+            fr.inria.phoenix.diasuite.framework.datatype.period.Period period) {
+        try {
+            synchronized(__actions) {
+                java.util.Queue<Object> __action = __actions.poll();
+                if(__action == null) {
+                    __actions.wait(TIMEOUT);
+                    __action = __actions.poll();
+                }
+                if(__action == null)
+                    return false;
+                if(!("registerPhysiologicalPeriodActivity".equals(__action.poll())))
+                    return false;
+                if(!name.equals(__action.poll()))
+                    return false;
+                if(!period.equals(__action.poll()))
+                    return false;
+                return true;
+            }
+         } catch(InterruptedException e) {
+             return false;
+         }
+    }
+    
+    /**
      * Check that the <code>removeAlarm</code> order from the <code>ScheduleAlarm</code> action
      * defined in device Fitbit was called.
      * 
@@ -550,6 +920,65 @@ public final class FitbitMock {
                 if(!("scheduleAlarm".equals(__action.poll())))
                     return false;
                 if(!alarm.equals(__action.poll()))
+                    return false;
+                return true;
+            }
+         } catch(InterruptedException e) {
+             return false;
+         }
+    }
+    
+    /**
+     * Check that the <code>storePhysiologicalActivity</code> order from the <code>RegisterPhysiologicalActivity</code> action
+     * defined in device Fitbit was called.
+     * 
+    
+    <pre>
+    storePhysiologicalActivity(physioActivity as PhysiologicalActivity);
+    </pre>    @return true if the action happened with the given parameters, remaining parameters are ignored
+     */
+    public boolean expectStorePhysiologicalActivity() {
+        try {
+            synchronized(__actions) {
+                java.util.Queue<Object> __action = __actions.poll();
+                if(__action == null) {
+                    __actions.wait(TIMEOUT);
+                    __action = __actions.poll();
+                }
+                if(__action == null)
+                    return false;
+                if(!("storePhysiologicalActivity".equals(__action.poll())))
+                    return false;
+                return true;
+            }
+         } catch(InterruptedException e) {
+             return false;
+         }
+    }
+    /**
+     * Check that the <code>storePhysiologicalActivity</code> order from the <code>RegisterPhysiologicalActivity</code> action
+     * defined in device Fitbit was called.
+     * 
+    
+    <pre>
+    storePhysiologicalActivity(physioActivity as PhysiologicalActivity);
+    </pre>
+     * @param physioActivity parameter 1 of the order.
+     *     @return true if the action happened with the given parameters
+     */
+    public boolean expectStorePhysiologicalActivity(fr.inria.phoenix.diasuite.framework.datatype.physiologicalactivity.PhysiologicalActivity physioActivity) {
+        try {
+            synchronized(__actions) {
+                java.util.Queue<Object> __action = __actions.poll();
+                if(__action == null) {
+                    __actions.wait(TIMEOUT);
+                    __action = __actions.poll();
+                }
+                if(__action == null)
+                    return false;
+                if(!("storePhysiologicalActivity".equals(__action.poll())))
+                    return false;
+                if(!physioActivity.equals(__action.poll()))
                     return false;
                 return true;
             }

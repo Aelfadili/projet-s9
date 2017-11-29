@@ -5,10 +5,10 @@ import java.io.Serializable;
 /**
  * <pre>
 structure Alarm {
- *         name as String;
- *         date as Date;
- *         minutesBetweenReminders as Integer;
- *         reminders as Integer;
+ * 	name as String;
+ * 	date as Date;
+ * 	minutesBetweenReminders as Integer;
+ * 	reminders as Integer;
  * }
 </pre>
  */
