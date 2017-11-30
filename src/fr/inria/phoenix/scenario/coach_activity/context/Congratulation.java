@@ -10,7 +10,7 @@ import fr.inria.phoenix.diasuite.framework.datatype.date.Date;
 import fr.inria.phoenix.diasuite.framework.datatype.period.Period;
 import fr.inria.phoenix.diasuite.framework.device.clock.TickHourFromClock;
 
-public class Congratulation<CongratulationValuePublishable> extends AbstractCongratulation {
+public class Congratulation extends AbstractCongratulation {
 	
 	public int time = 20;
 	public int step = 2000;
