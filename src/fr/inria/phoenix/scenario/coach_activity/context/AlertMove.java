@@ -8,6 +8,6 @@ import fr.inria.phoenix.diasuite.framework.datatype.criticalnotification.Critica
 
 
 public class AlertMove extends AbstractAlertMove{
-	
+
 	
 }
